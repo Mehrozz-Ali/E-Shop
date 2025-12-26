@@ -1,5 +1,7 @@
 const express = require("express");
+const ErrorHandler = require("./utils/ErrorHandler");
 const app = express();
+const cookieParser = require("cookie-parser")
 
 
 
@@ -10,5 +12,6 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 }
 
 
-
-module.exports=app
+// its for ErrorHandling 
+app.use(ErrorHandler)
+module.exports = app
