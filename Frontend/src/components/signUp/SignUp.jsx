@@ -3,6 +3,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { RxAvatar } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
 import styles from '../../styles/styles'
+import axios from 'axios'
+import server from '../../server'
 
 
 function SignUp() {
@@ -13,13 +15,28 @@ function SignUp() {
     const [avatar, setAvatar] = useState(null)
 
 
-    const handleSubmit = () => {
-        console.log("#fff");
-    }
+
 
     const handlefileInputChange = (e) => {
         const file = e.target.files[0];
         setAvatar(file)
+    }
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        const newForm = new FormData();
+        newForm.append("file", avatar);
+        newForm.append("name", name);
+        newForm.append("email", email);
+        newForm.append("password", password);
+        axios.post(`${server}/user/create-user`, newForm, config).then((res) => {
+            console.log(res);
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
 
@@ -30,7 +47,7 @@ function SignUp() {
             </div>
             <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <form className='space-y-6'>
+                    <form className='space-y-6' onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="full-name" className='block text-sm font-medium text-gray-700'>Full Name </label>
                             <div className="mt-1">
@@ -70,7 +87,7 @@ function SignUp() {
                                 </span>
                                 <label htmlFor="file-input" className='ml-5 flex items-center justify-center px-4 py-2 bordeer border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50'>
                                     <span>Upload a file</span>
-                                    <input type="file" name="avatar" id="file-input" accept='.jpg,.png,.jpeg' onChange={handlefileInputChange} className='sr-only'/>
+                                    <input type="file" name="avatar" id="file-input" accept='.jpg,.png,.jpeg' onChange={handlefileInputChange} className='sr-only' />
                                 </label>
                             </div>
                         </div>
