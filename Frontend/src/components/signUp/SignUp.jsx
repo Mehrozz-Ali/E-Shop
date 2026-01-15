@@ -34,7 +34,7 @@ function SignUp() {
         newForm.append("email", email);
         newForm.append("password", password);
         axios.post(`${server}/user/create-user`, newForm, config).then((res) => {
-            alert(res.message);
+            alert(res.data.message);
         }).catch((err) => {
             console.log(err);
         })
@@ -94,7 +94,7 @@ function SignUp() {
                         </div>
 
                         <div>
-                            <button type='submit' className='group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700'>Submit</button>
+                            <button type='submit' className='group relative w-full h-10 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700'>Submit</button>
                         </div>
                         <div className={`${styles.normalFlex} w-full`}>
                             <h4>Already have an account?</h4>
