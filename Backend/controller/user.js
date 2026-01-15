@@ -79,8 +79,8 @@ router.post("/activation", catchAsyncErrors(async (req, res, next) => {
             return next(new ErrorHandler("Invalid token", 400));
         }
         const { name, email, password, avatar } = newUser;
-        let user= await User.findOne({ email: email });
-        if(user){
+        let user = await User.findOne({ email: email });
+        if (user) {
             return next(new ErrorHandler("User already exists", 400));
         }
         user = await User.create({
@@ -95,6 +95,29 @@ router.post("/activation", catchAsyncErrors(async (req, res, next) => {
     }
 }))
 
+
+
+// login user 
+router.post("/login-user", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return next(new ErrorHandler("Please provide email and password", 400));
+        }
+        const user = await User.findOne({ email: email }).select("+password");
+        if (!user) {
+            return next(new ErrorHandler("User does not exist", 400));
+        }
+        const isPasswordValid = await user.comparePassword(password);
+        if (!isPasswordValid) {
+            return next(new ErrorHandler("Invalid password", 400));
+        }
+
+        sendToken(user, 201, res);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
 
 
 module.exports = router;
