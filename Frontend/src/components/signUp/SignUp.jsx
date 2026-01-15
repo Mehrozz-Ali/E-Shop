@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import axios from 'axios'
 import server from '../../server'
+import { toast } from 'react-toastify'
 
 
 function SignUp() {
@@ -34,9 +35,9 @@ function SignUp() {
         newForm.append("email", email);
         newForm.append("password", password);
         axios.post(`${server}/user/create-user`, newForm, config).then((res) => {
-            alert(res.data.message);
+            toast.success(res.data.message);
         }).catch((err) => {
-            console.log(err);
+            toast.error(err.response.data.message);
         })
     }
 
