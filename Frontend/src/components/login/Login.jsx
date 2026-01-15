@@ -18,7 +18,7 @@ function Login() {
         await axios.post(`${server}/user/login-user`, {
             email,
             password,
-        }).then((res) => {
+        },{withCredentials:true}).then((res) => {
             toast.success("Login Successful!");
             navigate("/");
         }).catch((err) => {
