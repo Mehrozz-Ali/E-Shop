@@ -8,9 +8,10 @@ import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
 import { BiMenuAltLeft } from 'react-icons/bi';
 import DropDown from './DropDown';
 import { categoriesData } from '../../static/data';
+import Navbar from './Navbar';
 
 
-function Header() {
+function Header({ activeHeading }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState(null);
     const [active, setActive] = useState(false);
@@ -81,10 +82,14 @@ function Header() {
                         <div className='relative h-[60px] mt-[10px] w-[270px]  1000px:block'>
                             <BiMenuAltLeft size={30} className='absolute top-3 left-2' />
                             <button className={`h-[100%] w-full flex  justify-between items-center pl-10 bg-white font-sans text-lg font-[500] select-none rounded-t-md`}>All Categories</button>
-                            <IoIosArrowDown size={20} className='absolute right-2 top-4 cursor-pointer'  onClick={()=>setDropDown(!dropDown)}/>
-                                { dropDown ?
-                                (<DropDown categoriesData={categoriesData} setDropDown={setDropDown}/>):null}
+                            <IoIosArrowDown size={20} className='absolute right-2 top-4 cursor-pointer' onClick={() => setDropDown(!dropDown)} />
+                            {dropDown ?
+                                (<DropDown categoriesData={categoriesData} setDropDown={setDropDown} />) : null}
                         </div>
+                    </div>
+                    {/* nav Items */}
+                    <div className={`${styles.normalFlex}`}>
+                        <Navbar active={activeHeading} />
                     </div>
                 </div>
             </div>
