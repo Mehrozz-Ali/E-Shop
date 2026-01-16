@@ -22,40 +22,27 @@ function Header() {
     return (
         <>
             <div className={`${styles.section}`}>
-                {/* <div className=" 800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
+                <div className="flex items-center justify-between h-[50px] my-[20px]">
                     <div>
                         <Link to="/">
-                            <img src="/logo.svg" alt="image" />
+                            <img src="/logo.svg" alt="" />
                         </Link>
                     </div>
 
                     <div className="w-[50%] relative">
-                        <input className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md" type="text" placeholder='Search Product...' value={searchData} onChange={handleSearchChange} />
-                        <AiOutlineSearch size={30} className='absolute right-2 top-1.5 cursor-pointer' />
-                    </div>
-                </div> */}
-                <div className="800px:h-[50px] 800px:my-[20px] 800px:flex items-center justify-between">
-                    <div>
-                        <Link to="/">
-                            <img
-                                src="/logo.svg"
-                                alt=""
-                            />
-                        </Link>
-                    </div>
+                        <input type="text" placeholder="Search Product..." value={searchTerm} onChange={handleSearchChange} className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md" />
+                        <AiOutlineSearch size={30} className="absolute right-2 top-1.5 cursor-pointer" />
+                        {searchData && searchData.length !== 0 ? (
+                            <div className='absolute min-h-[30vh] bg-slate-50 shadow-sm-2 z-[9] p-4'>
+                                {searchData && searchData.map((item, index) => {
+                                    const d = i.name;
+                                    const product_name = d.replace(/\s+/g, "-");
+                                    return (<Link to={`/product/${product_name}`}>
 
-                    <div className="w-[50%] relative">
-                        <input
-                            type="text"
-                            placeholder="Search Product..."
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
-                        />
-                        <AiOutlineSearch
-                            size={30}
-                            className="absolute right-2 top-1.5 cursor-pointer"
-                        />
+                                    </Link>)
+                                })}
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>
