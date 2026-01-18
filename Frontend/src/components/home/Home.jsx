@@ -5,6 +5,8 @@ import Categories from '../Route/Categories/Categories';
 import BestDeals from '../Route/BestDeals/BestDeals';
 import FeaturedProduct from '../Route/FeaturedProduct/FeaturedProduct';
 import Events from '../Route/Events/Events';
+import Sponsored from '../Route/Sponsored/Sponsored';
+import Footer from '../Layout/Footer'
 
 
 function Home() {
@@ -16,6 +18,8 @@ function Home() {
       <BestDeals />
       <Events />
       <FeaturedProduct />
+      <Sponsored />
+      <Footer />
     </div>
   )
 }
