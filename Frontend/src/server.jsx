@@ -1,3 +1,7 @@
 const server = "http://localhost:8000/api/v2";
 
-export default server;
+
+const backend_url = "http://localhost:8000/";
+
+
+export { server, backend_url };
