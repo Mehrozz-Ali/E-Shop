@@ -2,9 +2,9 @@ import React from 'react'
 import styles from '../../../styles/styles'
 import CountDown from "./CountDown.jsx"
 
-function EventsCard() {
+function EventsCard({ active }) {
     return (
-        <div className={`w-full block bg-white rounded-lg lg:flex mb-2 shadow-sm `}>
+        <div className={`w-full block bg-white rounded-lg ${active ? "unset" : "mb-12"} lg:flex p-2 shadow-sm `}>
             <div className='w-full lg:w-[50%] m-auto'>
                 <img src="https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg" alt="" />
             </div>
