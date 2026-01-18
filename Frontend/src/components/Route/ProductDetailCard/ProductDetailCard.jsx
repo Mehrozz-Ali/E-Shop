@@ -7,7 +7,7 @@ import { AiOutlineMessage, AiFillHeart, AiOutlineHeart, AiOutlineShoppingCart } 
 function ProductDetailCard({ setOpen, data }) {
     const [count, setCount] = useState(1);
     const [click, setClick] = useState(false);
-    const [select, SetSelect] = useState();
+    // const [select, SetSelect] = useState();
 
     const handleMessageSubmit = () => { };
     const decrementCount = () => {
