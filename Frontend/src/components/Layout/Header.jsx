@@ -40,6 +40,7 @@ function Header({ activeHeading }) {
     })
 
     return (
+
         <>
             <div className={`${styles.section}`}>
                 <div className="flex items-center justify-between h-[50px] my-[20px]">
@@ -114,7 +115,7 @@ function Header({ activeHeading }) {
                                 {isAuthenticated ?
                                     (
                                         <Link to="/profile">
-                                            <img src={`${backend_url}${user.avatar}`} alt="" className='w-[40px] h-[40px] rounded-full'/>
+                                            <img src={`${backend_url}${user.avatar}`} alt="" className='w-[35px] h-[35px] rounded-full' />
                                         </Link>) : (
                                         <Link to="/login">
                                             <CgProfile size={30} color='rgb(255 255 255/ 83%)' />
