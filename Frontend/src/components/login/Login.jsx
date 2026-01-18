@@ -4,8 +4,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import axios from 'axios'
-import server from '../../server'
 import { toast } from 'react-toastify'
+    import { server } from '../../server'
 
 function Login() {
     const [email, setEmail] = useState("")
@@ -18,7 +18,7 @@ function Login() {
         await axios.post(`${server}/user/login-user`, {
             email,
             password,
-        },{withCredentials:true}).then((res) => {
+        }, { withCredentials: true }).then((res) => {
             toast.success("Login Successful!");
             navigate("/");
             window.location.reload(true);

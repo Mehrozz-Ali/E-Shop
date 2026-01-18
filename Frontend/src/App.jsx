@@ -6,38 +6,42 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import Store from "./redux/store.jsx";
 import { loadUser } from './redux/actions/user.jsx';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const { loading } = useSelector((state) => state.user)
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/sign-up' element={<SignUpPage />} />
-          <Route path='/activation/:activation_token' element={<ActivationPage />} />
-          <Route path='/products' element={<ProductsPage />} />
-          <Route path='/best-selling' element={<BestSellingPage />} />
-          <Route path='/events' element={<EventsPage />} />
-          <Route path='/faq' element={<FaqPage />} />
+      {loading ? null : (
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/sign-up' element={<SignUpPage />} />
+            <Route path='/activation/:activation_token' element={<ActivationPage />} />
+            <Route path='/products' element={<ProductsPage />} />
+            <Route path='/best-selling' element={<BestSellingPage />} />
+            <Route path='/events' element={<EventsPage />} />
+            <Route path='/faq' element={<FaqPage />} />
 
-        </Routes>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </BrowserRouter>
+          </Routes>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+        </BrowserRouter>
+      )}
     </>
   )
 }

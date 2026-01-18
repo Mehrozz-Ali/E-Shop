@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import server from '../server';
+import { server } from '../server';
 import Activation from '../components/activation/Activation'
 import { useParams } from 'react-router-dom'
 

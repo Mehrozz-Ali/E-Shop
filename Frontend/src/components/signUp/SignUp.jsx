@@ -4,7 +4,7 @@ import { RxAvatar } from 'react-icons/rx'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import axios from 'axios'
-import server from '../../server'
+import { server } from '../../server'
 import { toast } from 'react-toastify'
 
 
