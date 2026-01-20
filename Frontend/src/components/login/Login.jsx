@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from '../../styles/styles'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-    import { server } from '../../server'
+import { server } from '../../server'
 
 function Login() {
     const [email, setEmail] = useState("")
