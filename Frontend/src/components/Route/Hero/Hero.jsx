@@ -15,7 +15,7 @@ function Hero() {
                     <br /> aliquam deserunt officia. Dolorum saepe nulla provident.
                 </p>
                 <Link to="/products" className="inline-block">
-                    <div className={`${styles.button} mt-5`}>
+                    <div className={`${styles.button} mt-5 !rounded`}>
                         <span className="text-[#fff] font-[Poppins] text-[18px]">Shop Now</span>
                     </div>
                 </Link>
