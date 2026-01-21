@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { HiOutlineMinus, HiPlus } from 'react-icons/hi';
 import { Link } from 'react-router-dom'
 
-function cart({ setOpenCart }) {
+function WishList({ setOpenWishList }) {
     const cartData = [
         {
             name: "Iphone 14 Pro Max 256 gb and 8gb ram silver color",
@@ -28,7 +28,7 @@ function cart({ setOpenCart }) {
             <div className="fixed top-0 right-0 min-h-full w-[25%] bg-white flex flex-col justify-between shadow-sm">
                 <div>
                     <div className="flex w-full justify-end pt-5 pr-5">
-                        <RxCross1 size={25} className='cursor-pointer' onClick={() => setOpenCart(false)} />
+                        <RxCross1 size={25} className='cursor-pointer' onClick={() => setOpenWishList(false)} />
                     </div>
                     {/* Items length  */}
                     <div className={`${styles.normalFlex} p-4`}>
@@ -89,4 +89,4 @@ const CartSingle = ({ data }) => {
 
 
 
-export default cart
+export default WishList
