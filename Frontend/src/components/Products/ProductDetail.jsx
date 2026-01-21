@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/styles';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from 'react-icons/ai';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 
@@ -70,6 +70,16 @@ function ProductDetail({ data }) {
                                 </div>
                                 <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}>
                                     <span className='text-white flex items-center'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
+                                </div>
+                                <div className="flex items-center pt-8">
+                                    <img src={data.shop.shop_avatar.url} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    <div className='pr-8 '>
+                                        <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data.shop.name}</h3>
+                                        <h5 className='pb-3 text-[15px]'>[{data.shop.ratings}] Ratings</h5>
+                                    </div>
+                                    <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`} onClick={handleMessageSubmit}>
+                                        <span className='text-white flex items-center'>Send Message<AiOutlineMessage className='ml-1' /> </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
