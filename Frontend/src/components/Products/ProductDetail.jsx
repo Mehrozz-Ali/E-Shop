@@ -29,11 +29,11 @@ function ProductDetail({ data }) {
             {data ? (
                 <div className={`${styles.section} w-[90%] 800px:w-[80%] `}>
                     <div className='w-full py-5'>
-                        <div className="flex w-full  800px:flex">
+                        <div className="flex  w-full  800px:flex">
                             {/* Left side */}
                             <div className="w-full  800px:w-[50%]">
                                 <img src={data?.image_Url[select].url} alt="" className='w-[50%]' />
-                                <div className="w-full flex">
+                                <div className="w-full flex gap-1">
                                     <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
                                         <img src={data?.image_Url[0].url} alt="image" className='h-[200px]' onClick={() => setSelect(0)} />
                                     </div>
@@ -68,8 +68,8 @@ function ProductDetail({ data }) {
                                         }
                                     </div>
                                 </div>
-                                <div className={`${styles.button} mt-6 rounded h-11 flex items-center`}>
-                                    <span className='text-white flex'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
+                                <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}>
+                                    <span className='text-white flex items-center'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
                                 </div>
                             </div>
                         </div>
