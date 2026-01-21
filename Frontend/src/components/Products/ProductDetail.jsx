@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/styles';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 
 function ProductDetail({ data }) {
@@ -66,6 +67,9 @@ function ProductDetail({ data }) {
                                             (<AiOutlineHeart size={30} className="cursor-pointer  right-2 top-5" onClick={() => setClick(!click)} color={click ? "red" : "#333"} title="Add to wishlist" />)
                                         }
                                     </div>
+                                </div>
+                                <div className={`${styles.button} mt-6 rounded h-11 flex items-center`}>
+                                    <span className='text-white flex'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
                                 </div>
                             </div>
                         </div>
