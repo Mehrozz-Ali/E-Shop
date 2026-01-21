@@ -24,7 +24,7 @@ function App() {
             <Route path='/sign-up' element={<SignUpPage />} />
             <Route path='/activation/:activation_token' element={<ActivationPage />} />
             <Route path='/products' element={<ProductsPage />} />
-            <Route path='/product/:id' element={<ProductDetailPage />} />
+            <Route path='/product/:name' element={<ProductDetailPage />} />
             <Route path='/best-selling' element={<BestSellingPage />} />
             <Route path='/events' element={<EventsPage />} />
             <Route path='/faq' element={<FaqPage />} />
