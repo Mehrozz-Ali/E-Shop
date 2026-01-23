@@ -10,7 +10,7 @@ function ProfileContent({ active }) {
             {active === 1 && (
                 <div className='flex justify-center w-full '>
                     <div className="relative">
-                        <img src={`${backend_url}${user.avatar.url}`} alt="" className="w-[35px] h-[35px] rounded-full" />
+                        <img src={`${backend_url}${user?.avatar?.url}`} alt="" className="w-[35px] h-[35px] rounded-full" />
                     </div>
                 </div>
             )}
