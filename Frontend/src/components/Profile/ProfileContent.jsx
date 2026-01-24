@@ -372,6 +372,16 @@ const PaymentMethod = () => {
                     <span className='text-[#fff] '>Add New</span>
                 </div>
             </div>
+            <br />
+            <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10" >
+                <div className="flex items-center">
+                    <img src="https://bonik-react.vercel.app/assets/images/payment-methods/Visa.svg" alt="image" />
+                    <h5 className='pl-5 font-[600]'>Shahriar Sajeeb</h5>
+                </div>
+                <div className="pl-8 flex items-center">
+                    <h6>1234 **** **** ****</h6>
+                </div>
+            </div>
         </div>
     )
 }
