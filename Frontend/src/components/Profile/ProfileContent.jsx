@@ -101,6 +101,14 @@ function ProfileContent({ active }) {
                     <TrackOrder />
                 </div>
             )}
+
+
+            {/* Payment Method */}
+            {active === 6 && (
+                <div>
+                    <PaymentMethod />
+                </div>
+            )}
         </div>
     )
 
@@ -354,6 +362,18 @@ const TrackOrder = () => {
         </div>
     )
 }
+
+const PaymentMethod = () => {
+    return (
+        <div className="w-full px-5">
+            <div className="flex w-full items-center justify-between ">
+                <h1 className='text-[25px] font-[600] text-[#000000ba] pb-2'>Payment Methods</h1>
+            </div>
+        </div>
+    )
+}
+
+
 
 
 
