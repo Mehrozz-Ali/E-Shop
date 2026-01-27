@@ -138,6 +138,12 @@ function Header({ activeHeading }) {
                     </div>
                 </div>
             </div>
+
+
+            {/* Mobile Header */}
+            <div className='w-full h-[60px] fixed bg-[#fff] z-50 top-0 left-0 shadow-sm block md:hidden '>
+
+            </div>
         </>
     )
 }
