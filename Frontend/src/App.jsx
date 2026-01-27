@@ -8,9 +8,10 @@ import Store from "./redux/store.jsx";
 import { loadUser } from './redux/actions/user.jsx';
 import { useSelector } from 'react-redux';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
+import ProtectedRoute from './ProtectedRoute.jsx';
 
 function App() {
-  const { loading } = useSelector((state) => state.user)
+  const { loading, isAuthenticated } = useSelector((state) => state.user)
   useEffect(() => {
     Store.dispatch(loadUser());
   }, []);
@@ -28,7 +29,10 @@ function App() {
             <Route path='/best-selling' element={<BestSellingPage />} />
             <Route path='/events' element={<EventsPage />} />
             <Route path='/faq' element={<FaqPage />} />
-            <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/profile' element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <ProfilePage />
+              </ProtectedRoute>} />
 
           </Routes>
           <ToastContainer
