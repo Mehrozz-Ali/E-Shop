@@ -23,38 +23,38 @@ function ProfileSidebar({ active, setActive }) {
   }
 
   return (
-    <div className='w-full bg-white shadow-sm rounded-[10px] p-4 pt-8'>
+    <div className='w-full bg-white shadow-sm rounded-[10px] p-4 pt-8 '>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(1)}>
         <RxPerson size={20} color={active === 1 ? "red" : ""} />
-        <span className={`pl-3 ${active === 1 ? "text-[red]" : " "}`}>Profile</span>
+        <span className={`pl-3 hidden md:inline  ${active === 1 ? "text-[red]" : " "}`}>Profile</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(2)}>
         <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
-        <span className={`pl-3 ${active === 2 ? "text-[red]" : " "}`}>Orders</span>
+        <span className={`pl-3 hidden md:inline ${active === 2 ? "text-[red]" : " "}`}>Orders</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(3)}>
         <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
-        <span className={`pl-3 ${active === 3 ? "text-[red]" : " "}`}>Refunds</span>
+        <span className={`pl-3 hidden md:inline ${active === 3 ? "text-[red]" : " "}`}>Refunds</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => { setActive(4); navigate("/inbox"); }}>
         <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
-        <span className={`pl-3 ${active === 4 ? "text-[red]" : " "}`}>Inbox</span>
+        <span className={`pl-3 hidden md:inline ${active === 4 ? "text-[red]" : " "}`}>Inbox</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(5)}>
         <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
-        <span className={`pl-3 ${active === 5 ? "text-[red]" : " "}`}>Track Order</span>
+        <span className={`pl-3 hidden md:inline ${active === 5 ? "text-[red]" : " "}`}>Track Order</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(6)}>
         <AiOutlineCreditCard size={20} color={active === 6 ? "red" : ""} />
-        <span className={`pl-3 ${active === 6 ? "text-[red]" : " "}`}>Payment Method</span>
+        <span className={`pl-3 hidden md:inline ${active === 6 ? "text-[red]" : " "}`}>Payment Method</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(7)}>
         <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
-        <span className={`pl-3 ${active === 7 ? "text-[red]" : " "}`}>Address</span>
+        <span className={`pl-3 hidden md:inline ${active === 7 ? "text-[red]" : " "}`}>Address</span>
       </div>
       <div className="flex items-center cursor-pointer w-full mb-8" onClick={() => setActive(8) || logoutHandler()}>
         <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
-        <span className={`pl-3 ${active === 8 ? "text-[red]" : " "}`}>Logout</span>
+        <span className={`pl-3 hidden md:inline ${active === 8 ? "text-[red]" : " "}`}>Logout</span>
       </div>
     </div>
   )
