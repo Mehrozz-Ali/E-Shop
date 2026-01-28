@@ -1,6 +1,6 @@
 import styles from '../../styles/styles';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { productData } from '../../static/data';
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from 'react-icons/ai';
@@ -13,6 +13,8 @@ import Navbar from './Navbar';
 import { backend_url } from '../../server';
 import Cart from '../cart/cart';
 import WishList from '../WishList/WishList';
+import { RxCross1 } from 'react-icons/rx';
+
 
 function Header({ activeHeading }) {
     const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -22,6 +24,7 @@ function Header({ activeHeading }) {
     const [dropDown, setDropDown] = useState(false);
     const [openCart, setOpenCart] = useState(false);
     const [openWishList, setOpenWishList] = useState(false);
+    const [open, setOpen] = useState(false)  // for mobile screen 
 
 
 
@@ -34,18 +37,27 @@ function Header({ activeHeading }) {
         setSearchData(filteredProducts);
     }
 
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 70) {
-            setActive(true);
-        } else {
-            setActive(false);
-        }
-    })
+    // window.addEventListener("scroll", () => {
+    //     if (window.scrollY > 70) {
+    //         setActive(true);
+    //     } else {
+    //         setActive(false);
+    //     }
+    // })
+    useEffect(() => {
+        const handleScroll = () => {
+            setActive(window.scrollY > 70);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
 
     return (
 
         <>
-            <div className={`${styles.section}`}>
+            <div className={`${styles.section} hidden lg:block`}>
                 <div className="flex items-center justify-between h-[50px] my-[20px]">
                     <div>
                         <Link to="/">
@@ -83,7 +95,7 @@ function Header({ activeHeading }) {
                 </div>
             </div>
 
-            <div className={`${active === true ? "shadow-sm fixed top-0 left-0 z-10" : null} transition  800px:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}>
+            <div className={`${active === true ? "shadow-sm fixed top-0 left-0 z-10" : ""} hidden lg:block transition  lg:flex items-center justify-between w-full bg-[#3321c8] h-[70px]`}>
                 <div className={`${styles.section} relative ${styles.normalFlex} justify-between`}>
                     {/* Categories */}
                     <div onClick={() => setDropDown(!dropDown)}>
@@ -141,8 +153,64 @@ function Header({ activeHeading }) {
 
 
             {/* Mobile Header */}
-            <div className='w-full h-[60px] fixed bg-[#fff] z-50 top-0 left-0 shadow-sm block md:hidden '>
+            <div className='w-full h-[60px] fixed bg-[#fff] z-50 top-0 left-0 shadow-sm block lg:hidden '>
+                <div className="w-full flex items-center justify-between">
+                    <div className=''>
+                        <BiMenuAltLeft size={40} className='ml-4' onClick={() => setOpen(true)} />
+                    </div>
+                    <div>
+                        <Link to="/">
+                            <img src="/logo.svg" alt="" className='mt-3 cursor-pointer' />
+                        </Link>
+                    </div>
+                    <div>
+                        <div className="relative mr-[20px]">
+                            <AiOutlineShoppingCart size={30} />
+                            <span className='absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right  p-0 m-0 text-white font-mono text-[12px] leading-tight text-center'>1</span>
+                        </div>
+                    </div>
+                </div>
 
+                {/* Mobile Header Sidebar */}
+                {open && (
+                    <div className='fixed w-full bg-[#0000005a] z-20 h-full top-0 left-0'>
+                        <div className='fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll'>
+                            <div className="w-full justify-between flex pr-3">
+                                <div>
+                                    <div className="relative mr-[15px]">
+                                        <AiOutlineHeart size={30} className='mt-5 ml-3' />
+                                        <span className='absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right  p-0 m-0 text-white font-mono text-[12px] leading-tight text-center'>0</span>
+                                    </div>
+                                </div>
+                                <RxCross1 size={30} className='ml-4 mt-5' onClick={() => setOpen(false)} />
+                            </div>
+
+                            {/* search bar  */}
+                            <div className="my-8 w-[92%] m-auto h-[40px] relative">
+                                <input type='search' placeholder='Search Product...' className='h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md' value={searchTerm} onChange={handleSearchChange} />
+                                {searchData && (
+                                    <div className='absolute  bg-[#fff] z-10 shadow w-full p-2'>
+                                        {
+                                            searchData && searchData.map((i) => {
+                                                const d = i.name;
+                                                const Product_name = d.replace(/\s+/g, "-");
+                                                return (
+                                                    <Link to={`/product/${Product_name}`}>
+                                                        <div className='flex items-center'>
+                                                            <img src={i.image_Url[0].url} alt="" className='w-[50px] mr-2' />
+                                                            <h5>{i.name}</h5>
+                                                        </div>
+                                                    </Link>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                )}
+                            </div>
+
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     )
