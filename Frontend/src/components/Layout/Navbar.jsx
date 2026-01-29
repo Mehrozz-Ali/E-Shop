@@ -5,11 +5,11 @@ import styles from '../../styles/styles';
 
 function Navbar({ active }) {
     return (
-        <div className={`${styles.normalFlex}`}>
+        <div className={`block md:${styles.normalFlex}`}>
             {
                 navItems && navItems.map((i, index) => (
                     <div className='flex'>
-                        <Link to={i.url} className={`${active === index + 1 ? "text-[#17dd1f]" : "text-[#fff]"} font-[500] px-6 cursor-pointer`} >
+                        <Link to={i.url} className={`${active === index + 1 ? "text-[#17dd1f]" :" text-black md:text-[#fff]"} pb-[30px]  font-[500] px-6 cursor-pointer`} >
                             {i.title}
                         </Link>
                     </div>
