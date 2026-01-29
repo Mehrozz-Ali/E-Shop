@@ -9,7 +9,7 @@ function Navbar({ active }) {
             {
                 navItems && navItems.map((i, index) => (
                     <div className='flex'>
-                        <Link to={i.url} className={`${active === index + 1 ? "text-[#17dd1f]" :" text-black md:text-[#fff]"} pb-[30px]  font-[500] px-6 cursor-pointer`} >
+                        <Link to={i.url} className={`${active === index + 1 ? "text-[#17dd1f]" : " text-black md:text-[#fff]"} pb-[30px] md:pb-0 font-[500] px-6 cursor-pointer`} >
                             {i.title}
                         </Link>
                     </div>
