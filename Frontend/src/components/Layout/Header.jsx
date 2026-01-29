@@ -88,7 +88,7 @@ function Header({ activeHeading }) {
                     </div>
 
                     <div className={`${styles.button} !rounded-sm`}>
-                        <Link to="/seller">
+                        <Link to="/shop-create">
                             <h1 className='text-[#fff] flex items-center'>Become a Seller<IoIosArrowForward className="ml-1" /></h1>
                         </Link>
                     </div>
@@ -211,7 +211,7 @@ function Header({ activeHeading }) {
 
                             <Navbar active={activeHeading} />
                             <div className={`${styles.button} !rounded-sm ml-4`}>
-                                <Link to="/seller">
+                                <Link to="/shop-create">
                                     <h1 className='text-[#fff] flex items-center'>Become a Seller<IoIosArrowForward className="ml-1" /></h1>
                                 </Link>
                             </div>
