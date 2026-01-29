@@ -87,7 +87,7 @@ function Header({ activeHeading }) {
                         ) : null}
                     </div>
 
-                    <div className={`${styles.button}`}>
+                    <div className={`${styles.button} !rounded-sm`}>
                         <Link to="/seller">
                             <h1 className='text-[#fff] flex items-center'>Become a Seller<IoIosArrowForward className="ml-1" /></h1>
                         </Link>
@@ -153,7 +153,7 @@ function Header({ activeHeading }) {
 
 
             {/* Mobile Header */}
-            <div className='w-full h-[60px] fixed bg-[#fff] z-50 top-0 left-0 shadow-sm block lg:hidden '>
+            <div className={` ${active === true ? "shadow-sm fixed top-0 left-0 z-10" : ""} w-full h-[60px]  bg-[#fff] z-50 top-0 left-0 shadow-sm block lg:hidden `}>
                 <div className="w-full flex items-center justify-between">
                     <div className=''>
                         <BiMenuAltLeft size={40} className='ml-4' onClick={() => setOpen(true)} />
@@ -208,6 +208,32 @@ function Header({ activeHeading }) {
                                 )}
                             </div>
 
+
+                            <Navbar active={activeHeading} />
+                            <div className={`${styles.button} !rounded-sm ml-4`}>
+                                <Link to="/seller">
+                                    <h1 className='text-[#fff] flex items-center'>Become a Seller<IoIosArrowForward className="ml-1" /></h1>
+                                </Link>
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <div className="flex w-full justify-center">
+                                {
+                                    isAuthenticated ? (
+                                        <div>
+                                            <Link to="/profile">
+                                                <img src={`${backend_url}${user.avatar.url}`} alt="image" className='w-[60px] h-[60px] rounded-full border-[3px] border-[#0ebc88]' />
+                                            </Link>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Link to="/login" className='text-[18px] pr-[10px] text-[#000000b7]'>Login /</Link>
+                                            <Link to="/sign-up" className='text-[18px] text-[#000000b7]'>Sign Up</Link>
+                                        </>
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
                 )}

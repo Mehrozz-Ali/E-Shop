@@ -7,10 +7,10 @@ function Categories() {
     const navigate = useNavigate();
     return (
         <>
-            <div className={`${styles.section} sm:block`}>
-                <div className={`branding my-12 flex justify-between w-full shadow-sm bg-white p-5 rounded-md`}>
+            <div className={`${styles.section} `}>
+                <div className={`branding my-12 grid grid-cols-2 sm:grid-cols-4 gap-4 w-full shadow-sm bg-white p-5 rounded-md`}>
                     {brandingData && brandingData.map((i, index) => (
-                        <div className='flex items-start' key={index}>
+                        <div className='flex items-start gap-2  w-full sm:w-[calc(50%-0.5rem)] lg:w-auto' key={index}>
                             {i.icon}
                             <div className='px-3'>
                                 <h3 className='font-bold text-sm md:text-base'>{i.title}</h3>
