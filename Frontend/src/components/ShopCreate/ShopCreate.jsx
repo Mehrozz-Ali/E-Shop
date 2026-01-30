@@ -19,19 +19,20 @@ function ShopCreate() {
     const [visible, setVisible] = useState(false)
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await axios.post(`${server}/user/login-user`, {
-            email,
-            password,
-        }, { withCredentials: true }).then((res) => {
-            toast.success("Login Successful!");
-            navigate("/");
-            window.location.reload(true);
-        }).catch((err) => {
-            toast.error(err.response.data.message);
-        })
-    }
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     await axios.post(`${server}/user/login-user`, {
+    //         email,
+    //         password,
+    //     }, { withCredentials: true }).then((res) => {
+    //         toast.success("Login Successful!");
+    //         navigate("/");
+    //         window.location.reload(true);
+    //     }).catch((err) => {
+    //         toast.error(err.response.data.message);
+    //     })
+    // }
+
 
 
     const handlefileInputChange = (e) => {
@@ -40,12 +41,40 @@ function ShopCreate() {
     }
 
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        axios
+            .post(`${server}/shop/create-shop`, {
+                name,
+                email,
+                password,
+                avatar,
+                zipCode,
+                address,
+                phoneNumber,
+            })
+            .then((res) => {
+                toast.success(res.data.message);
+                setName("");
+                setEmail("");
+                setPassword("");
+                setAvatar();
+                setZipCode();
+                setAddress("");
+                setPhoneNumber();
+            })
+            .catch((error) => {
+                toast.error(error.response.data.message);
+            });
+    };
+
     return (
         <div className='min-h-screen bg-gray-50 flex-col justify-center py-12 sm:px-6 lg:px-8'>
             <div className='sm:mx-auto sm:w-full sm:max-w-md'>
                 <h2 className='mt-6 text-center text-3xl font-extrabold text-black-500'>Register as a seller</h2>
             </div>
-            <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
+            <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-[35rem]'>
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <form className='space-y-6' onSubmit={handleSubmit}>
 
@@ -95,15 +124,6 @@ function ShopCreate() {
                                 }
                             </div>
                         </div>
-                        {/* <div className={`${styles.normalFlex} justify-between`}>
-                            <div className={`${styles.normalFlex}`}>
-                                <input type="checkbox" name='remember-me' id='remember-me' className='h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded' />
-                                <label htmlFor="remember-me" className='ml-2 block text-sm text-gray-900'>Remember me</label>
-                            </div>
-                            <div className='text-sm'>
-                                <a href=".forgot-password" className='font-medium text-blue-600 hover:text-blue-500'>Forgot your password?</a>
-                            </div>
-                        </div> */}
 
 
                         <div>
@@ -122,8 +142,8 @@ function ShopCreate() {
                             <button type='submit' className='group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700'>Submit</button>
                         </div>
                         <div className={`${styles.normalFlex} w-full`}>
-                            <h4>Don't have an account?</h4>
-                            <Link to="/sign-up" className="text-blue-600 pl-2">Sign Up</Link>
+                            <h4>Already have an account?</h4>
+                            <Link to="/shop-login" className="text-blue-600 pl-2">Sign in</Link>
                         </div>
                     </form>
                 </div>
