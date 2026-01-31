@@ -7,7 +7,6 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { server } from '../../server'
 import { RxAvatar } from 'react-icons/rx'
-import { set } from 'mongoose'
 
 function ShopCreate() {
     const [name, setName] = useState("");
@@ -20,19 +19,6 @@ function ShopCreate() {
     const [visible, setVisible] = useState(false)
     const navigate = useNavigate();
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     await axios.post(`${server}/user/login-user`, {
-    //         email,
-    //         password,
-    //     }, { withCredentials: true }).then((res) => {
-    //         toast.success("Login Successful!");
-    //         navigate("/");
-    //         window.location.reload(true);
-    //     }).catch((err) => {
-    //         toast.error(err.response.data.message);
-    //     })
-    // }
 
 
 

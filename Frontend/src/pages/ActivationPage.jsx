@@ -4,7 +4,6 @@ import { server } from '../server';
 import Activation from '../components/activation/Activation'
 import { useParams } from 'react-router-dom'
 
-// import { server } from '../server';
 
 
 
