@@ -18,13 +18,6 @@ function SignUp() {
 
 
 
-
-    const handlefileInputChange = (e) => {
-        const file = e.target.files[0];
-        setAvatar(file)
-    }
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -44,6 +37,13 @@ function SignUp() {
             toast.error(err.response.data.message);
         })
     }
+
+    const handlefileInputChange = (e) => {
+        const file = e.target.files[0];
+        setAvatar(file)
+    }
+
+
 
 
     return (
