@@ -10,6 +10,7 @@ const { isAuthenticated } = require("../middleware/auth");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const { log } = require("console");
 
 
 
@@ -86,6 +87,7 @@ router.post("/activation", catchAsyncErrors(async (req, res, next) => {
         if (seller) {
             return next(new ErrorHandler("Shop already exists", 400));
         }
+        console.log(name,email,avatar,password,zipCode,address,phoneNumber);
         seller = await Shop.create({
             name,
             email,
