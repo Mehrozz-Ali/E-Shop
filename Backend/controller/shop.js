@@ -29,7 +29,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
                     res.status(500).json({ message: 'Error deleting file' })
                 }
             });
-            return next(new ErrorHandler("User already exists", 400));
+            return next(new ErrorHandler("Shop already exists", 400));
         }
         const filename = req.file.filename;
         const fileUrl = path.join(filename);
@@ -55,7 +55,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
             })
             res.status(201).json({
                 success: true,
-                message: `Please check your email:- ${user.email} to activate your shop!`
+                message: `Please check your email:- ${seller.email} to activate your shop!`
             })
         } catch (error) {
             return next(new ErrorHandler(error.message, 500));
@@ -67,14 +67,14 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
 
 
 // create activation token
-const createActivationToken = (user) => {
-    return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+const createActivationToken = (seller) => {
+    return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
         expiresIn: '5m',
     })
 }
 
 // activate seller account
-router.post("/shop/activation", catchAsyncErrors(async (req, res, next) => {
+router.post("/activation", catchAsyncErrors(async (req, res, next) => {
     try {
         const { activation_token } = req.body;
         const newSeller = jwt.verify(activation_token, process.env.ACTIVATION_SECRET);
@@ -84,7 +84,7 @@ router.post("/shop/activation", catchAsyncErrors(async (req, res, next) => {
         const { name, email, password, avatar, zipCode, address, phoneNumber } = newSeller;
         let seller = await Shop.findOne({ email: email });
         if (seller) {
-            return next(new ErrorHandler("User already exists", 400));
+            return next(new ErrorHandler("Shop already exists", 400));
         }
         seller = await Shop.create({
             name,
