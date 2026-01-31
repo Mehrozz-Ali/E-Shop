@@ -1,11 +1,11 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage } from './Routes.jsx'
+import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage, ShopLoginPage } from './Routes.jsx'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import Store from "./redux/store.jsx";
-import { loadUser } from './redux/actions/user.jsx';
+import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import { useSelector } from 'react-redux';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
@@ -14,6 +14,7 @@ function App() {
   const { loading, isAuthenticated } = useSelector((state) => state.user)
   useEffect(() => {
     Store.dispatch(loadUser());
+    Store.dispatch(loadSeller());
   }, []);
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
             <Route path='/events' element={<EventsPage />} />
             <Route path='/faq' element={<FaqPage />} />
             <Route path='/shop-create' element={<ShopCreatePage />} />
+            <Route path='/shop-login' element={<ShopLoginPage />} />
             {/* <Route path='/payment' element={<PaymentPage />} /> */}
 
             {/* <Route path='/order/success/:id' element={<OrderSuccessPage />} /> */}
