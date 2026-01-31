@@ -1,6 +1,6 @@
-
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const shopSchema = new mongoose.Schema({
     name: {
@@ -43,7 +43,7 @@ const shopSchema = new mongoose.Schema({
         },
     },
     zipCode: {
-        type: String,
+        type: Number,
         required: true,
     },
     createdAt: {
