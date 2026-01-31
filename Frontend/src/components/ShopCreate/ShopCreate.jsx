@@ -7,6 +7,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { server } from '../../server'
 import { RxAvatar } from 'react-icons/rx'
+import { set } from 'mongoose'
 
 function ShopCreate() {
     const [name, setName] = useState("");
@@ -42,31 +43,29 @@ function ShopCreate() {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+       e.preventDefault();
+        const config = { headers: { "Content-Type": "multipart/form-data" } };
+        const newForm = new FormData();
 
-        axios
-            .post(`${server}/shop/create-shop`, {
-                name,
-                email,
-                password,
-                avatar,
-                zipCode,
-                address,
-                phoneNumber,
-            })
-            .then((res) => {
-                toast.success(res.data.message);
-                setName("");
-                setEmail("");
-                setPassword("");
-                setAvatar();
-                setZipCode();
-                setAddress("");
-                setPhoneNumber();
-            })
-            .catch((error) => {
-                toast.error(error.response.data.message);
-            });
+        newForm.append("file", avatar);
+        newForm.append("name", name);
+        newForm.append("email", email);
+        newForm.append("password", password);
+        newForm.append("phoneNumber", phoneNumber);
+        newForm.append("address", address);
+        newForm.append("zipCode", zipCode);
+        axios.post(`${server}/shop/create-shop`, newForm, config).then((res) => {
+            toast.success(res.data.message);
+            setName("");
+            setEmail("");
+            setPassword("");
+            setAvatar(null);
+            setPhoneNumber();
+            setAddress("");
+            setZipCode();
+        }).catch((err) => {
+            toast.error(err.response.data.message);
+        })
     };
 
     return (
