@@ -6,16 +6,17 @@ const Shop = require("../model/shop");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
-const { isAuthenticated } = require("../middleware/auth");
+const { isAuthenticated, isSeller } = require("../middleware/auth");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { log } = require("console");
+const sendShopToken = require("../utils/shopToken");
 
 
 
 
-
+// create shop 
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
     try {
         const { email } = req.body;
@@ -87,7 +88,6 @@ router.post("/activation", catchAsyncErrors(async (req, res, next) => {
         if (seller) {
             return next(new ErrorHandler("Shop already exists", 400));
         }
-        console.log(name,email,avatar,password,zipCode,address,phoneNumber);
         seller = await Shop.create({
             name,
             email,
@@ -97,10 +97,54 @@ router.post("/activation", catchAsyncErrors(async (req, res, next) => {
             address,
             phoneNumber,
         })
-        sendToken(seller, 201, res);
+        sendShopToken(seller, 201, res);
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));
     }
 }))
+
+
+// login shop 
+router.post("/login-shop", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return next(new ErrorHandler("Please provide email and password", 400));
+        }
+        const seller = await Shop.findOne({ email: email }).select("+password");
+        if (!seller) {
+            return next(new ErrorHandler("Shop does not exist", 400));
+        }
+        const isPasswordValid = await seller.comparePassword(password);
+        if (!isPasswordValid) {
+            return next(new ErrorHandler("Invalid password", 400));
+        }
+
+        sendShopToken(seller, 201, res);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
+
+
+// load shop
+router.get("/getSeller", isSeller, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const seller = await Shop.findById(req.seller._id);
+        if (!seller) {
+            return next(new ErrorHandler("Shop not found", 404));
+        }
+
+        res.status(200).json({
+            success: true,
+            seller,
+        });
+
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
+
+
 
 module.exports = router;
