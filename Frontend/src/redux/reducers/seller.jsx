@@ -7,15 +7,15 @@ const initialState = {
 export const sellerReducer = createReducer(initialState, (builder) => {
     builder
         .addCase("LoadSellerRequest", (state) => {
-            state.loading = true;
+            state.isLoading = true;
         })
         .addCase("LoadSellerSuccess", (state, action) => {
             state.isAuthenticated = true;
-            state.loading = false;
+            state.isLoading = false;
             state.seller = action.payload;
         })
         .addCase("LoadSellerFail", (state, action) => {
-            state.loading = false;
+            state.isLoading = false;
             state.error = action.payload;
             state.isAuthenticated = false;
         })
