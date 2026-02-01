@@ -19,8 +19,7 @@ function App() {
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
-
-  }, []);
+  }, [isSeller]);
 
 
   return (
@@ -40,7 +39,7 @@ function App() {
             <Route path='/faq' element={<FaqPage />} />
             {/* Shop Routes */}
             <Route path='/shop-create' element={<ShopCreatePage />} />
-            <Route path='/shop-login' element={<ShopLoginPage />} />\
+            <Route path='/shop-login' element={<ShopLoginPage />} />
             <Route path='/shop/:id' element={
               <SellerProtectedRoute isSeller={isSeller} >
                 <ShopHomePage />
