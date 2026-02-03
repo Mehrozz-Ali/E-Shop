@@ -4,7 +4,12 @@ import { backend_url } from '../../server';
 import styles from '../../styles/styles';
 
 function ShopInfo({ isOwner }) {
-    const { seller } = useSelector((state) => state.seller)
+    const { seller } = useSelector((state) => state.seller);
+
+
+    const LogoutHandler = () => {
+
+    }
     return (
         <div>
             <div className='w-full py-5'>
@@ -44,6 +49,9 @@ function ShopInfo({ isOwner }) {
                 <div className="py-3 px-4">
                     <div className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}>
                         <span className='text-white '>Edit Shop</span>
+                    </div>
+                    <div className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`} onClick={LogoutHandler}>
+                        <span className='text-white '>Log Out</span>
                     </div>
                 </div>
             )}
