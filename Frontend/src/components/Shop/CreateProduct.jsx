@@ -3,11 +3,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { categoriesData } from '../../static/data';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { createProduct } from '../../redux/actions/product';
+import { useEffect } from 'react';
+import { toast } from "react-toastify";
 
 function CreateProduct() {
-    const { seller } = useSelector((state) => state.seller)
+    const { seller } = useSelector((state) => state.seller);
+    const { success, error } = useSelector((state) => state.product);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+        }
+        if (success) {
+            toast.success("Product created successfully!");
+            navigate("/dashboard");
+        }
+    }, [dispatch, error, success, navigate]);
 
     const [images, setImages] = useState([]);
     const [name, setName] = useState("");
@@ -20,6 +34,19 @@ function CreateProduct() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const newForm = new FormData();
+        images.forEach((image) => {
+            newForm.append("images", image);
+        })
+        newForm.append("name", name);
+        newForm.append("description", description);
+        newForm.append("category", category);
+        newForm.append("tags", tags);
+        newForm.append("originalPrice", originalPrice);
+        newForm.append("discountPrice", discountPrice);
+        newForm.append("stock", stock);
+        newForm.append("shopId", seller._id);
+        dispatch(createProduct(newForm));
     }
 
     const handleImageChange = (e) => {
@@ -42,7 +69,7 @@ function CreateProduct() {
                 <br />
                 <div>
                     <label className='pb-2'>Description <span className='text-red-500'>*</span></label>
-                    <input type="text" name='description' value={description} onChange={(e) => setDescription(e.target.value)} className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter your Product description' />
+                    <textarea cols="30" rows='5' name='description' value={description} onChange={(e) => setDescription(e.target.value)} className=' mt-2 appearance-none block w-full px-3 pt-2  border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter your Product description' ></textarea>
                 </div>
                 <br />
                 <div>
