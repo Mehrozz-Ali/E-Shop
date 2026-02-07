@@ -18,8 +18,8 @@ function CreateEvent() {
             toast.error(error);
         }
         if (success) {
-            toast.success("Product created successfully!");
-            navigate("/dashboard");
+            toast.success("Event created successfully!");
+            navigate("/dashboard-events");
             window.location.reload();
         }
     }, [dispatch, error, success, navigate]);
@@ -124,7 +124,7 @@ function CreateEvent() {
                     <input type="number" name='discountPrice' value={discountPrice} onChange={(e) => setDiscountPrice(e.target.value)} className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter your event product price with discount' />
                 </div>
                 <br />
-                
+
                 <div>
                     <label className='pb-2'>Event Start Date <span className='text-red-500'>*</span></label>
                     <input type="date" name='startDate' id="start_Date" value={startDate ? startDate.toISOString().slice(0, 10) : ""} min={today} onChange={handleStartDateChange} className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter your event product stock' />
