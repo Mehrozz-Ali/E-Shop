@@ -10,7 +10,7 @@ import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
-import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents } from './routes/ShopRoutes'
+import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents } from './routes/ShopRoutes'
 
 function App() {
 
@@ -60,6 +60,11 @@ function App() {
         <Route path='/dashboard-create-event' element={
           <SellerProtectedRoute  >
             <ShopCreateEvents />
+          </SellerProtectedRoute>
+        } />
+        <Route path='/dashboard-events' element={
+          <SellerProtectedRoute  >
+            <ShopAllEvents />
           </SellerProtectedRoute>
         } />
         {/* <Route path='/payment' element={<PaymentPage />} /> */}
