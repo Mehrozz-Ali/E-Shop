@@ -25,7 +25,7 @@ function AllProducts() {
         { field: "id", headerName: "Product ID", minWidth: 150, flex: 0.7 },
         { field: "name", headerName: "Name", minWidth: 150, flex: 0.7 },
         { field: "price", headerName: "Price", minWidth: 150, flex: 0.7 },
-        { field: "Stock", headerName: "Stock", minWidth: 150, flex: 0.7 },
+        { field: "stock", headerName: "Stock", minWidth: 150, flex: 0.7 },
         { field: "sold", headerName: "Sold out", minWidth: 150, flex: 0.7 },
         {
             field: "Preview", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
