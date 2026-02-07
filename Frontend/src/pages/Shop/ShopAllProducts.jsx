@@ -7,7 +7,7 @@ function ShopAllProducts() {
     return (
         <div>
             <DashboardHeader />
-            <div className="flex items-center justify-between w-full">
+            <div className="flex justify-between w-full">
                 <div className='w-[80px] md:w-[300px]'>
                     <DashboardSidebar active={3} />
                 </div>
