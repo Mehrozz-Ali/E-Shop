@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const { upload } = require("../multer");
 const Shop = require("../model/shop");
 const Event = require("../model/event");
+const { isSeller } = require("../middleware/auth");
 
 
 // create Event 
@@ -44,5 +45,36 @@ router.post("/create-event", upload.array("files"), catchAsyncErrors(async (req,
     }
 }))
 
+
+// get all events of a shop
+router.get("/get-all-events/:id", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const events = await Event.find({ shopId: req.params.id });
+        res.status(201).json({
+            success: true,
+            events,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error, 400));
+    }
+}))
+
+
+// delete event of a shop
+router.delete("/delete-shop-event/:id", isSeller, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const productId = req.params.id;
+        const event = await Event.findByIdAndDelete(productId);
+        if (!event) {
+            return next(new ErrorHandler("Event not found with this id ", 500));
+        }
+        res.status(201).json({
+            success: true,
+            message: "Event Deleted Successfully",
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error, 400));
+    }
+}))
 
 module.exports = router;
