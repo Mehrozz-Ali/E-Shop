@@ -21,3 +21,25 @@ export const createProduct = (newForm) => async (dispatch) => {
         })
     }
 }
+
+
+
+
+// get all products of a shop
+export const getAllProductsShop = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: "getAllProductsShopRequest"
+        })
+        const { data } = await axios.get(`${server}/product/get-all-products-shop/${id}`);
+        dispatch({
+            type: "getAllProductsShopSuccess",
+            payload: data.products,
+        })
+    } catch (error) {
+        dispatch({
+            type: "getAllProductsShopFailed",
+            payload: error.response.data.message,
+        })
+    }
+}
