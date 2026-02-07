@@ -20,6 +20,7 @@ function CreateProduct() {
         if (success) {
             toast.success("Product created successfully!");
             navigate("/dashboard");
+            window.location.reload();
         }
     }, [dispatch, error, success, navigate]);
 
@@ -52,11 +53,8 @@ function CreateProduct() {
         newForm.append("description", description);
         newForm.append("category", category);
         newForm.append("tags", tags);
-        // newForm.append("originalPrice", originalPrice);
         if (originalPrice) newForm.append("originalPrice", Number(originalPrice));
         newForm.append("discountPrice", Number(discountPrice));
-        // newForm.append("discountPrice", discountPrice);
-        // newForm.append("stock", stock);
         if (stock !== "") {
             newForm.append("stock", Number(stock));
         }
