@@ -35,10 +35,6 @@ const eventSchema = new mongoose.Schema({
         type: Number,
         required: [true, "Please enter your event product price!"],
     },
-    stock: {
-        type: Number,
-        required: [true, "Please enter your event product stock!"],
-    },
     images: [
         {
             type: String,
