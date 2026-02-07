@@ -15,7 +15,8 @@ router.post("/create-product", upload.array("files"), catchAsyncErrors(async (re
         const shop = await Shop.findById(shopId);
         if (!shopId) {
             return next(new ErrorHandler("Shop ID is Invalid", 400));
-        } else {
+        } 
+        else {
             const files = req.files;
             const imagesUrls = files.map((file) => `${file.fileName}`);
             const productData = req.body;
