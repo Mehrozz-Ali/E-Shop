@@ -30,10 +30,20 @@ function CreateProduct() {
     const [tags, setTags] = useState("");
     const [originalPrice, setOriginalPrice] = useState();
     const [discountPrice, setDiscountPrice] = useState();
-    const [stock, setStock] = useState();
+    const [stock, setStock] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!category) {
+            toast.error("Please select a category");
+            return;
+        }
+
+        if (stock === "") {
+            toast.error("Stock is required");
+            return;
+        }
         const newForm = new FormData();
         images.forEach((image) => {
             newForm.append("files", image);
@@ -42,9 +52,14 @@ function CreateProduct() {
         newForm.append("description", description);
         newForm.append("category", category);
         newForm.append("tags", tags);
-        newForm.append("originalPrice", originalPrice);
-        newForm.append("discountPrice", discountPrice);
-        newForm.append("stock", stock);
+        // newForm.append("originalPrice", originalPrice);
+        if (originalPrice) newForm.append("originalPrice", Number(originalPrice));
+        newForm.append("discountPrice", Number(discountPrice));
+        // newForm.append("discountPrice", discountPrice);
+        // newForm.append("stock", stock);
+        if (stock !== "") {
+            newForm.append("stock", Number(stock));
+        }
         newForm.append("shopId", seller._id);
         dispatch(createProduct(newForm));
     }
@@ -75,7 +90,7 @@ function CreateProduct() {
                 <div>
                     <label className='pb-2'>Category <span className='text-red-500'>*</span></label>
                     <select className='w-full mt-2 border h-[35px] rounded-[5px]' value={category} onChange={(e) => setCategory(e.target.value)}>
-                        <option value="Choose a category">Choose a category</option>
+                        <option value="">Choose a category</option>
                         {categoriesData && categoriesData.map((i) => (
                             <option value={i.title} key={i.title}>{i.title}</option>
                         ))}
@@ -97,6 +112,12 @@ function CreateProduct() {
                     <input type="number" name='discountPrice' value={discountPrice} onChange={(e) => setDiscountPrice(e.target.value)} className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter your Product price with discount' />
                 </div>
                 <br />
+                <div>
+                    <label className='pb-2'>Stock <span className='text-red-500'>*</span></label>
+                    <input type="number" name='stock' value={stock} onChange={(e) => setStock(e.target.value)} className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' placeholder='Enter product stock' />
+                </div>
+                <br />
+
                 <div>
                     <label className='pb-2'>Upload Images  <span className='text-red-500'>*</span></label>
                     <input type="file" id="upload" className='hidden' multiple onChange={handleImageChange} />

@@ -15,13 +15,22 @@ router.post("/create-product", upload.array("files"), catchAsyncErrors(async (re
         const shop = await Shop.findById(shopId);
         if (!shopId) {
             return next(new ErrorHandler("Shop ID is Invalid", 400));
-        } 
+        }
+        if (!shop) {
+            return next(new ErrorHandler("Shop not found", 400));
+        }
         else {
             const files = req.files;
-            const imagesUrls = files.map((file) => `${file.fileName}`);
+            const imagesUrls = files.map((file) => `${file.filename}`);
             const productData = req.body;
             productData.images = imagesUrls;
-            productData.shop = shop;
+            productData.shopId = shop._id.toString();
+            productData.shop = {
+                _id: shop._id.toString(),
+                name: shop.name,
+                email: shop.email,
+                avatar: shop.avatar,
+            };
 
 
             const product = await Product.create(productData);
