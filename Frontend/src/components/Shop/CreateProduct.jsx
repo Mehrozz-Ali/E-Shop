@@ -36,7 +36,7 @@ function CreateProduct() {
         e.preventDefault();
         const newForm = new FormData();
         images.forEach((image) => {
-            newForm.append("images", image);
+            newForm.append("files", image);
         })
         newForm.append("name", name);
         newForm.append("description", description);
