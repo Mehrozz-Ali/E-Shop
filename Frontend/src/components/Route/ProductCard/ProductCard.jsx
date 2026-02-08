@@ -17,7 +17,7 @@ function ProductCard({ data }) {
         <div className='flex justify-end'>
         </div>
         <Link to={`/product/${product_name}`}>
-          <img src={data.image_Url[0].url} alt="image" className='w-full h-[170px] object-contain' />
+          <img src={data.image_Url && data.image_Url[0] ? data.image_Url[0].url : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
         </Link>
         <Link to="/">
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
