@@ -24,7 +24,7 @@ function AllCoupons() {
     const [coupons, setCoupons] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const { seller } = useSelector((state) => state.seller);
-    const { products } = useSelector((state) => state.products);
+    const  products  = useSelector((state) => state.products);
     const dispatch = useDispatch();
 
 
@@ -66,19 +66,6 @@ function AllCoupons() {
         { field: "id", headerName: "Product ID", minWidth: 150, flex: 0.7 },
         { field: "name", headerName: "Name", minWidth: 150, flex: 0.7 },
         { field: "price", headerName: "Price", minWidth: 150, flex: 0.7 },
-        // {
-        //     field: "Preview", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
-        //         const d = params.row.name;
-        //         const product_name = d.replace(/\s+/g, "-");
-        //         return (
-        //             <>
-        //                 <Link to={`/product/${product_name}`}>
-        //                     <Button><AiOutlineEye size={20} /></Button>
-        //                 </Link>
-        //             </>
-        //         )
-        //     }
-        // },
         {
             field: "Delete", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
                 const d = params.row.name;
@@ -100,7 +87,6 @@ function AllCoupons() {
             id: item._id,
             name: item.name,
             price: item.value + "%",
-            sold: 10,
         })
     })
 
