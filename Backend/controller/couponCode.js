@@ -28,14 +28,13 @@ router.post("/create-coupon-code", isSeller, catchAsyncErrors(async (req, res, n
 
 
 // get all coupons of a shop 
-router.route("/get-coupon/:id", isSeller, catchAsyncErrors(async (req, res, next) => {
+router.get("/get-coupon/:id", isSeller, catchAsyncErrors(async (req, res, next) => {
     try {
-        const couponCodes = await CouponCode.find({ shop: { _id: req.params.id } });
+        const couponCodes = await CouponCode.find({ shopId: req.params.id });
         res.status(201).json({
             success: true,
             couponCodes,
         })
-
     } catch (error) {
         return next(new ErrorHandler(error, 400));
     }
