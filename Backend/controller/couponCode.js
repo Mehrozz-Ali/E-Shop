@@ -12,7 +12,7 @@ const CouponCode = require("../model/couponCode");
 router.post("/create-coupon-code", isSeller, catchAsyncErrors(async (req, res, next) => {
     try {
         const isCouponCodeExist = await CouponCode.find({ name: req.body.name });
-        if (isCouponCodeExist) {
+        if (isCouponCodeExist.length !== 0) {
             return next(new ErrorHandler("Coupon Code already exists", 400))
         }
         const couponCode = await CouponCode.create(req.body);
@@ -24,3 +24,5 @@ router.post("/create-coupon-code", isSeller, catchAsyncErrors(async (req, res, n
         return next(new ErrorHandler(error, 400));
     }
 }))
+
+module.exports = router;
