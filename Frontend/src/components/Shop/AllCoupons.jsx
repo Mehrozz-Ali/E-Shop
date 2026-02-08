@@ -20,10 +20,29 @@ function AllCoupons() {
     const [value, setValue] = useState(null);
     const [minAmount, setMinAmount] = useState(null);
     const [maxAmount, setMaxAmount] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [coupons, setCoupons] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(null);
-    const { products, isLoading } = useSelector((state) => state.product);
     const { seller } = useSelector((state) => state.seller);
+    const { products } = useSelector((state) => state.products);
     const dispatch = useDispatch();
+
+
+
+
+    useEffect(() => {
+        setIsLoading(true);
+        axios.get(`${server}/coupon/get-coupon/${seller._id}`, { withCredentials: true }).then((res) => {
+            setIsLoading(false);
+            console.log(res.data);
+            setCoupons(res.data);
+        }).catch((error) => {
+            setIsLoading(false);
+            toast.error(error.response.data.message);
+        });
+    }, [dispatch, seller._id]);
+
+
 
     const handleDelete = (id) => {
         dispatch(deleteProduct(id));
@@ -32,36 +51,34 @@ function AllCoupons() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post(`${server}/coupon/create-coupon-code`, { name, minAmount, maxAmount, selectedProducts, value, shop:seller }, { withCredentials: true }).then((res) => {
-            console.log(res.data);
+        await axios.post(`${server}/coupon/create-coupon-code`, { name, minAmount, maxAmount, selectedProducts, value, shop: seller }, { withCredentials: true }).then((res) => {
+            toast.success("Coupon created successfully!");
+            setOpen(false);
+            window.location.reload();
         }).catch((error) => {
             toast.error(error.response.data.message);
         })
     }
 
-    useEffect(() => {
-        dispatch(getAllProductsShop(seller._id));
-    }, [dispatch, seller._id]);
+
 
     const columns = [
         { field: "id", headerName: "Product ID", minWidth: 150, flex: 0.7 },
         { field: "name", headerName: "Name", minWidth: 150, flex: 0.7 },
         { field: "price", headerName: "Price", minWidth: 150, flex: 0.7 },
-        { field: "stock", headerName: "Stock", minWidth: 150, flex: 0.7 },
-        { field: "sold", headerName: "Sold out", minWidth: 150, flex: 0.7 },
-        {
-            field: "Preview", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
-                const d = params.row.name;
-                const product_name = d.replace(/\s+/g, "-");
-                return (
-                    <>
-                        <Link to={`/product/${product_name}`}>
-                            <Button><AiOutlineEye size={20} /></Button>
-                        </Link>
-                    </>
-                )
-            }
-        },
+        // {
+        //     field: "Preview", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
+        //         const d = params.row.name;
+        //         const product_name = d.replace(/\s+/g, "-");
+        //         return (
+        //             <>
+        //                 <Link to={`/product/${product_name}`}>
+        //                     <Button><AiOutlineEye size={20} /></Button>
+        //                 </Link>
+        //             </>
+        //         )
+        //     }
+        // },
         {
             field: "Delete", headerName: "", minWidth: 100, flex: 0.8, type: "number", sortable: false, renderCell: (params) => {
                 const d = params.row.name;
@@ -78,12 +95,11 @@ function AllCoupons() {
     ]
 
     const row = [];
-    products && products.forEach((item) => {
+    coupons && coupons.forEach((item) => {
         row.push({
             id: item._id,
             name: item.name,
-            price: "US$" + item.discountPrice,
-            stock: item.stock,
+            price: item.value + "%",
             sold: 10,
         })
     })
