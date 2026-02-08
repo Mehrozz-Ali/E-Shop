@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import styles from '../../styles/styles';
 import { RxCross1 } from 'react-icons/rx';
+import { server } from '../../server';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 
@@ -17,7 +20,7 @@ function AllCoupons() {
     const [value, setValue] = useState(null);
     const [minAmount, setMinAmount] = useState(null);
     const [maxAmount, setMaxAmount] = useState(null);
-    const [selectedProducts, setSelectedProducts] = useState("");
+    const [selectedProducts, setSelectedProducts] = useState(null);
     const { products, isLoading } = useSelector((state) => state.product);
     const { seller } = useSelector((state) => state.seller);
     const dispatch = useDispatch();
@@ -27,8 +30,13 @@ function AllCoupons() {
         window.location.reload();
     }
 
-    const handleSubmit = (e) => {
-
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await axios.post(`${server}/coupon/create-coupon-code`, { name, minAmount, maxAmount, selectedProducts, value, shop:seller }, { withCredentials: true }).then((res) => {
+            console.log(res.data);
+        }).catch((error) => {
+            toast.error(error.response.data.message);
+        })
     }
 
     useEffect(() => {
