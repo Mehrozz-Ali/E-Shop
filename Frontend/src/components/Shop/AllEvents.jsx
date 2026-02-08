@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../Layout/Loader';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { getAllEventsShop } from '../../redux/actions/event';
+import { deleteEvent, getAllEventsShop } from '../../redux/actions/event';
 
 function AllEvents() {
     const { events, isLoading } = useSelector((state) => state.events);
