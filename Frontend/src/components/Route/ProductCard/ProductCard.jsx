@@ -18,7 +18,7 @@ function ProductCard({ data }) {
         <div className='flex justify-end'>
         </div>
         <Link to={`/product/${product_name}`}>
-          <img src={data.images && data.images[0] ? `${backend_url}${data.images[0]}` : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
+         <img src={data.image_Url && data.image_Url[0] ? data.image_Url[0].url : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' /> 
         </Link>
         <Link to="/">
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
@@ -35,14 +35,13 @@ function ProductCard({ data }) {
           <div className='py-2 flex items-center justify-between'>
             <div className='flex'>
               <h5 className={`${styles.productDiscountPrice}`}>
-                ${data.discountPrice}
+                ${data.price === 0 ? data.price : data.discount_price}
               </h5>
               <h4 className={`${styles.price}`}>
-                {data.originalPrice ? data.originalPrice + "$" : null}
-                $
+                {data.price ? data.price + " $" : null}
               </h4>
             </div>
-            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data.sold_out} sold</span>
+            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data.total_sell} sold</span>
           </div>
         </Link>
         {/* Side options */}
