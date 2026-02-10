@@ -1,12 +1,24 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { backend_url } from '../../server';
 import styles from '../../styles/styles';
 import axios from 'axios';
 import { server } from '../../server';
+import { useParams } from 'react-router-dom';
 
 function ShopInfo({ isOwner }) {
+    const [data, setData] = useState({});
     const { seller } = useSelector((state) => state.seller);
+
+    const { id } = useParams();
+    useEffect(() => {
+        axios.get(`${server}/shop/get-shop-info/${id}`).then((res) => {
+            setData(res.data.shop);
+        }).catch((error => {
+            console.log(error);
+        }))
+    }, [id]);
+
 
 
     const LogoutHandler = async () => {
