@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from '../../../styles/styles';
 import { AiFillStar, AiOutlineStar, AiFillHeart, AiOutlineHeart, AiOutlineEye, AiOutlineShoppingCart } from 'react-icons/ai';
 import ProductDetailCard from '../ProductDetailCard/ProductDetailCard';
+import { backend_url } from '../../../server';
 
 
 function ProductCard({ data }) {
@@ -17,7 +18,7 @@ function ProductCard({ data }) {
         <div className='flex justify-end'>
         </div>
         <Link to={`/product/${product_name}`}>
-          <img src={data.image_Url && data.image_Url[0] ? data.image_Url[0].url : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
+          <img src={data.images && data.images[0] ? `${backend_url}${data.images[0]}` : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
         </Link>
         <Link to="/">
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
@@ -34,15 +35,14 @@ function ProductCard({ data }) {
           <div className='py-2 flex items-center justify-between'>
             <div className='flex'>
               <h5 className={`${styles.productDiscountPrice}`}>
-                {data.price === 0 ? data.price : data.discount_price}
-                $
+                ${data.discountPrice}
               </h5>
               <h4 className={`${styles.price}`}>
-                {data.price ? data.price + "$" : null}
+                {data.originalPrice ? data.originalPrice + "$" : null}
                 $
               </h4>
             </div>
-            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data.total_sell} sold</span>
+            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data.sold_out} sold</span>
           </div>
         </Link>
         {/* Side options */}
