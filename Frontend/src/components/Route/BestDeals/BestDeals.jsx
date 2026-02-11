@@ -11,10 +11,10 @@ function BestDeals() {
 
 
     useEffect(() => {
-        // const d = productData && productData.sort((a, b) => b.total_sell - a.total_sell);
-        const d = products && products.sort((a, b) => b.sold_out - a.sold_out);
-        const firstFive = d.slice(0, 5);
-        setData(firstFive);
+        const d = productData && productData.sort((a, b) => b.total_sell - a.total_sell);
+        // const d = products && products.sort((a, b) => b.sold_out - a.sold_out);
+        const firstTen = d.slice(0, 10);
+        setData(firstTen);
     }, [])
     return (
         <div>
@@ -24,7 +24,7 @@ function BestDeals() {
                 </div>
                 <div className='grid grid-cols-l gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0 '>
                     {
-                        products && products.map((i, index) => (
+                        data && data.map((i, index) => (
                             <ProductCard data={i} key={index} />
                         ))
                     }

@@ -5,8 +5,11 @@ import Footer from '../components/Layout/Footer';
 import { useParams } from 'react-router-dom';
 import { productData } from '../static/data';
 import SuggestedProduct from '../components/Products/SuggestedProduct'
+import { useSelector } from 'react-redux';
 
 function ProductDetailPage() {
+    const { products } = useSelector((state) => state.product);
+
     const { name } = useParams();
     const [data, setData] = useState(null);
     const productName = name.replace(/-/g, " ");
