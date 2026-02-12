@@ -178,4 +178,20 @@ router.get("/get-shop-info/:id", catchAsyncErrors(async (req, res, next) => {
 }))
 
 
+
+// get all shops
+router.get("/get-all-shops", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const shops = await Shop.find();
+        res.status(200).json({
+            success: true,
+            shops,
+        });
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}));
+
+
+
 module.exports = router;
