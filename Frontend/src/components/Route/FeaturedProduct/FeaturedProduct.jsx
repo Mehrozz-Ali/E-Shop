@@ -15,17 +15,32 @@ function FeaturedProduct() {
     // Get logged-in seller's shopId
     useEffect(() => {
         axios.get("http://localhost:8000/api/v2/shop/getSeller", { withCredentials: true })
-            .then(res => setShopId(res.data.seller._id))
+            .then(res => {
+                setShopId(res.data.seller._id)
+            })
             .catch(err => console.log(err));
     }, []);
 
     // Fetch seller-specific products
     useEffect(() => {
         if (!shopId) return;
+
         axios.get(`http://localhost:8000/api/v2/product/get-all-products-shop/${shopId}`)
-            .then(res => setData(res.data.products))
+            .then(res => {
+                const products = res.data.products ?? [];
+                const topProducts = products
+                    .map(p => ({
+                        ...p,
+                        priceNumber: Number(p.price ?? 0) // use correct field
+                    }))
+                    .sort((a, b) => b.priceNumber - a.priceNumber)
+                    .slice(0, 5); // top 5
+                setData(topProducts);
+            })
             .catch(err => console.log(err));
     }, [shopId]);
+
+
 
     return (
         <div>
