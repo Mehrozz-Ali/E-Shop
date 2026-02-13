@@ -150,9 +150,9 @@ const ProductDetailsInfo = ({ data }) => {
             ) : null}
             {
                 active === 3 && (
-                    <div className='w-full flex 800px:flex p-5'>
+                    <div className='w-full flex md:flex p-5'>
                         {/* Left side  */}
-                        <div className="w-full 800px:w-[50%]">
+                        <div className="w-full md:w-[50%]">
                             <div className="flex items-center">
                                 <img
                                     src={data?.shop?.shop_avatar ? `${backend_url}${data.shop.shop_avatar}` : ""}
@@ -167,7 +167,7 @@ const ProductDetailsInfo = ({ data }) => {
                             <p className='pt-2 text-base sm:text-sm md:text-base lg:text-lg max-w-full break-words leading-relaxed"' >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa, fugit laudantium! Ab perferendis, illum repellat nam natus neque culpa qui quaerat suscipit, dicta vel impedit, molestiae reprehenderit est deleniti dolorum.</p>
                         </div>
                         {/* Right side  */}
-                        <div className="w-full 800px:w-[50%] mt-5 800px:mt-0 flex flex-col items-end">
+                        <div className="w-full md:w-[50%] mt-5 md:mt-0 flex flex-col items-end">
                             <div className="text-left">
                                 <h5 className='font-[600]'>Join on: <span className='font-[500]'>14 March, 2023</span></h5>
                                 <h5 className='font-[600] pt-3'>Total Products: <span className='font-[500]'>1,223</span></h5>
