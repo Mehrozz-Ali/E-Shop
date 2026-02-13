@@ -28,9 +28,9 @@ function ProductDetailCard({ setOpen, data }) {
                         <div className='block w-full md:flex '>
                             {/* Left Side  */}
                             <div className='w-full 800px:w-[50%]'>
-                                <img src={data.image_Url[0].url} alt="image"  />
+                                <img src={data?.images?.[0] ? data.images[0].url || data.images[0] : ""} alt="image" />
                                 <div className="flex">
-                                    <img src={data.shop.shop_avatar.url} alt="image" className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    <img src={data?.shop?.shop_avatar?.url || ""} alt="image" className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div>
                                         <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
                                         <h5 className='pb-3 text-[15px]'>[{data.shop.ratings}] Rating</h5>
@@ -47,8 +47,8 @@ function ProductDetailCard({ setOpen, data }) {
                                 <h1 className={`${styles.productTitle} text-[20px]`}>{data.name}</h1>
                                 <p className='text-justify'>{data.description}</p>
                                 <div className='flex pt-3 '>
-                                    <h4 className={`${styles.productDiscountPrice}`}>{data.discount_price}$</h4>
-                                    <h3 className={`${styles.price}`}>{data.price ? data.price + "$" : null}</h3>
+                                    <h4 className={`${styles.productDiscountPrice}`}>{data.discountPrice}$</h4>
+                                    <h3 className={`${styles.price}`}>{data.originalPrice ? data.originalPrice + "$" : null}</h3>
                                 </div>
                                 <div className="flex items-center mt-12 justify-between pr-3">
                                     <div>

@@ -4,6 +4,7 @@ import styles from '../../styles/styles';
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from 'react-icons/ai';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { backend_url } from '../../server';
 
 function ProductDetail({ data }) {
     const [count, setCount] = useState(1);
@@ -27,18 +28,21 @@ function ProductDetail({ data }) {
     return (
         <div className='bg-white '>
             {data ? (
-                <div className={`${styles.section} w-[90%] 800px:w-[80%] `}>
+                <div className={`${styles.section} w-[90%] md:w-[80%] `}>
                     <div className='w-full py-5'>
-                        <div className="flex  w-full  800px:flex">
+                        <div className="flex  w-full  md:flex">
                             {/* Left side */}
-                            <div className="w-full  800px:w-[50%]">
-                                <img src={data?.image_Url[select].url} alt="" className='w-[50%]' />
+                            <div className="w-full  md:w-[50%]">
+                                {/* <img src={data?.image_Url[select].url} alt="" className='w-[50%]' /> */}
                                 <div className="w-full flex gap-1">
                                     <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
-                                        <img src={data?.image_Url[0].url} alt="image" className='h-[200px]' onClick={() => setSelect(0)} />
+                                        {/* <img src={`${backend_url}${data.images && data.images[0]}`} alt="image" className='h-[200px]' onClick={() => setSelect(0)} /> */}
+                                        <img src={ data?.images?.length > 0 ? `${backend_url}${data.images[0]}` : ""}
+                                        />
+
                                     </div>
-                                    <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
-                                        <img src={data?.image_Url[1].url} alt="image" className='h-[200px]' onClick={() => setSelect(0)} />
+                                    <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}>
+                                        <img src={`${backend_url}${data.images && data.images[1]}`} alt="image" className='h-[200px]' onClick={() => setSelect(1)} />
                                     </div>
                                 </div>
                             </div>
@@ -48,8 +52,8 @@ function ProductDetail({ data }) {
                                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                                 <p className=''>{data.description}</p>
                                 <div className="flex pt-3">
-                                    <h4 className={`${styles.productDiscountPrice}`}>{data.discount_price}$</h4>
-                                    <h3 className={`${styles.price}`}>{data.price ? data.price + "$" : null}</h3>
+                                    <h4 className={`${styles.productDiscountPrice}`}>{data.discountPrice}$</h4>
+                                    <h3 className={`${styles.price}`}>{data.originalPrice ? data.originalPrice + "$" : null}</h3>
                                 </div>
                                 <div className="flex items-center mt-12 justify-between pr-3">
                                     <div>
@@ -72,10 +76,10 @@ function ProductDetail({ data }) {
                                     <span className='text-white flex items-center'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
                                 </div>
                                 <div className="flex items-center pt-8">
-                                    <img src={data.shop.shop_avatar.url} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    <img src={`${backend_url}${data?.shop?.shop_avatar}`} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div className='pr-8 '>
                                         <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data.shop.name}</h3>
-                                        <h5 className='pb-3 text-[15px]'>[{data.shop.ratings}] Ratings</h5>
+                                        <h5 className='pb-3 text-[15px]'>[4/5] Ratings</h5>
                                     </div>
                                     <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`} onClick={handleMessageSubmit}>
                                         <span className='text-white flex items-center'>Send Message<AiOutlineMessage className='ml-1' /> </span>
