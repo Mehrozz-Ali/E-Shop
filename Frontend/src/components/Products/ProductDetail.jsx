@@ -37,9 +37,7 @@ function ProductDetail({ data }) {
                                 <div className="w-full flex gap-1">
                                     <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
                                         {/* <img src={`${backend_url}${data.images && data.images[0]}`} alt="image" className='h-[200px]' onClick={() => setSelect(0)} /> */}
-                                        <img src={ data?.images?.length > 0 ? `${backend_url}${data.images[0]}` : ""}
-                                        />
-
+                                        <img src={data?.images?.length > 0 ? `${backend_url}${data.images[0]}` : ""}/>
                                     </div>
                                     <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}>
                                         <img src={`${backend_url}${data.images && data.images[1]}`} alt="image" className='h-[200px]' onClick={() => setSelect(1)} />
@@ -78,7 +76,7 @@ function ProductDetail({ data }) {
                                 <div className="flex items-center pt-8">
                                     <img src={`${backend_url}${data?.shop?.shop_avatar}`} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div className='pr-8 '>
-                                        <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data.shop.name}</h3>
+                                        <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data?.shop?.name}</h3>
                                         <h5 className='pb-3 text-[15px]'>[4/5] Ratings</h5>
                                     </div>
                                     <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`} onClick={handleMessageSubmit}>
@@ -88,7 +86,6 @@ function ProductDetail({ data }) {
                             </div>
                         </div>
                     </div>
-
                     <ProductDetailsInfo data={data} />
                     <br />
                     <br />
@@ -157,10 +154,14 @@ const ProductDetailsInfo = ({ data }) => {
                         {/* Left side  */}
                         <div className="w-full 800px:w-[50%]">
                             <div className="flex items-center">
-                                <img src={data.shop.shop_avatar.url} alt="image" className='w-[50px] h-[50px] rounded-full ' />
+                                <img
+                                    src={data?.shop?.shop_avatar ? `${backend_url}${data.shop.shop_avatar}` : ""}
+                                    alt="shop"
+                                    className='w-[50px] h-[50px] rounded-full mr-2'
+                                />
                                 <div className='pl-3'>
-                                    <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                                    <h5 className='pb-2 text-[15px]'>[{data.shop.ratings}] Rating</h5>
+                                    <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
+                                    <h5 className='pb-2 text-[15px]'>[{data?.shop?.ratings}] Rating</h5>
                                 </div>
                             </div>
                             <p className='pt-2 text-base sm:text-sm md:text-base lg:text-lg max-w-full break-words leading-relaxed"' >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa, fugit laudantium! Ab perferendis, illum repellat nam natus neque culpa qui quaerat suscipit, dicta vel impedit, molestiae reprehenderit est deleniti dolorum.</p>
