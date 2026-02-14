@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { RxCross1 } from 'react-icons/rx';
 import styles from '../../../styles/styles';
 import { AiOutlineMessage, AiFillHeart, AiOutlineHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { backend_url } from '../../../server';
 
 function ProductDetailCard({ setOpen, data }) {
     const [count, setCount] = useState(1);
@@ -28,9 +29,9 @@ function ProductDetailCard({ setOpen, data }) {
                         <div className='block w-full md:flex '>
                             {/* Left Side  */}
                             <div className='w-full 800px:w-[50%]'>
-                                <img src={data?.images?.[0] ? data.images[0].url || data.images[0] : ""} alt="image" />
+                                <img src={data?.images?.[0] ? `${backend_url}${data.images[0]}` : ""} alt="image" />
                                 <div className="flex">
-                                    <img src={data?.shop?.shop_avatar?.url || ""} alt="image" className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    <img src={data?.shop?.avatar?.url ? `${backend_url}${data.shop.avatar.url}` : ""} alt="image" className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div>
                                         <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
                                         <h5 className='pb-3 text-[15px]'>[{data.shop.ratings}] Rating</h5>
