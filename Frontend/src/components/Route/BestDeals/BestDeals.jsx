@@ -1,10 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { productData } from '../../../static/data';
 import styles from '../../../styles/styles'
 import ProductCard from '../ProductCard/ProductCard'
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../../../redux/actions/product';
 import axios from 'axios';
 
 function BestDeals() {

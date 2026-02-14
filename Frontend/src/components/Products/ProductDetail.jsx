@@ -18,8 +18,10 @@ function ProductDetail({ data }) {
     const { products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllProductsShop(data._id));
-    }, [dispatch]);
+        if (data?._id) {
+            dispatch(getAllProductsShop(data.shop._id));
+        }
+    }, [dispatch, data?.shop?._id]);
 
 
     const decrementCount = () => {

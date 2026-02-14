@@ -1,9 +1,6 @@
 import React from 'react'
-// import { productData } from '../../../static/data';
 import styles from '../../../styles/styles'
 import ProductCard from '../ProductCard/ProductCard'
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../../../redux/actions/product';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
@@ -11,6 +8,7 @@ import axios from 'axios';
 function FeaturedProduct() {
     const [shopId, setShopId] = useState("");
     const [data, setData] = useState([]);
+    const { allProducts } = ((state) => state.product);
 
     // Get logged-in seller's shopId
     useEffect(() => {
@@ -31,10 +29,10 @@ function FeaturedProduct() {
                 const topProducts = products
                     .map(p => ({
                         ...p,
-                        priceNumber: Number(p.price ?? 0) // use correct field
+                        priceNumber: Number(p.price ?? 0)
                     }))
                     .sort((a, b) => b.priceNumber - a.priceNumber)
-                    .slice(0, 5); // top 5
+                    .slice(0, 5);
                 setData(topProducts);
             })
             .catch(err => console.log(err));
@@ -49,7 +47,7 @@ function FeaturedProduct() {
                     <h1>Featured Products</h1>
                 </div>
                 <div className='grid grid-cols-l gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12 border-0 '>
-                    {data && data.map((i, index) => <ProductCard data={i} key={index} />)}
+                    {allProducts && allProducts.map((i, index) => <ProductCard data={i} key={index} />)}
                 </div>
             </div>
         </div>

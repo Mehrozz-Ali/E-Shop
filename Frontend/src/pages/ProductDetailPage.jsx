@@ -30,9 +30,6 @@ function ProductDetailPage() {
         setData(found);
     }, [products, productName]);
 
-    // Debug log
-    console.log('ProductDetailPage data:', data);
-
     return (
         <div>
             <Header />
