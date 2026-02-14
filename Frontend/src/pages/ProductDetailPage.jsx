@@ -9,7 +9,7 @@ import { getAllProducts } from '../redux/actions/product';
 
 
 function ProductDetailPage() {
-    const { products } = useSelector((state) => state.product);
+    const { allProducts } = useSelector((state) => state.product);
     const dispatch = useDispatch();
 
     const { name } = useParams();
@@ -17,18 +17,18 @@ function ProductDetailPage() {
     const productName = name.replace(/-/g, " ");
 
     useEffect(() => {
-        if (!products || products.length === 0) {
+        if (!allProducts || allProducts.length === 0) {
             dispatch(getAllProducts());
         }
-    }, [dispatch, products]);
+    }, [dispatch, allProducts]);
 
     useEffect(() => {
-        console.log('All products:', products);
-        const found = products.find(
+        console.log('All products:', allProducts);
+        const found = allProducts.find(
             (i) => i.name && i.name.trim().toLowerCase() === productName.trim().toLowerCase()
         );
         setData(found);
-    }, [products, productName]);
+    }, [allProducts, productName]);
 
     return (
         <div>
