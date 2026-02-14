@@ -1,26 +1,15 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styles from '../../../styles/styles'
 import ProductCard from '../ProductCard/ProductCard'
-import axios from 'axios';
 
 function BestDeals() {
-
-    const [products, setProducts] = useState([]);
-
-    // Fetch all products from all shops
-    useEffect(() => {
-        axios.get("http://localhost:8000/api/v2/product/get-all-products")
-            .then(res => {
-                const topPriced = res.data.products
-                    .sort((a, b) => Number(b.originalPrice) - Number(a.originalPrice)) // convert to number
-                    .slice(0, 10);
-                setProducts(topPriced);
-            })
-            .catch(err => console.log(err));
-    }, []);
-
-    const sortedProducts = products;
+    const { allProducts } = useSelector((state) => state.product);
+    // Sort and slice top 10 by originalPrice
+    const sortedProducts = allProducts
+        .slice()
+        .sort((a, b) => Number(b.originalPrice) - Number(a.originalPrice))
+        .slice(0, 10);
     return (
         <div>
             <div className={`${styles.section}`}>
@@ -35,7 +24,6 @@ function BestDeals() {
                     ) : (
                         <h2>No Products Found</h2>
                     )}
-
                 </div>
             </div>
         </div>

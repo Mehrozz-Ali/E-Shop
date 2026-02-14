@@ -8,8 +8,8 @@ import { backend_url } from '../../../server';
 function ProductDetailCard({ setOpen, data }) {
     const [count, setCount] = useState(1);
     const [click, setClick] = useState(false);
-    // const [select, SetSelect] = useState();
 
+    
     const handleMessageSubmit = () => { };
     const decrementCount = () => {
         if (count > 1) {
