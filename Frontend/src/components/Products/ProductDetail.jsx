@@ -1,16 +1,25 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/styles';
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from 'react-icons/ai';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { backend_url } from '../../server';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProductsShop } from '../../redux/actions/product';
 
 function ProductDetail({ data }) {
     const [count, setCount] = useState(1);
     const [click, setClick] = useState(false);
     const [select, setSelect] = useState(0);
     const navigate = useNavigate();
+
+
+    const { products } = useSelector((state) => state.product);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getAllProductsShop(data._id));
+    }, [dispatch]);
 
 
     const decrementCount = () => {
@@ -84,7 +93,7 @@ function ProductDetail({ data }) {
                             </div>
                         </div>
                     </div>
-                    <ProductDetailsInfo data={data} />
+                    <ProductDetailsInfo data={data} products={products} />
                     <br />
                     <br />
                 </div>
@@ -95,7 +104,8 @@ function ProductDetail({ data }) {
 }
 
 
-const ProductDetailsInfo = ({ data }) => {
+
+const ProductDetailsInfo = ({ data, products }) => {
     const [active, setActive] = useState(1);
     return (
         <div className='bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded'>
@@ -121,24 +131,7 @@ const ProductDetailsInfo = ({ data }) => {
             </div>
             {active === 1 ? (
                 <>
-                    <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis quasi, id iusto amet voluptatem est molestiae? Deleniti eos rerum suscipit nobis tempore! Illo dolorem tempore expedita facilis in similique officia.
-                        Repellat obcaecati blanditiis consectetur ratione beatae. Eveniet officia excepturi in, dignissimos pariatur repellendus, harum nisi recusandae suscipit, corporis doloribus? Sequi dicta eum sapiente quam, debitis quos earum aliquam itaque tempora!
-                        Alias neque cupiditate aut. Voluptatem dolore provident dicta atque vel. Quas quis sit ex tempore natus at debitis, cupiditate quae nobis dolorem numquam mollitia excepturi amet molestiae velit corrupti illo?
-                        Nihil cupiditate corrupti ab nobis tempora similique veritatis, ea assumenda quos, ipsam laboriosam unde sapiente quo, in quisquam rem earum est fugiat magnam voluptate iure. Asperiores repudiandae corporis tempora facere.
-                        Blanditiis cupiditate tempore ut voluptas quibusdam quam hic? Veritatis velit odit quam quisquam eum, fugiat incidunt quas atque? At voluptate vero fuga non molestias est veritatis quidem sapiente repellat vitae!
-                    </p>
-                    <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis quasi, id iusto amet voluptatem est molestiae? Deleniti eos rerum suscipit nobis tempore! Illo dolorem tempore expedita facilis in similique officia.
-                        Repellat obcaecati blanditiis consectetur ratione beatae. Eveniet officia excepturi in, dignissimos pariatur repellendus, harum nisi recusandae suscipit, corporis doloribus? Sequi dicta eum sapiente quam, debitis quos earum aliquam itaque tempora!
-                        Alias neque cupiditate aut. Voluptatem dolore provident dicta atque vel. Quas quis sit ex tempore natus at debitis, cupiditate quae nobis dolorem numquam mollitia excepturi amet molestiae velit corrupti illo?
-                        Nihil cupiditate corrupti ab nobis tempora similique veritatis, ea assumenda quos, ipsam laboriosam unde sapiente quo, in quisquam rem earum est fugiat magnam voluptate iure. Asperiores repudiandae corporis tempora facere.
-                        Blanditiis cupiditate tempore ut voluptas quibusdam quam hic? Veritatis velit odit quam quisquam eum, fugiat incidunt quas atque? At voluptate vero fuga non molestias est veritatis quidem sapiente repellat vitae!
-                    </p>
-                    <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis quasi, id iusto amet voluptatem est molestiae? Deleniti eos rerum suscipit nobis tempore! Illo dolorem tempore expedita facilis in similique officia.
-                        Repellat obcaecati blanditiis consectetur ratione beatae. Eveniet officia excepturi in, dignissimos pariatur repellendus, harum nisi recusandae suscipit, corporis doloribus? Sequi dicta eum sapiente quam, debitis quos earum aliquam itaque tempora!
-                        Alias neque cupiditate aut. Voluptatem dolore provident dicta atque vel. Quas quis sit ex tempore natus at debitis, cupiditate quae nobis dolorem numquam mollitia excepturi amet molestiae velit corrupti illo?
-                        Nihil cupiditate corrupti ab nobis tempora similique veritatis, ea assumenda quos, ipsam laboriosam unde sapiente quo, in quisquam rem earum est fugiat magnam voluptate iure. Asperiores repudiandae corporis tempora facere.
-                        Blanditiis cupiditate tempore ut voluptas quibusdam quam hic? Veritatis velit odit quam quisquam eum, fugiat incidunt quas atque? At voluptate vero fuga non molestias est veritatis quidem sapiente repellat vitae!
-                    </p>
+                    <p className='py-2 text-[18px] leading-8 pb-10 whitespace-pre-line text-justify'>{data.description}</p>
                 </>
             ) : null}
             {active === 2 ? (
@@ -159,16 +152,17 @@ const ProductDetailsInfo = ({ data }) => {
                                 />
                                 <div className='pl-3'>
                                     <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
-                                    <h5 className='pb-2 text-[15px]'>[{data?.shop?.ratings}] Rating</h5>
+                                    <h5 className='pb-2 text-[15px]'>[4/5] Rating</h5>
                                 </div>
                             </div>
-                            <p className='pt-2 text-base sm:text-sm md:text-base lg:text-lg max-w-full break-words leading-relaxed"' >Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa, fugit laudantium! Ab perferendis, illum repellat nam natus neque culpa qui quaerat suscipit, dicta vel impedit, molestiae reprehenderit est deleniti dolorum.</p>
+                            <p className='pt-2 text-base sm:text-sm md:text-base lg:text-lg max-w-full break-words leading-relaxed"' >{data?.shop?.description}</p>
                         </div>
+
                         {/* Right side  */}
                         <div className="w-full md:w-[50%] mt-5 md:mt-0 flex flex-col items-end">
                             <div className="text-left">
-                                <h5 className='font-[600]'>Join on: <span className='font-[500]'>14 March, 2023</span></h5>
-                                <h5 className='font-[600] pt-3'>Total Products: <span className='font-[500]'>1,223</span></h5>
+                                <h5 className='font-[600]'>Join on: <span className='font-[500]'>{data?.shop?.createdAt ? new Date(data.shop.createdAt).toLocaleDateString() : "N/A"}</span></h5>
+                                <h5 className='font-[600] pt-3'>Total Products: <span className='font-[500]'>{products && products.length}</span></h5>
                                 <h5 className='font-[600] pt-3'>Total Reviews: <span className='font-[500]'>324</span></h5>
                                 <Link to="/">
                                     <div className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}>
