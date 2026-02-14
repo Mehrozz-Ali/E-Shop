@@ -30,23 +30,21 @@ function ProductDetail({ data }) {
             {data ? (
                 <div className={`${styles.section} w-[90%] md:w-[80%] `}>
                     <div className='w-full py-5'>
-                        <div className="flex  w-full  md:flex">
+                        <div className="flex  w-full md:flex">
                             {/* Left side */}
-                            <div className="w-full  md:w-[50%]">
-                                {/* <img src={data?.image_Url[select].url} alt="" className='w-[50%]' /> */}
+                            <div className="w-full md:w-[50%]">
                                 <div className="w-full flex gap-1">
                                     <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
-                                        {/* <img src={`${backend_url}${data.images && data.images[0]}`} alt="image" className='h-[200px]' onClick={() => setSelect(0)} /> */}
-                                        <img src={data?.images?.length > 0 ? `${backend_url}${data.images[0]}` : ""}/>
+                                        <img src={`${backend_url}${data.images && data.images[0]}`} alt="image" className='w-[200px] h-[200px]' onClick={() => setSelect(0)} />
                                     </div>
                                     <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}>
-                                        <img src={`${backend_url}${data.images && data.images[1]}`} alt="image" className='h-[200px]' onClick={() => setSelect(1)} />
+                                        <img src={`${backend_url}${data.images && data.images[1]}`} alt="image" className='w-[200px] h-[200px]' onClick={() => setSelect(1)} />
                                     </div>
                                 </div>
                             </div>
 
                             {/* Right side */}
-                            <div className='w-full 800px:w-[50%] pt-5'>
+                            <div className='w-full md:w-[50%] pt-5'>
                                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                                 <p className=''>{data.description}</p>
                                 <div className="flex pt-3">
@@ -74,7 +72,7 @@ function ProductDetail({ data }) {
                                     <span className='text-white flex items-center'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
                                 </div>
                                 <div className="flex items-center pt-8">
-                                    <img src={`${backend_url}${data?.shop?.shop_avatar}`} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
+                                    <img src={`${backend_url}${data.shop.avatar?.url}`} alt="image " className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div className='pr-8 '>
                                         <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data?.shop?.name}</h3>
                                         <h5 className='pb-3 text-[15px]'>[4/5] Ratings</h5>
@@ -155,7 +153,7 @@ const ProductDetailsInfo = ({ data }) => {
                         <div className="w-full md:w-[50%]">
                             <div className="flex items-center">
                                 <img
-                                    src={data?.shop?.shop_avatar ? `${backend_url}${data.shop.shop_avatar}` : ""}
+                                    src={data?.shop?.avatar?.url ? `${backend_url}${data.shop.avatar.url}` : ""}
                                     alt="shop"
                                     className='w-[50px] h-[50px] rounded-full mr-2'
                                 />

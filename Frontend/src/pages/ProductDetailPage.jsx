@@ -4,25 +4,52 @@ import ProductDetail from '../components/Products/ProductDetail';
 import Footer from '../components/Layout/Footer';
 import { useParams } from 'react-router-dom';
 import SuggestedProduct from '../components/Products/SuggestedProduct'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../redux/actions/product';
+
 
 function ProductDetailPage() {
     const { products } = useSelector((state) => state.product);
+    const dispatch = useDispatch();
 
     const { name } = useParams();
     const [data, setData] = useState(null);
     const productName = name.replace(/-/g, " ");
 
-    console.log(name);
-
+    useEffect(() => {
+        if (!products || products.length === 0) {
+            dispatch(getAllProducts());
+        }
+    }, [dispatch, products]);
 
     useEffect(() => {
-        const data = products.find((i) => i.name === productName);
-        setData(data);
-    }, [])
-    return (<div> <Header /> <ProductDetail data={data} /> {data && <SuggestedProduct data={data} />} <Footer />
-    </div>
-    )
+        console.log('All products:', products);
+        const found = products.find(
+            (i) => i.name && i.name.trim().toLowerCase() === productName.trim().toLowerCase()
+        );
+        setData(found);
+    }, [products, productName]);
+
+    // Debug log
+    console.log('ProductDetailPage data:', data);
+
+    return (
+        <div>
+            <Header />
+            {data ? (
+                <>
+                    <ProductDetail data={data} />
+                    <SuggestedProduct data={data} />
+                </>
+            ) : (
+                <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
+                    Product not found or loading. Please check your product data.<br />
+                    <span style={{ color: 'black' }}>Searched for: <b>{productName}</b></span>
+                </div>
+            )}
+            <Footer />
+        </div>
+    );
 }
 
 export default ProductDetailPage
