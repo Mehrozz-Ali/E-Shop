@@ -44,18 +44,20 @@ function ProductDetail({ data }) {
                         <div className="flex  w-full md:flex">
                             {/* Left side */}
                             <div className="w-full md:w-[50%]">
+                                <img src={`${backend_url}${data.images && data.images[select]}`} alt="product" />
                                 <div className="w-full flex gap-1">
-                                    <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
-                                        <img src={`${backend_url}${data.images && data.images[0]}`} alt="image" className='w-[200px] h-[200px]' onClick={() => setSelect(0)} />
-                                    </div>
-                                    <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}>
-                                        <img src={`${backend_url}${data.images && data.images[1]}`} alt="image" className='w-[200px] h-[200px]' onClick={() => setSelect(1)} />
-                                    </div>
+                                    {
+                                        data && data.images && data.images.map((i, index) => (
+                                            <div key={index} className={`${select === index ? "border" : "null"} cursor-pointer`}>
+                                                <img src={`${backend_url}${i}`} alt={`image ${index}`} className='w-[200px] h-[200px] overflow-hidden mr-2' onClick={() => setSelect(index)} />
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                             </div>
 
                             {/* Right side */}
-                            <div className='w-full md:w-[50%] pt-5'>
+                            <div className='w-full md:w-[50%] pt-5 pl-4'>
                                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                                 <p className=''>{data.description}</p>
                                 <div className="flex pt-3">
