@@ -11,12 +11,15 @@ import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetai
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents ,ShopAllCoupons} from './routes/ShopRoutes'
+import { getAllEvents } from './redux/actions/event.jsx';
 
 function App() {
 
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
+    Store.dispatch(getAllEvents());
+    // Store.dispatch(getAllProducts());
   }, []);
 
 

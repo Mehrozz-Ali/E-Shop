@@ -42,7 +42,21 @@ router.post("/create-event", upload.array("files"), catchAsyncErrors(async (req,
 
         }
     } catch (error) {
-        return next(new ErrorHandler(error, 400))
+        return next(new ErrorHandler(error, 400));
+    }
+}))
+
+
+// get all events
+router.get("/get-all-events", catchAsyncErrors(async (req, res, next) => {
+    try {
+const events=await Event.find({});
+        res.status(201).json({
+            success: true,
+            events,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error, 400));
     }
 }))
 
