@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { getAllProducts } from '../../redux/actions/product';
 import Header from '../Layout/Header';
 import Hero from '../Route/Hero/Hero';
 import Categories from '../Route/Categories/Categories';
@@ -9,7 +11,14 @@ import Sponsored from '../Route/Sponsored/Sponsored';
 import Footer from '../Layout/Footer'
 
 
+
 function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProducts());
+  }, [dispatch]);
+
   return (
     <div>
       <Header activeHeading={1} />
@@ -21,7 +30,7 @@ function Home() {
       <Sponsored />
       <Footer />
     </div>
-  )
+  );
 }
 
 export default Home
