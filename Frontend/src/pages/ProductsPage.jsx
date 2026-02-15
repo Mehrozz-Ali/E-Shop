@@ -3,23 +3,26 @@ import Header from '../components/Layout/Header';
 import styles from '../styles/styles';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { productData } from '../static/data';
 import ProductCard from '../components/Route/ProductCard/ProductCard';
+import { useSelector } from 'react-redux';
+import Footer from '../components/Layout/Footer';
 
 function ProductsPage() {
+
+    const { allProducts } = useSelector((state) => state.product);
     const [searchParams] = useSearchParams();
     const categoryData = searchParams.get("category");
     const [data, setData] = useState([]);
 
     useEffect(() => {
         if (categoryData === null) {
-            const d = productData && productData.sort((a, b) => a.total_sell - b.total_sell);
+            const d = allProducts && allProducts.sort((a, b) => a.sold_out - b.sold_out);
             setData(d);
         } else {
-            const d = productData && productData.filter((i) => i.category === categoryData);
+            const d = allProducts && allProducts.filter((i) => i.category === categoryData);
             setData(d);
         }
-    }, []);
+    }, [allProducts, categoryData]);
     return (
         <div>
             <Header activeHeading={3} />
@@ -31,6 +34,7 @@ function ProductsPage() {
                 </div>
                 {data && data.length === 0 ? (<h1 className='text-center w-full pb-[110px] text-[20px]'>No Products Found!</h1>) : null}
             </div>
+            <Footer />
         </div>
     )
 }

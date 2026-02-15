@@ -10,7 +10,6 @@ const Store = configureStore({
         seller: sellerReducer,
         product: productReducer,
         events: eventReducer,
-
     },
 })
 

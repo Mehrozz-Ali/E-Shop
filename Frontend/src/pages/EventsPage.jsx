@@ -7,7 +7,6 @@ function EventsPage() {
         <div>
             <Header activeHeading={4} />
             <EventsCard active={true} />
-            <EventsCard active={true} />
 
         </div>
     )

@@ -17,6 +17,8 @@ import { RxCross1 } from 'react-icons/rx';
 
 
 function Header({ activeHeading }) {
+
+    const { allProducts } = useSelector((state) => state.product);
     const { isAuthenticated, user } = useSelector((state) => state.user);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchData, setSearchData] = useState(null);
@@ -31,19 +33,12 @@ function Header({ activeHeading }) {
     const handleSearchChange = (e) => {
         const term = e.target.value;
         setSearchTerm(term);
-        const filteredProducts = productData && productData.filter((product) =>
+        const filteredProducts = allProducts && allProducts.filter((product) =>
             product.name.toLocaleLowerCase().includes(term.toLocaleLowerCase())
         );
         setSearchData(filteredProducts);
     }
 
-    // window.addEventListener("scroll", () => {
-    //     if (window.scrollY > 70) {
-    //         setActive(true);
-    //     } else {
-    //         setActive(false);
-    //     }
-    // })
     useEffect(() => {
         const handleScroll = () => {
             setActive(window.scrollY > 70);
@@ -77,7 +72,7 @@ function Header({ activeHeading }) {
                                     return (
                                         <Link to={`/product/${product_name}`}>
                                             <div className="w-full flex items-start-py-3">
-                                                <img src={i.image_Url[0].url} alt="" className='w-[40px] h-[40px] mr-[10px]' />
+                                                <img src={`${backend_url}${i.images[0]}`} alt="" className='w-[40px] h-[40px] mr-[10px]' />
                                                 <h1>{i.name}</h1>
                                             </div>
                                         </Link>

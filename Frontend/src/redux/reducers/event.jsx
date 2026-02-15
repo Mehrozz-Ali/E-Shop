@@ -5,7 +5,7 @@ const initialState = {
     event: null,
     success: false,
     error: null,
-    events: [],
+    allEvents: [],
 };
 
 export const eventReducer = createReducer(initialState, (builder) => {
@@ -47,6 +47,20 @@ export const eventReducer = createReducer(initialState, (builder) => {
             state.message = action.payload;
         })
         .addCase("deleteEventFailed", (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        })
+
+
+        // get all events 
+        .addCase("getAllEventsRequest", (state) => {
+            state.isLoading = true;
+        })
+        .addCase("getAllEventsSuccess", (state, action) => {
+            state.isLoading = false;
+            state.allEvents = action.payload;
+        })
+        .addCase("getAllEventsFailed", (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         })

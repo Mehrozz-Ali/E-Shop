@@ -49,7 +49,7 @@ function ProductDetail({ data }) {
                                     {
                                         data && data.images && data.images.map((i, index) => (
                                             <div key={index} className={`${select === index ? "border" : "null"} cursor-pointer`}>
-                                                <img src={`${backend_url}${i}`} alt={`image ${index}`} className='w-[200px] h-[200px] overflow-hidden mr-2' onClick={() => setSelect(index)} />
+                                                <img src={`${backend_url}${i}`} alt={`image ${index}`} className='w-[200px] h-[200px] overflow-hidden mr-3 mt-3' onClick={() => setSelect(index)} />
                                             </div>
                                         ))
                                     }
@@ -148,17 +148,19 @@ const ProductDetailsInfo = ({ data, products }) => {
                     <div className='w-full flex md:flex p-5'>
                         {/* Left side  */}
                         <div className="w-full md:w-[50%]">
-                            <div className="flex items-center">
-                                <img
-                                    src={data?.shop?.avatar?.url ? `${backend_url}${data.shop.avatar.url}` : ""}
-                                    alt="shop"
-                                    className='w-[50px] h-[50px] rounded-full mr-2'
-                                />
-                                <div className='pl-3'>
-                                    <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
-                                    <h5 className='pb-2 text-[15px]'>[4/5] Rating</h5>
+                            <Link to={`/shop/${data.shop._id}`}>
+                                <div className="flex items-center">
+                                    <img
+                                        src={data?.shop?.avatar?.url ? `${backend_url}${data.shop.avatar.url}` : ""}
+                                        alt="shop"
+                                        className='w-[50px] h-[50px] rounded-full mr-2'
+                                    />
+                                    <div className='pl-3'>
+                                        <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
+                                        <h5 className='pb-2 text-[15px]'>[4/5] Rating</h5>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                             <p className='pt-2 text-base sm:text-sm md:text-base lg:text-lg max-w-full break-words leading-relaxed"' >{data?.shop?.description}</p>
                         </div>
 
