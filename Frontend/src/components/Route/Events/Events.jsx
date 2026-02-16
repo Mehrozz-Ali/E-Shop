@@ -10,19 +10,19 @@ function Events() {
 
   useEffect(() => {
     dispatch(getAllEvents());
-  })
+  }, [dispatch]);
 
   return (
     <div>
       {
-        isLoading && (
+        !isLoading && allEvents && allEvents.length > 0 && (
           <div className={`${styles.section}`}>
             <div className={`${styles.heading}`}>
               <h1>Popular Events</h1>
             </div>
 
             <div className='w-full grid'>
-              <EventsCard data={allEvents && allEvents[0]} />
+              <EventsCard data={allEvents[0]} />
             </div>
           </div>
         )

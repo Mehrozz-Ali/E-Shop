@@ -5,6 +5,8 @@ const initialState = {
     event: null,
     success: false,
     error: null,
+    message: null,
+    events: [],
     allEvents: [],
 };
 
@@ -16,7 +18,7 @@ export const eventReducer = createReducer(initialState, (builder) => {
         .addCase("eventCreateSuccess", (state, action) => {
             state.isLoading = false;
             state.event = action.payload;
-            state.success = true;
+            state.success = false;
         })
         .addCase("eventCreateFail", (state, action) => {
             state.isLoading = false;
