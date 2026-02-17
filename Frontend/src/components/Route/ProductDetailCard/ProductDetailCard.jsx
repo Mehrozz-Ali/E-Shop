@@ -30,9 +30,13 @@ function ProductDetailCard({ setOpen, data }) {
         if (isItemExist) {
             toast.error("Item already exist in cart!")
         } else {
-            const cartData = { ...data, qty: count };
-            dispatch(addToCart(cartData));
-            toast.success("Item added to cart successfully!");
+            if (data.stock < count) {
+                toast.error("Product stock limited!")
+            } else {
+                const cartData = { ...data, qty: count };
+                dispatch(addToCart(cartData));
+                toast.success("Item added to cart Successfully!");
+            }
         }
     }
 
