@@ -1,17 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import styles from '../../../styles/styles';
 import { AiFillStar, AiOutlineStar, AiFillHeart, AiOutlineHeart, AiOutlineEye, AiOutlineShoppingCart } from 'react-icons/ai';
 import ProductDetailCard from '../ProductDetailCard/ProductDetailCard';
 import { backend_url } from '../../../server';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlist';
 
 
 function ProductCard({ data }) {
+  const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const d = data.name;
   const product_name = d.replace(/\s+/g, "-");
+
+  useEffect(() => {
+    if (wishlist && wishlist.find((i) => i._id === data._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishlist])
+
+
+  const removeFromWishlistHandler = (data) => {
+    dispatch(removeFromWishlist(data._id));
+  }
+
+  const addToWishlistHandler = (data) => {
+    dispatch(addToWishlist(data));
+  }
+
+  console.log(wishlist);
+
+
   return (
     <>
       <div className='w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer'>
@@ -46,8 +71,8 @@ function ProductCard({ data }) {
         </Link>
         {/* Side options */}
         <div>{click ?
-          (< AiFillHeart size={22} className="cursor-pointer absolute right-2  top-5" onClick={() => setClick(!click)} color={click ? "red" : "#333"} title="Remove from wishlist" />) :
-          (<AiOutlineHeart size={22} className="cursor-pointer absolute right-2 top-5" onClick={() => setClick(!click)} color={click ? "red" : "#333"} title="Add to wishlist" />)
+          (< AiFillHeart size={22} className="cursor-pointer absolute right-2  top-5" onClick={() => removeFromWishlistHandler(data)} color={click ? "red" : "#333"} title="Remove from wishlist" />) :
+          (<AiOutlineHeart size={22} className="cursor-pointer absolute right-2 top-5" onClick={() => addToWishlistHandler(data)} color={click ? "red" : "#333"} title="Add to wishlist" />)
         }
           <AiOutlineEye size={22} className="cursor-pointer absolute right-2  top-14" onClick={() => setOpen(!open)} color="#333" title="Quick view" />
           <AiOutlineShoppingCart size={22} className="cursor-pointer absolute right-2 top-24" onClick={() => setOpen(!open)} color="#444" title="Add to cart" />
