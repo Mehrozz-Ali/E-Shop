@@ -27,10 +27,12 @@ function ProductCard({ data }) {
 
 
   const removeFromWishlistHandler = (data) => {
-    dispatch(removeFromWishlist(data._id));
+    setClick(!click);
+    dispatch(removeFromWishlist(data));
   }
 
   const addToWishlistHandler = (data) => {
+    setClick(!click);
     dispatch(addToWishlist(data));
   }
 

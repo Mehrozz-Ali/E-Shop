@@ -116,7 +116,7 @@ function Header({ activeHeading }) {
                         <div className={`${styles.normalFlex}`}>
                             <div className="relative cursor-pointer mr-[15px]" onClick={() => setOpenWishList(true)}>
                                 <AiOutlineHeart size={30} color='rgb(255 255 255/ 83%)' />
-                                <span className='absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right  p-0 m-0 text-white font-mono text-[12px] leading-tight text-center'>{WishList && WishList.length}</span>
+                                <span className='absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right  p-0 m-0 text-white font-mono text-[12px] leading-tight text-center'>{wishlist && wishlist.length}</span>
                             </div>
                         </div>
                         <div className={`${styles.normalFlex}`}>
