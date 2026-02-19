@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addToCart } from '../../../redux/actions/cart';
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlist';
+import { Link } from 'react-router-dom';
 
 function ProductDetailCard({ setOpen, data }) {
     const { cart } = useSelector((state) => state.cart);
@@ -78,7 +79,9 @@ function ProductDetailCard({ setOpen, data }) {
                                 <div className="flex">
                                     <img src={data?.shop?.avatar?.url ? `${backend_url}${data.shop.avatar.url}` : ""} alt="image" className='w-[50px] h-[50px] rounded-full mr-2' />
                                     <div>
+                                        <Link to={`/shop/preview/${data.shop._id}`}>
                                         <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
+                                        </Link>
                                         <h5 className='pb-3 text-[15px]'>[{data.shop.ratings}] Rating</h5>
                                     </div>
                                 </div>
