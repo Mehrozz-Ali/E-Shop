@@ -7,10 +7,14 @@ import ProductDetailCard from '../ProductDetailCard/ProductDetailCard';
 import { backend_url } from '../../../server';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, removeFromWishlist } from '../../../redux/actions/wishlist';
+import { addToCart } from '../../../redux/actions/cart';
+import { toast } from 'react-toastify';
 
 
 function ProductCard({ data }) {
   const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -34,6 +38,21 @@ function ProductCard({ data }) {
   const addToWishlistHandler = (data) => {
     setClick(!click);
     dispatch(addToWishlist(data));
+  }
+
+  const addToCartHandler = (id) => {
+    const isItemExist = cart && cart.find((i) => i._id === id);
+    if (isItemExist) {
+      toast.error("Item already exist in cart!")
+    } else {
+      if (data.stock < 1) {
+        toast.error("Product stock limited!")
+      } else {
+        const cartData = { ...data, qty: 1 };
+        dispatch(addToCart(cartData));
+        toast.success("Item added to cart Successfully!");
+      }
+    }
   }
 
   console.log(wishlist);
@@ -77,7 +96,7 @@ function ProductCard({ data }) {
           (<AiOutlineHeart size={22} className="cursor-pointer absolute right-2 top-5" onClick={() => addToWishlistHandler(data)} color={click ? "red" : "#333"} title="Add to wishlist" />)
         }
           <AiOutlineEye size={22} className="cursor-pointer absolute right-2  top-14" onClick={() => setOpen(!open)} color="#333" title="Quick view" />
-          <AiOutlineShoppingCart size={22} className="cursor-pointer absolute right-2 top-24" onClick={() => setOpen(!open)} color="#444" title="Add to cart" />
+          <AiOutlineShoppingCart size={22} className="cursor-pointer absolute right-2 top-24" onClick={() => addToCartHandler(data._id)} color="#444" title="Add to cart" />
           {open ?
             (<ProductDetailCard open={open} setOpen={setOpen} data={data} />) : null
           }

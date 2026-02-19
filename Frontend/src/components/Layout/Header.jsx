@@ -11,7 +11,7 @@ import DropDown from './DropDown';
 import { categoriesData } from '../../static/data';
 import Navbar from './Navbar';
 import { backend_url } from '../../server';
-import Cart from '../cart/cart';
+import Cart from '../Cart/Cart';
 import WishList from '../WishList/WishList';
 import { RxCross1 } from 'react-icons/rx';
 
