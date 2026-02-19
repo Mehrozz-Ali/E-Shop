@@ -45,7 +45,7 @@ function ProductDetail({ data }) {
                             {/* Left side */}
                             <div className="w-full md:w-[50%]">
                                 <img src={`${backend_url}${data.images && data.images[select]}`} alt="product" />
-                                <div className="w-full flex gap-1">
+                                <div className="w-full flex gap-2">
                                     {
                                         data && data.images && data.images.map((i, index) => (
                                             <div key={index} className={`${select === index ? "border" : "null"} cursor-pointer`}>
