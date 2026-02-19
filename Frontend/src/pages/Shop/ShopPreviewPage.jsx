@@ -2,8 +2,10 @@ import React from 'react'
 import styles from '../../styles/styles'
 import ShopInfo from "../../components/Shop/ShopInfo";
 import ShopProfileData from "../../components/Shop/ShopProfileData";
+import { useSelector } from 'react-redux';
 
 const ShopPreviewPage = () => {
+    const {seller} = useSelector((state) => state.seller);
     return (
         <div className={`${styles.section} bg-[#f5f5f5]`}>
             <div className="w-full md:flex py-10 justify-between">
@@ -11,7 +13,7 @@ const ShopPreviewPage = () => {
                     <ShopInfo isOwner={false} />
                 </div>
                 <div className="md:w-[72%] mt-5 md:mt-['unset'] rounded-[4px]">
-                    <ShopProfileData isOwner={false} />
+                    <ShopProfileData isOwner={seller} />
                 </div>
             </div>
         </div>

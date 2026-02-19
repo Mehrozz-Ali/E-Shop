@@ -10,7 +10,7 @@ import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
-import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents ,ShopAllCoupons} from './routes/ShopRoutes'
+import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents ,ShopAllCoupons, ShopPreviewPage} from './routes/ShopRoutes'
 import { getAllEvents } from './redux/actions/event.jsx';
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
         <Route path='/events' element={<EventsPage />} />
         <Route path='/faq' element={<FaqPage />} />
         {/* Shop Routes */}
+        <Route path="/shop/preview/:id" element={<ShopPreviewPage />} />
         <Route path='/shop-create' element={<ShopCreatePage />} />
         <Route path='/shop-login' element={<ShopLoginPage />} />
         <Route path='/shop/:id' element={
