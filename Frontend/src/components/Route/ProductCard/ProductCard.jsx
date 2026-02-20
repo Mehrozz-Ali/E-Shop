@@ -18,8 +18,8 @@ function ProductCard({ data }) {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const d = data.name;
-  const product_name = d.replace(/\s+/g, "-");
+
+
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
@@ -63,13 +63,13 @@ function ProductCard({ data }) {
       <div className='w-full h-[370px] bg-white rounded-lg shadow-sm p-3 relative cursor-pointer'>
         <div className='flex justify-end'>
         </div>
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data._id}`}>
           <img src={data.images && data.images[0] ? `${backend_url}/${data.images[0]}` : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
         </Link>
         <Link to={`/shop/preview/${data.shop._id}`}>
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
         </Link>
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data._id}`}>
           <h4 className='pb-3 font-[500]'>{data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}</h4>
           <div className="flex">
             <AiFillStar size={20} className='mr-2 cursor-pointer' color="#f6BA00" />

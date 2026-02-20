@@ -7,21 +7,61 @@ import { Link } from 'react-router-dom';
 import { backend_url } from '../../server';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProductsShop } from '../../redux/actions/product';
+import { addToWishlist, removeFromWishlist } from '../../redux/actions/wishlist';
+import { addToCart } from '../../redux/actions/cart';
+import { toast } from 'react-toastify';
 
 function ProductDetail({ data }) {
+    const { wishlist } = useSelector((state) => state.wishlist);
+    const { cart } = useSelector((state) => state.cart);
+    const { products } = useSelector((state) => state.product);
+
+
+
     const [count, setCount] = useState(1);
     const [click, setClick] = useState(false);
     const [select, setSelect] = useState(0);
     const navigate = useNavigate();
 
 
-    const { products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (data?._id) {
             dispatch(getAllProductsShop(data.shop._id));
         }
-    }, [dispatch, data?.shop?._id]);
+        if (wishlist && wishlist.find((i) => i._id === data._id)) {
+            setClick(true);
+        } else {
+            setClick(false);
+        }
+    }, [wishlist, data?._id]);
+
+
+    const removeFromWishlistHandler = (data) => {
+        setClick(!click);
+        dispatch(removeFromWishlist(data));
+    }
+
+    const addToWishlistHandler = (data) => {
+        setClick(!click);
+        dispatch(addToWishlist(data));
+    }
+
+    const addToCartHandler = (id) => {
+        const isItemExist = cart && cart.find((i) => i._id === id);
+        if (isItemExist) {
+            toast.error("Item already exist in cart!")
+        } else {
+            if (data.stock < 1) {
+                toast.error("Product stock limited!")
+            } else {
+                const cartData = { ...data, qty: count };
+                dispatch(addToCart(cartData));
+                toast.success("Item added to cart Successfully!");
+            }
+        }
+    }
 
 
     const decrementCount = () => {
@@ -76,12 +116,12 @@ function ProductDetail({ data }) {
                                     </div>
                                     <div>
                                         {click ?
-                                            (<AiFillHeart size={30} className="cursor-pointer  right-2  top-5" onClick={() => setClick(!click)} color={click ? "red" : "#333"} title="Remove from wishlist" />) :
-                                            (<AiOutlineHeart size={30} className="cursor-pointer  right-2 top-5" onClick={() => setClick(!click)} color={click ? "red" : "#333"} title="Add to wishlist" />)
+                                            (<AiFillHeart size={30} className="cursor-pointer  right-2  top-5" onClick={() => removeFromWishlistHandler(data)} color={click ? "red" : "#333"} title="Remove from wishlist" />) :
+                                            (<AiOutlineHeart size={30} className="cursor-pointer  right-2 top-5" onClick={() => addToWishlistHandler(data)} color={click ? "red" : "#333"} title="Add to wishlist" />)
                                         }
                                     </div>
                                 </div>
-                                <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}>
+                                <div className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`} onClick={() => addToCartHandler(data._id)}>
                                     <span className='text-white flex items-center'>Add to Cart<AiOutlineShoppingCart className="ml-1" /></span>
                                 </div>
                                 <div className="flex items-center pt-8">
