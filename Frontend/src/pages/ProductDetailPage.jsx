@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Header from '../components/Layout/Header';
 import ProductDetail from '../components/Products/ProductDetail';
 import Footer from '../components/Layout/Footer';
@@ -12,9 +12,9 @@ function ProductDetailPage() {
     const { allProducts } = useSelector((state) => state.product);
     const dispatch = useDispatch();
 
-    const { name } = useParams();
+    const { id } = useParams();
     const [data, setData] = useState(null);
-    const productName = name.replace(/-/g, " ");
+    // const productName = name.replace(/-/g, " ");
 
     useEffect(() => {
         if (!allProducts || allProducts.length === 0) {
@@ -23,12 +23,14 @@ function ProductDetailPage() {
     }, [dispatch, allProducts]);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    })
+
+    useEffect(() => {
         console.log('All products:', allProducts);
-        const found = allProducts.find(
-            (i) => i.name && i.name.trim().toLowerCase() === productName.trim().toLowerCase()
-        );
-        setData(found);
-    }, [allProducts, productName]);
+        const data = allProducts && allProducts.find((i) => i._id === id);
+        setData(data);
+    }, [allProducts, data,id]);
 
     return (
         <div>
@@ -41,7 +43,7 @@ function ProductDetailPage() {
             ) : (
                 <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
                     Product not found or loading. Please check your product data.<br />
-                    <span style={{ color: 'black' }}>Searched for: <b>{productName}</b></span>
+                    <span style={{ color: 'black' }}>Searched for: <b>{id}</b></span>
                 </div>
             )}
             <Footer />

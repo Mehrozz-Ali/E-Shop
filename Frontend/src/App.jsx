@@ -10,7 +10,7 @@ import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
-import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents ,ShopAllCoupons, ShopPreviewPage} from './routes/ShopRoutes'
+import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopPreviewPage } from './routes/ShopRoutes'
 import { getAllEvents } from './redux/actions/event.jsx';
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
         <Route path='/activation/:activation_token' element={<ActivationPage />} />
         <Route path='/seller/activation/:activation_token' element={<SellerActivationPage />} />
         <Route path='/products' element={<ProductsPage />} />
-        <Route path='/product/:name' element={<ProductDetailPage />} />
+        <Route path='/product/:id' element={<ProductDetailPage />} />
         <Route path='/best-selling' element={<BestSellingPage />} />
         <Route path='/events' element={<EventsPage />} />
         <Route path='/faq' element={<FaqPage />} />
