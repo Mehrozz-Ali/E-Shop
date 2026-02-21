@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { backend_url } from '../../server';
 import { AiOutlineCamera, AiOutlineDelete } from 'react-icons/ai';
 import { MdOutlineTrackChanges } from 'react-icons/md';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
+import { updatedUserInformation } from '../../redux/actions/user';
 
 function ProfileContent({ active }) {
     const { user } = useSelector((state) => state.user);
@@ -16,8 +17,11 @@ function ProfileContent({ active }) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
 
+    const dispatch = useDispatch();
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        dispatch(updatedUserInformation(name,email,phoneNumber,password))
     }
 
     return (
