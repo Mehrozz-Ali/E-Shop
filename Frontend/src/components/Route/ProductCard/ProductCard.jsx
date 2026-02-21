@@ -66,7 +66,7 @@ function ProductCard({ data }) {
         <Link to={`/product/${data._id}`}>
           <img src={data.images && data.images[0] ? `${backend_url}/${data.images[0]}` : 'fallback-image-url'} alt="image" className='w-full h-[170px] object-contain' />
         </Link>
-        <Link to={`/shop/preview/${data.shop._id}`}>
+        <Link to={`/shop/preview/${data?.shop._id}`}>
           <h5 className={`${styles.shop_name}`}>{data.shop.name}</h5>
         </Link>
         <Link to={`/product/${data._id}`}>

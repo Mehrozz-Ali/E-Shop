@@ -1,5 +1,6 @@
 import axios from "axios";
 import { server } from "../../server";
+import user from "../../../../Backend/model/user";
 
 
 // load user
@@ -43,3 +44,26 @@ export const loadSeller = () => async (dispatch) => {
 }
 
 
+
+// user updated information
+export const updatedUserInformation = (email, password, name, phoneNumber) => async (dispatch, action) => {
+    try {
+        dispatch({
+            type: "updateUserInfoRequest",
+        })
+        const { data } = await axios.put(`${server}/user/update-user-info`, {
+            name,
+            email,
+            password,
+            phoneNumber,
+        }, { withCredentials: true });
+
+        dispatch({
+            type: "updateUserInfoSuccess",
+            payload: data.user,
+        })
+
+    } catch (error) {
+
+    }
+}

@@ -14,9 +14,7 @@ function ProfileContent({ active }) {
     const [name, setName] = useState(user && user.name);
     const [email, setEmail] = useState(user && user.email);
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [zipCode, setZipCode] = useState("");
-    const [address1, setAddress1] = useState("");
-    const [address2, setAddress2] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -54,22 +52,12 @@ function ProfileContent({ active }) {
                                     <input type="number" className={`${styles.input} w-full md:!w-[95%]`} required value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                                 </div>
                                 <div className='w-full md:w-[50%] pt-2'>
-                                    <label className='block pb-2'>Zip Code</label>
-                                    <input type="number" className={`${styles.input} w-full md:!w-[95%]`} required value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                                    <label className='block pb-2'>Enter your Password </label>
+                                    <input type="password" className={`${styles.input} w-full md:!w-[95%]`} required value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
+
                             </div>
 
-
-                            <div className="w-full flex pb-3 flex-wrap">
-                                <div className='w-full md:w-[50%]'>
-                                    <label className='block pb-2'>Address 1</label>
-                                    <input type="address" className={`${styles.input} w-full md:!w-[95%]`} required value={address1} onChange={(e) => setAddress1(e.target.value)} />
-                                </div>
-                                <div className='w-full md:w-[50%]'>
-                                    <label className='block pb-2'>Address 2</label>
-                                    <input type="address" className={`${styles.input} w-full md:!w-[95%]`} required value={address2} onChange={(e) => setAddress2(e.target.value)} />
-                                </div>
-                            </div>
                             <input className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`} required value="Update" type='submit' />
                         </form>
                     </div>
