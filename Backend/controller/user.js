@@ -160,4 +160,32 @@ router.get("/getuser", isAuthenticated, catchAsyncErrors(async (req, res, next) 
 }))
 
 
+// update user info 
+router.put("/update-user-info", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const { email, name, password, phoneNumber } = req.body;
+        const user = await User.findOne({ email: email }).select("+password");
+        if (!user) {
+            return next(new ErrorHandler("User does not exist", 400));
+        }
+
+        const isPasswordValid = await user.comparePassword(password);
+        if (!isPasswordValid) {
+            return next(new ErrorHandler("Invalid password", 400));
+        }
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.phoneNumber = phoneNumber || user.phoneNumber;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            user,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
+
+
 module.exports = router;

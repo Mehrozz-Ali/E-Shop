@@ -1,6 +1,5 @@
 import axios from "axios";
 import { server } from "../../server";
-import user from "../../../../Backend/model/user";
 
 
 // load user
@@ -64,6 +63,9 @@ export const updatedUserInformation = (email, password, name, phoneNumber) => as
         })
 
     } catch (error) {
-
+        dispatch({
+            type: "updateUserInfoFailed",
+            payload:error.response.data.message || error.message,
+        })
     }
 }
