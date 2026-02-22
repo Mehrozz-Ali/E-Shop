@@ -21,7 +21,8 @@ function ProfileContent({ active }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updatedUserInformation(name,email,phoneNumber,password))
+        dispatch(updatedUserInformation(name, email, password, phoneNumber));
+
     }
 
     return (
@@ -57,7 +58,7 @@ function ProfileContent({ active }) {
                                 </div>
                                 <div className='w-full md:w-[50%] pt-2'>
                                     <label className='block pb-2'>Enter your Password </label>
-                                    <input type="password" className={`${styles.input} w-full md:!w-[95%]`} required value={password} onChange={(e) => setPassword(e.target.value)} />
+                                    <input type="password" required className={`${styles.input} w-full md:!w-[95%]`}  value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
 
                             </div>
