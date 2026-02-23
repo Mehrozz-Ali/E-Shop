@@ -45,7 +45,7 @@ export const loadSeller = () => async (dispatch) => {
 
 
 // user updated information
-export const updatedUserInformation = (name, email, password, phoneNumber) => async (dispatch) => {
+export const updateUSerInformation = (name,email,password,phoneNumber) => async (dispatch) => {
     try {
         dispatch({
             type: "updateUserInfoRequest",
@@ -57,15 +57,15 @@ export const updatedUserInformation = (name, email, password, phoneNumber) => as
             phoneNumber,
         }, { withCredentials: true });
 
+
         dispatch({
             type: "updateUserInfoSuccess",
-            payload: data.user,
+            payload: data.user
         })
-
     } catch (error) {
         dispatch({
             type: "updateUserInfoFailed",
-            payload: error.response?.data?.message || error.message,
+            payload: error.response.data.message || error.message,
         })
     }
 }

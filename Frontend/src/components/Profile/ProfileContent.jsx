@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import { updatedUserInformation } from '../../redux/actions/user';
+import {updateUSerInformation} from '../../redux/actions/user';
 
 function ProfileContent({ active }) {
     const { user } = useSelector((state) => state.user);
@@ -21,7 +21,7 @@ function ProfileContent({ active }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updatedUserInformation(name, email, password, phoneNumber));
+        dispatch(updateUSerInformation(name, email, password, phoneNumber));
 
     }
 
