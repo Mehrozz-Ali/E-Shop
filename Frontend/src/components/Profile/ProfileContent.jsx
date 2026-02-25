@@ -8,16 +8,24 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import {updateUSerInformation} from '../../redux/actions/user';
+import { updateUSerInformation } from '../../redux/actions/user';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 function ProfileContent({ active }) {
-    const { user } = useSelector((state) => state.user);
+    const { user,error  } = useSelector((state) => state.user);
     const [name, setName] = useState(user && user.name);
     const [email, setEmail] = useState(user && user.email);
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
     const [password, setPassword] = useState("");
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+        }
+    }, [error]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -58,7 +66,7 @@ function ProfileContent({ active }) {
                                 </div>
                                 <div className='w-full md:w-[50%] pt-2'>
                                     <label className='block pb-2'>Enter your Password </label>
-                                    <input type="password" required className={`${styles.input} w-full md:!w-[95%]`}  value={password} onChange={(e) => setPassword(e.target.value)} />
+                                    <input type="password" required className={`${styles.input} w-full md:!w-[95%]`} value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
 
                             </div>
