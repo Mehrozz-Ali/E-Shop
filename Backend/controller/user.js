@@ -192,9 +192,60 @@ router.put("/update-user-info", isAuthenticated, catchAsyncErrors(async (req, re
 
 
 // update user avatar 
-router.put("/update-avatar", isAuthenticated, upload.single("file"))
+router.put("/update-avatar", isAuthenticated, upload.single("file"), catchAsyncErrors(async (req, res, next) => {
+    try {
+        const existUser = await User.findById(req.user.id);
+        if (existUser.avatar) {
+            const existAvatarPath = `uploads/${existUser.avatar}`;
+            if (fs.existsSync(existAvatarPath)) {
+                fs.unlinkSync(existAvatarPath);
+            }
+        }
 
 
+        const fileUrl = path.join(req.file.filename);
+        const avatar = {
+            public_id: req.file.filename,
+            url: fileUrl,
+        };
+        const user = await User.findByIdAndUpdate(req.user.id, { avatar: avatar }, { new: true });
+
+        res.status(200).json({
+            success: true,
+            user,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+
+    }
+}))
+
+
+
+// update user addresses
+router.put("/update-user-addresses", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const sameTypeAddress = user.addresses.find((address) => address.addressType === req.body.addressType);
+        if (sameTypeAddress) {
+            return next(new ErrorHandler(`${req.body.addressType} address already exists`));
+        }
+        const existsAddress = user.addresses.find(address => address._id === req.body._id);
+        if (existsAddress) {
+            Object.assign(existsAddress, req.body);
+        } else {
+            // add new address to array 
+            user.addresses.push(req.body);
+        }
+        await user.save();
+        res.status(200).json({
+            success: true,
+            user,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}))
 
 
 module.exports = router;

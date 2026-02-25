@@ -1,5 +1,6 @@
 import axios from "axios";
 import { server } from "../../server";
+import { Country } from "country-state-city";
 
 
 // load user
@@ -45,7 +46,7 @@ export const loadSeller = () => async (dispatch) => {
 
 
 // user updated information
-export const updateUSerInformation = (name,email,password,phoneNumber) => async (dispatch) => {
+export const updateUSerInformation = (name, email, password, phoneNumber) => async (dispatch) => {
     try {
         dispatch({
             type: "updateUserInfoRequest",
@@ -65,6 +66,33 @@ export const updateUSerInformation = (name,email,password,phoneNumber) => async 
     } catch (error) {
         dispatch({
             type: "updateUserInfoFailed",
+            payload: error.response.data.message || error.message,
+        })
+    }
+}
+
+
+// update user Address
+export const updateUserAddress = (Country, City, address1, address2, addressType) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "updateUserAddressRequest",
+        })
+        const { data } = await axios.put(`${server}/user/update-user-addresses`, {
+            Country,
+            City,
+            address1,
+            address2,
+            addressType,
+        }, { withCredentials: true });
+
+        dispatch({
+            type: "updateUserAddressSuccess",
+            payload: data.user,
+        })
+    } catch (error) {
+        dispatch({
+            type: "updateUserAddressFailed",
             payload: error.response.data.message || error.message,
         })
     }

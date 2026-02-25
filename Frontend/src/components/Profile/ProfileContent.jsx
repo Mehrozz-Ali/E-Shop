@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { backend_url } from '../../server';
+import { backend_url, server, } from '../../server';
 import { AiOutlineCamera, AiOutlineDelete } from 'react-icons/ai';
 import { MdOutlineTrackChanges } from 'react-icons/md';
 import styles from '../../styles/styles';
@@ -8,29 +8,56 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import { updateUSerInformation } from '../../redux/actions/user';
+import { updateUserAddress, updateUSerInformation } from '../../redux/actions/user';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { RxCross1 } from 'react-icons/rx';
+import { Country, City } from "country-state-city";
 
 function ProfileContent({ active }) {
-    const { user,error  } = useSelector((state) => state.user);
+    const { user, error } = useSelector((state) => state.user);
     const [name, setName] = useState(user && user.name);
     const [email, setEmail] = useState(user && user.email);
     const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
     const [password, setPassword] = useState("");
+    const [avatar, setAvatar] = useState(null);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (error) {
             toast.error(error);
+            dispatch({
+                type: "clearErrors",
+            })
         }
     }, [error]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(updateUSerInformation(name, email, password, phoneNumber));
+    }
 
+
+
+    const handleImage = async (e) => {
+        const file = e.target.files[0];
+        setAvatar(file);
+
+        const formData = new FormData();
+        formData.append("file", e.target.files[0]);
+
+        await axios.put(`${server}/user/update-avatar`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+        }).then((response) => {
+            window.location.reload();
+        }).catch((error) => {
+            toast.error(error.response.data.message);
+        })
     }
 
     return (
@@ -42,7 +69,10 @@ function ProfileContent({ active }) {
                         <div className="relative">
                             <img src={`${backend_url}${user?.avatar?.url}`} alt="image" className="w-[150px] h-[150px] rounded-full border-[3px] border-[#3ad132] object-cover " />
                             <div className='w-[30px] h-[30px] bg-[#f3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]'>
-                                <AiOutlineCamera />
+                                <input type="file" id="file" className='hidden' onChange={handleImage} />
+                                <label htmlFor="file" className='cursor-pointer'>
+                                    <AiOutlineCamera />
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -399,12 +429,105 @@ const PaymentMethod = () => {
 }
 
 const Address = () => {
+    const [open, setOpen] = useState(false);
+    const [country, setCountry] = useState("");
+    const [city, setCity] = useState("");
+    const [zipCode, setZipCode] = useState("");
+    const [address1, setAddress1] = useState("");
+    const [address2, setAddress2] = useState("");
+    const [addressType, setAddressType] = useState("");
+    const dispatch = useDispatch();
+
+    const { user } = useSelector((state) => state.user);
+
+    const addressTypeData = [
+        {
+            name: "Default",
+        },
+        {
+            name: "Home ",
+        },
+        {
+            name: "Office",
+        }
+    ]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (addressType === "" || country === "" || city === "") {
+            toast.error("Please fill all the fields");
+        } else {
+            dispatch(updateUserAddress(country, city, address1, address2, addressType));
+        }
+    }
+
     return (
         <div className="w-full  px-5">
+            {
+                open && (
+                    <div className="fixed w-full h-screen bg-[#0000004b] top-0 left-0 flex items-center justify-center">
+                        <div className="w-[35%] h-[80vh] bg-white rounded shadow relative overflow-scroll">
+                            <div className="w-full flex justify-end">
+                                <RxCross1 className="cursor-pointer " onClick={() => setOpen(false)} size={30} />
+                            </div>
+                            <h1 className='text-center pt-5'>Add New Address</h1>
+                            <div className="full">
+                                <form aria-required action="submit" onSubmit={handleSubmit} className='w-full'>
+                                    <div className="w-full block p-4">
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>Country</label>
+                                            <select name="country" id="country" value={country} onChange={(e) => setCountry(e.target.value)} className='w-[95%] border h-[30px] rounded-[5px]'>
+                                                <option value="" className='block pb-2'>Choose your country</option>
+                                                {Country && Country.getAllCountries().map((item) => {
+                                                    return <option className='block pb-2' key={item.isoCode} value={item.isoCode}>{item.name}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>City</label>
+                                            <select name="city" id="city " value={city} onChange={(e) => setCity(e.target.value)} className='w-[95%] border h-[30px] rounded-[5px]'>
+                                                <option value="" className='block pb-2'>Choose your city</option>
+                                                {City && City.getCitiesOfCountry(country).map((item) => {
+                                                    return <option className='block pb-2' key={item.isoCode} value={item.isoCode}>{item.name}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>Address 1</label>
+                                            <input type="text" className={`${styles.input}`} required value={address1} onChange={(e) => setAddress1(e.target.value)} />
+                                        </div>
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>Address 2</label>
+                                            <input type="text" className={`${styles.input}`} required value={address2} onChange={(e) => setAddress2(e.target.value)} />
+                                        </div>
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>Zip Code </label>
+                                            <input type="number" className={`${styles.input}`} required value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                                        </div>
+
+                                        <div className="w-full pb-2">
+                                            <label className='block pb-2'>Address Type</label>
+                                            <select name="addressType" id="addressType" value={addressType} onChange={(e) => setAddressType(e.target.value)} className='w-[95%] border h-[30px] rounded-[5px]'>
+                                                <option value="" className='block pb-2'>Choose your Address Type</option>
+                                                {addressTypeData && addressTypeData.map((item) => {
+                                                    return <option className='block pb-2' key={item.name} value={item.name}>{item.name}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className='w-full pb-2'>
+                                            <input type="submit" className={`${styles.input} mt-5 cursor-pointer`} required readOnly />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
             <div className="flex w-full items-center justify-between ">
                 <h1 className='text-[25px] font-[600] text-[#000000ba] pb-2'>My  Addresses</h1>
-                <div className={`${styles.button} !rounded-md`}>
-                    <span className='text-[#fff] '>Add New</span>
+                <div className={`${styles.button} !rounded-md`} onClick={() => setOpen(true)}>
+                    <span className='text-[#fff] ' >Add New</span>
                 </div>
             </div>
             <br />
