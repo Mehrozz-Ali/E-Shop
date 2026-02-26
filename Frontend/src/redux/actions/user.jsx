@@ -90,13 +90,39 @@ export const updateUserAddress = (country, city, address1, address2, addressType
         dispatch({
             type: "updateUserAddressSuccess",
             payload: {
-                updateAddressSuccessMessage: "User address updated successfully!",
+                successMessage: "User address updated successfully!",
                 user: data.user,
             },
         })
     } catch (error) {
         dispatch({
             type: "updateUserAddressFailed",
+            payload: error.response.data.message || error.message,
+        })
+    }
+}
+
+
+
+// delete user address 
+export const deleteUserAddress = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "deleteUserAddressRequest",
+        })
+        const { data } = await axios.delete(`${server}/user/delete-user-address/:${id}`, { withCredentials: true });
+
+        dispatch({
+            type: "deleteUserAddressSuccess",
+            payload: {
+                successMessage: "User address deleted successfully!",
+                user: data.user,
+            },
+        })
+
+    } catch (error) {
+        dispatch({
+            type: "deleteUserAddressFailed",
             payload: error.response.data.message || error.message,
         })
     }

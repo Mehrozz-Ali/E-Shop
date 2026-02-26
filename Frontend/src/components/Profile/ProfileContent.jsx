@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import { updateUserAddress, updateUserInformation } from '../../redux/actions/user';
+import { deleteUserAddress, updateUserAddress, updateUserInformation } from '../../redux/actions/user';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import { RxCross1 } from 'react-icons/rx';
 import { Country, City } from "country-state-city";
 
 function ProfileContent({ active }) {
-    const { user, error } = useSelector((state) => state.user);
+    const { user, error, successMessage } = useSelector((state) => state.user);
     const [name, setName] = useState(user && user.name);
     const [email, setEmail] = useState(user && user.email);
     const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
@@ -33,7 +33,13 @@ function ProfileContent({ active }) {
                 type: "clearErrors",
             })
         }
-    }, [error]);
+        if (successMessage) {
+            toast.success(successMessage);
+            dispatch({
+                type: "clearSuccessMessages",
+            })
+        }
+    }, [error, successMessage]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -469,6 +475,10 @@ const Address = () => {
         }
     }
 
+    const handleDelete = (item) => {
+        dispatch(deleteUserAddress(item._id));
+    }
+
     return (
         <div className="w-full  px-5">
             {
@@ -479,7 +489,7 @@ const Address = () => {
                                 <RxCross1 className="cursor-pointer " onClick={() => setOpen(false)} size={30} />
                             </div>
                             <h1 className='text-center pt-5'>Add New Address</h1>
-                            <div className="full">
+                            <div className="w-full">
                                 <form aria-required action="submit" onSubmit={handleSubmit} className='w-full'>
                                     <div className="w-full block p-4">
                                         <div className="w-full pb-2">
@@ -568,13 +578,8 @@ const Address = () => {
                     </div>
                 </div>
             ) : (
-                user &&
-                user.addresses &&
-                user.addresses.map((item, index) => (
-                    <div
-                        key={index}
-                        className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-4"
-                    >
+                user && user.addresses && user.addresses.map((item, index) => (
+                    <div key={index} className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-4">
                         <div className="flex items-center">
                             <h5 className='pl-5 font-[600]'>{item.addressType}</h5>
                         </div>
@@ -585,7 +590,7 @@ const Address = () => {
                             <h6>{user && user.phoneNumber}</h6>
                         </div>
                         <div className='min-w-[10%] flex items-center justify-between pl-8'>
-                            <AiOutlineDelete size={25} className='cursor-pointer' />
+                            <AiOutlineDelete size={25} className='cursor-pointer' onClick={() => handleDelete(item)} />
                         </div>
                     </div>
                 ))
