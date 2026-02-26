@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import { updateUserAddress, updateUSerInformation } from '../../redux/actions/user';
+import { updateUserAddress, updateUserInformation } from '../../redux/actions/user';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -23,6 +23,7 @@ function ProfileContent({ active }) {
     const [password, setPassword] = useState("");
     const [avatar, setAvatar] = useState(null);
 
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -36,7 +37,7 @@ function ProfileContent({ active }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(updateUSerInformation(name, email, password, phoneNumber));
+        dispatch(updateUserInformation(name, email, password, phoneNumber));
     }
 
 
@@ -454,10 +455,17 @@ const Address = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (addressType === "" || country === "" || city === "") {
+        if (addressType === "" || country === "" || city === "" || zipCode === "") {
             toast.error("Please fill all the fields");
         } else {
-            dispatch(updateUserAddress(country, city, address1, address2, addressType));
+            dispatch(updateUserAddress(country, city, address1, address2, addressType, zipCode));
+            setOpen(false);
+            setCountry("");
+            setCity("");
+            setAddress1("");
+            setAddress2("");
+            setZipCode("");
+            setAddressType("");
         }
     }
 
@@ -531,20 +539,58 @@ const Address = () => {
                 </div>
             </div>
             <br />
-            <div className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10" >
-                <div className="flex items-center">
-                    <h5 className='pl-5 font-[600]'>Default</h5>
+            {/* {user && user.addresses.map((item, index) => (
+                <div key={index} className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-4" >
+                    <div className="flex items-center">
+                        <h5 className='pl-5 font-[600]'>{item.addressType}</h5>
+                    </div>
+                    <div className="pl-8 flex items-center">
+                        <h6>{item.address1}, {item.address2}</h6>
+                    </div>
+                    <div className="pl-8 flex items-center">
+                        <h6>{user && user.phoneNumber}</h6>
+                    </div>
+                    <div className='min-w-[10%] flex items-center justify-between pl-8'>
+                        <AiOutlineDelete size={25} className='cursor-pointer' />
+                    </div>
                 </div>
-                <div className="pl-8 flex items-center">
-                    <h6>494 Zulfiqar Town, Road Kasur</h6>
+            ))} */}
+            {user && user.addresses && user.addresses.length === 0 ? (
+                <div className='shadow-md border border-gray-200 rounded-[5px] bg-white'>
+                    <div className="w-full flex flex-col items-center justify-center py-10 text-gray-500 " >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                                d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243A8 8 0 1117.657 16.657z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <h4 className="text-lg font-semibold">  No address available</h4>
+                        <p className="text-sm"> Please add a new address </p>
+                    </div>
                 </div>
-                <div className="pl-8 flex items-center">
-                    <h6>+92-324-1050964</h6>
-                </div>
-                <div className='min-w-[10%] flex items-center justify-between pl-8'>
-                    <AiOutlineDelete size={25} className='cursor-pointer' />
-                </div>
-            </div>
+            ) : (
+                user &&
+                user.addresses &&
+                user.addresses.map((item, index) => (
+                    <div
+                        key={index}
+                        className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-4"
+                    >
+                        <div className="flex items-center">
+                            <h5 className='pl-5 font-[600]'>{item.addressType}</h5>
+                        </div>
+                        <div className="pl-8 flex items-center">
+                            <h6>{item.address1}, {item.address2}</h6>
+                        </div>
+                        <div className="pl-8 flex items-center">
+                            <h6>{user && user.phoneNumber}</h6>
+                        </div>
+                        <div className='min-w-[10%] flex items-center justify-between pl-8'>
+                            <AiOutlineDelete size={25} className='cursor-pointer' />
+                        </div>
+                    </div>
+                ))
+            )}
+
         </div>
     )
 }

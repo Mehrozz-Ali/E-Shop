@@ -46,7 +46,7 @@ export const loadSeller = () => async (dispatch) => {
 
 
 // user updated information
-export const updateUSerInformation = (name, email, password, phoneNumber) => async (dispatch) => {
+export const updateUserInformation = (name, email, password, phoneNumber) => async (dispatch) => {
     try {
         dispatch({
             type: "updateUserInfoRequest",
@@ -73,22 +73,26 @@ export const updateUSerInformation = (name, email, password, phoneNumber) => asy
 
 
 // update user Address
-export const updateUserAddress = (Country, City, address1, address2, addressType) => async (dispatch) => {
+export const updateUserAddress = (country, city, address1, address2, addressType, zipCode) => async (dispatch) => {
     try {
         dispatch({
             type: "updateUserAddressRequest",
         })
         const { data } = await axios.put(`${server}/user/update-user-addresses`, {
-            Country,
-            City,
+            country,
+            city,
             address1,
             address2,
             addressType,
+            zipCode,
         }, { withCredentials: true });
 
         dispatch({
             type: "updateUserAddressSuccess",
-            payload: data.user,
+            payload: {
+                updateAddressSuccessMessage: "User address updated successfully!",
+                user: data.user,
+            },
         })
     } catch (error) {
         dispatch({
