@@ -11,6 +11,7 @@ const sendMail = require("../utils/sendMail");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated } = require("../middleware/auth");
+const mongoose = require("mongoose");
 
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
@@ -250,15 +251,23 @@ router.put("/update-user-addresses", isAuthenticated, catchAsyncErrors(async (re
 
 
 
-// delete user address
+
 router.delete("/delete-user-address/:id", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
     try {
         const userId = req.user._id;
-        const addressId = req.params.id;
+        let addressId = req.params.id;
+        if (addressId.startsWith(":")) {
+            addressId = addressId.slice(1);
+        }
+        if (!addressId.match(/^[0-9a-fA-F]{24}$/)) {
+            return next(new ErrorHandler("Invalid address ID format", 400));
+        }
+        const mongoose = require("mongoose");
+        const objectId = new mongoose.Types.ObjectId(addressId);
 
         await User.updateOne({
             _id: userId,
-        }, { $pull: { addresses: { _id: addressId } } });
+        }, { $pull: { addresses: { _id: objectId } } });
 
         const user = await User.findById(userId);
 

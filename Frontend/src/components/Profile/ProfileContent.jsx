@@ -549,22 +549,6 @@ const Address = () => {
                 </div>
             </div>
             <br />
-            {/* {user && user.addresses.map((item, index) => (
-                <div key={index} className="w-full bg-white h-[70px] rounded-[4px] flex items-center px-3 shadow justify-between pr-10 mb-4" >
-                    <div className="flex items-center">
-                        <h5 className='pl-5 font-[600]'>{item.addressType}</h5>
-                    </div>
-                    <div className="pl-8 flex items-center">
-                        <h6>{item.address1}, {item.address2}</h6>
-                    </div>
-                    <div className="pl-8 flex items-center">
-                        <h6>{user && user.phoneNumber}</h6>
-                    </div>
-                    <div className='min-w-[10%] flex items-center justify-between pl-8'>
-                        <AiOutlineDelete size={25} className='cursor-pointer' />
-                    </div>
-                </div>
-            ))} */}
             {user && user.addresses && user.addresses.length === 0 ? (
                 <div className='shadow-md border border-gray-200 rounded-[5px] bg-white'>
                     <div className="w-full flex flex-col items-center justify-center py-10 text-gray-500 " >
