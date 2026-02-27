@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, } from 'react-router-dom'
-import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage, ShopLoginPage } from './routes/Routes.jsx';
+import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage, ShopLoginPage, CheckoutPage } from './routes/Routes.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -81,11 +81,11 @@ function App() {
         {/* <Route path='/order/success/:id' element={<OrderSuccessPage />} /> */}
 
 
-        {/* <Route path='/checkout' element={
-              <ProtectedRoute>
-                <CheckoutPage />
-              </ProtectedRoute>
-            } /> */}
+        <Route path='/checkout' element={
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        } />
         <Route path='/profile' element={
           <ProtectedRoute>
             <ProfilePage />
