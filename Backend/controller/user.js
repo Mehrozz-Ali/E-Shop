@@ -288,7 +288,7 @@ router.put("/update-user-password", isAuthenticated, catchAsyncErrors(async (req
     try {
         const user = await User.findById(req.user.id).select("+password");
 
-        const isPasswordMatched = await user.comparePassword(req.body.oldPadsword);
+        const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
         if (!isPasswordMatched) {
             return next(new ErrorHandler("Old password is incorrect", 400));
