@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import styles from "../../styles/styles";
-import { Country, State } from "country-state-city";
+import { Country, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -41,33 +41,27 @@ const Checkout = () => {
         }
     };
 
-    const subTotalPrice = cart.reduce(
-        (acc, item) => acc + item.qty * item.discountPrice,
-        0
-    );
+    const subTotalPrice = cart.reduce((acc, item) => acc + item.qty * item.discountPrice, 0);
 
     // this is shipping cost variable
-    const shipping = subTotalPrice * 0.1;
+    const shipping = subTotalPrice * 0.1; // 0.1=10%
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const name = couponCode;
 
         await axios.get(`${server}/coupon/get-coupon-value/${name}`).then((res) => {
+            console.log(res.data);
             const shopId = res.data.couponCode?.shopId;
             const couponCodeValue = res.data.couponCode?.value;
             if (res.data.couponCode !== null) {
-                const isCouponValid =
-                    cart && cart.filter((item) => item.shopId === shopId);
+                const isCouponValid = cart && cart.filter((item) => item.shopId === shopId);
 
                 if (isCouponValid.length === 0) {
                     toast.error("Coupon code is not valid for this shop");
                     setCouponCode("");
                 } else {
-                    const eligiblePrice = isCouponValid.reduce(
-                        (acc, item) => acc + item.qty * item.discountPrice,
-                        0
-                    );
+                    const eligiblePrice = isCouponValid.reduce((acc, item) => acc + item.qty * item.discountPrice, 0);
                     const discountPrice = (eligiblePrice * couponCodeValue) / 100;
                     setDiscountPrice(discountPrice);
                     setCouponCodeData(res.data.couponCode);
@@ -81,13 +75,10 @@ const Checkout = () => {
         });
     };
 
-    const discountPercentenge = couponCodeData ? discountPrice : "";
+    const discountPercentage = couponCodeData ? discountPrice : "";
 
-    const totalPrice = couponCodeData
-        ? (subTotalPrice + shipping - discountPercentenge).toFixed(2)
-        : (subTotalPrice + shipping).toFixed(2);
+    const totalPrice = couponCodeData ? (subTotalPrice + shipping - discountPercentage).toFixed(2) : (subTotalPrice + shipping).toFixed(2);
 
-    console.log(discountPercentenge);
 
     return (
         <div className="w-full flex flex-col items-center py-8">
@@ -96,7 +87,7 @@ const Checkout = () => {
                     <ShippingInfo user={user} country={country} setCountry={setCountry} city={city} setCity={setCity} userInfo={userInfo} setUserInfo={setUserInfo} address1={address1} setAddress1={setAddress1} address2={address2} setAddress2={setAddress2} zipCode={zipCode} setZipCode={setZipCode} />
                 </div>
                 <div className="w-full md:w-[35%] md:mt-0 mt-8">
-                    <CartData handleSubmit={handleSubmit} totalPrice={totalPrice} shipping={shipping} subTotalPrice={subTotalPrice} couponCode={couponCode} setCouponCode={setCouponCode} discountPercentenge={discountPercentenge} />
+                    <CartData handleSubmit={handleSubmit} totalPrice={totalPrice} shipping={shipping} subTotalPrice={subTotalPrice} couponCode={couponCode} setCouponCode={setCouponCode} discountPercentage={discountPercentage} />
                 </div>
             </div>
             <div className={`${styles.button} w-[150px] md:w-[280px] mt-10`} onClick={paymentSubmit}>
@@ -105,6 +96,7 @@ const Checkout = () => {
         </div>
     );
 };
+
 
 
 
@@ -139,7 +131,7 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                 <div className="w-full flex pb-3">
                     <div className="w-[50%]">
                         <label className="block pb-2">Country</label>
-                        <select className="w-[95%] border h-[40px] rounded-[5px]" value={country} onChange={(e) => setCountry(e.target.value)}>
+                        <select className="w-[95%] border h-[35px] rounded-[5px]" value={country} onChange={(e) => setCountry(e.target.value)}>
                             <option className="block pb-2" value="">Choose your country</option>
                             {Country && Country.getAllCountries().map((item) => (
                                 <option key={item.isoCode} value={item.isoCode}> {item.name}</option>
@@ -148,9 +140,9 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                     </div>
                     <div className="w-[50%]">
                         <label className="block pb-2">City</label>
-                        <select className="w-[95%] border h-[40px] rounded-[5px]" value={city} onChange={(e) => setCity(e.target.value)}>
+                        <select className="w-[95%] border h-[35px] rounded-[5px]" value={city} onChange={(e) => setCity(e.target.value)}>
                             <option className="block pb-2" value="">Choose your City</option>
-                            {State && State.getStatesOfCountry(country).map((item) => (
+                            {City && City.getCitiesOfCountry(country).map((item) => (
                                 <option key={item.isoCode} value={item.isoCode}>{item.name}</option>
                             ))}
                         </select>
@@ -171,11 +163,31 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                 <div></div>
             </form>
             <h5 className="text-[18px] cursor-pointer inline-block" onClick={() => setUserInfo(!userInfo)}>Choose From saved address</h5>
+            {console.log("Addresses:", user?.addresses)}
             {userInfo && (
                 <div>
                     {user && user?.addresses?.map((item, index) => (
                         <div className="w-full flex mt-1">
-                            <input type="checkbox" className="mr-3 " value={item.addressType} onClick={() => setAddress1(item.address1) || setAddress2(item.address2) || setZipCode(item.zipCode) || setCountry(item.country) || setCity(item.city)} />
+                            {/* <input type="checkbox" className="mr-3 " value={item.addressType} onClick={() => setAddress1(item.address1) || setAddress2(item.address2) || setZipCode(item.zipCode) || setCountry(item.country) || setCity(item.city)} /> */}
+                            <input type="checkbox" checked={address1 === item.address1}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setAddress1(item.address1);
+                                        setAddress2(item.address2);
+                                        setZipCode(item.zipCode);
+                                        setCountry(item.country);
+                                        setCity(item.city);
+                                    } else {
+                                        // Clear form when unchecked
+                                        setAddress1("");
+                                        setAddress2("");
+                                        setZipCode("");
+                                        setCountry("");
+                                        setCity("");
+                                    }
+                                }}
+                            />
+
                             <h2>{item.addressType}</h2>
                         </div>
                     ))}
@@ -200,9 +212,7 @@ const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCod
             <br />
             <div className="flex justify-between border-b pb-3">
                 <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-                <h5 className="text-[18px] font-[600]">
-                    - {discountPercentenge ? "$" + discountPercentenge.toString() : null}
-                </h5>
+                <h5 className="text-[18px] font-[600]"> - {discountPercentenge ? "$" + discountPercentenge.toString() : null} </h5>
             </div>
             <h5 className="text-[18px] font-[600] text-end pt-3">${totalPrice}</h5>
             <br />
