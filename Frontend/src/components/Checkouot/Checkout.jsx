@@ -106,6 +106,8 @@ const Checkout = () => {
     );
 };
 
+
+
 const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setUserInfo, address1, setAddress1, address2, setAddress2, zipCode, setZipCode }) => {
     return (
         <div className="w-full md:w-[95%] bg-white rounded-md shadow-md border border-gray-200 p-5 pb-8">
@@ -171,9 +173,9 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
             <h5 className="text-[18px] cursor-pointer inline-block" onClick={() => setUserInfo(!userInfo)}>Choose From saved address</h5>
             {userInfo && (
                 <div>
-                    {user && user.addresses.map((item, index) => (
+                    {user && user?.addresses?.map((item, index) => (
                         <div className="w-full flex mt-1">
-                            <input type="checkbox" className="mr-3" value={item.addressType} onClick={() => setAddress1(item.address1) || setAddress2(item.address2) || setZipCode(item.zipCode) || setCountry(item.country) || setCity(item.city)} />
+                            <input type="checkbox" className="mr-3 " value={item.addressType} onClick={() => setAddress1(item.address1) || setAddress2(item.address2) || setZipCode(item.zipCode) || setCountry(item.country) || setCity(item.city)} />
                             <h2>{item.addressType}</h2>
                         </div>
                     ))}
