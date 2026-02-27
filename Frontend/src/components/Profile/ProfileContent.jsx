@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { backend_url, server, } from '../../server';
-import { AiOutlineCamera, AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineCamera, AiOutlineDelete, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { MdOutlineTrackChanges } from 'react-icons/md';
 import styles from '../../styles/styles';
 import { Link } from 'react-router-dom';
@@ -414,6 +414,11 @@ const ChnagePassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const [showOld, setShowOld] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+
+
     const passwordChangeHandler = async (e) => {
         e.preventDefault();
 
@@ -423,6 +428,9 @@ const ChnagePassword = () => {
             confirmPassword
         }, { withCredentials: true }).then((res) => {
             toast.success(res.data.message);
+            setOldPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
         }).catch((error) => {
             toast.error(error.response.data.message);
         })
@@ -430,26 +438,44 @@ const ChnagePassword = () => {
 
     return (
         <div className="w-full px-5">
-            <h1 className=' block text-center text-[25px] font-[600] text-[#000000ba] pb-2 '>Change Password </h1>
-            <div className="w-full">
-                <form aria-required onSubmit={passwordChangeHandler} className='flex flex-col items-center'>
-                    <div className="w-[100%] md:w-[50%] mt-5">
-                        <label className='block pb-2'>Old Password </label>
-                        <input type="password" className={`${styles.input}`} required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+            <h1 className='block text-center text-[25px] font-[600] text-[#000000ba] pb-2'>Change Password </h1>
+
+            <form onSubmit={passwordChangeHandler} className='flex flex-col items-center'>
+                <div className="w-[100%] md:w-[50%] mt-5 relative">
+                    <label className='block pb-2'>Old Password</label>
+                    <div className='relative'>
+                        <input type={showOld ? "text" : "password"} className={`${styles.input} pr-10`} required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={() => setShowOld(!showOld)}>
+                            {showOld ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                        </span>
                     </div>
-                    <div className="w-[100%] md:w-[50%] mt-2">
-                        <label className='block pb-2'>Enter your new Password </label>
-                        <input type="password" className={`${styles.input}`} required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                </div>
+
+                <div className="w-[100%] md:w-[50%] mt-5 relative">
+                    <label className='block pb-2'>New Password</label>
+                    <div className='relative'>
+                        <input type={showNew ? "text" : "password"} className={`${styles.input} pr-10`} required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={() => setShowNew(!showNew)} >
+                            {showNew ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                        </span>
                     </div>
-                    <div className="w-[100%] md:w-[50%] mt-2">
-                        <label className='block pb-2'>Confirm New Password </label>
-                        <input type="password" className={`${styles.input}`} required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                </div>
+
+
+                <div className="w-[100%] md:w-[50%] mt-5">
+                    <label className='block pb-2'>Confirm Password</label>
+                    <div className="relative">
+                        <input type={showConfirm ? "text" : "password"} className={`${styles.input} pr-10`} required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={() => setShowConfirm(!showConfirm)} >
+                            {showConfirm ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                        </span>
                     </div>
-                    <input type="submit" value="Update" className={`w-[100%] md:w-[50%] h-[40px] border border-[#3a24db] mt-7`} required readOnly />
-                </form>
-            </div>
+                </div>
+
+                <input type="submit" value="Update" className="w-[100%] md:w-[50%] h-[40px] border border-[#3a24db] mt-7 cursor-pointer" />
+            </form>
         </div>
-    )
+    );
 }
 
 const Address = () => {
