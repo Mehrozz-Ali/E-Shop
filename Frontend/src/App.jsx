@@ -85,19 +85,12 @@ function App() {
             <ShopAllCoupons />
           </SellerProtectedRoute>
         } />
-        {/* <Route path='/payment' element={
-          <ProtectedRoute>
-            <PaymentPage />
-          </ProtectedRoute>
-        } /> */}
 
-        <Route
-          path="/payment"
-          element={
+
+
+        <Route path="/payment" element={
             <ProtectedRoute>
-              <Elements stripe={stripePromise}>
-                <PaymentPage />
-              </Elements>
+              <Elements stripe={stripePromise}> <PaymentPage /> </Elements>
             </ProtectedRoute>
           }
         />
