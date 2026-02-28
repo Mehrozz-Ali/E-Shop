@@ -32,7 +32,6 @@ const Checkout = () => {
             toast.error("Please choose your delivery address!")
         } else {
             const shippingAddress = { address1, address2, zipCode, country, city };
-
             const orderData = { cart, totalPrice, subTotalPrice, shipping, discountPrice, shippingAddress, user, }
 
             // update local storage with the updated orders array
@@ -51,8 +50,7 @@ const Checkout = () => {
         const name = couponCode;
 
         await axios.get(`${server}/coupon/get-coupon-value/${name}`).then((res) => {
-            console.log(res.data);
-            const shopId = res.data.couponCode?.shopId;
+            const shopId = res.data.couponCode?.shop?._id;
             const couponCodeValue = res.data.couponCode?.value;
             if (res.data.couponCode !== null) {
                 const isCouponValid = cart && cart.filter((item) => item.shopId === shopId);
@@ -163,12 +161,10 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                 <div></div>
             </form>
             <h5 className="text-[18px] cursor-pointer inline-block" onClick={() => setUserInfo(!userInfo)}>Choose From saved address</h5>
-            {console.log("Addresses:", user?.addresses)}
             {userInfo && (
                 <div>
                     {user && user?.addresses?.map((item, index) => (
                         <div className="w-full flex mt-1">
-                            {/* <input type="checkbox" className="mr-3 " value={item.addressType} onClick={() => setAddress1(item.address1) || setAddress2(item.address2) || setZipCode(item.zipCode) || setCountry(item.country) || setCity(item.city)} /> */}
                             <input type="checkbox" checked={address1 === item.address1}
                                 onChange={(e) => {
                                     if (e.target.checked) {
@@ -187,7 +183,6 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
                                     }
                                 }}
                             />
-
                             <h2>{item.addressType}</h2>
                         </div>
                     ))}

@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, } from 'react-router-dom'
-import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage, ShopLoginPage, CheckoutPage } from './routes/Routes.jsx';
+import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSellingPage, EventsPage, FaqPage, ProductDetailPage, ProfilePage, ShopCreatePage, SellerActivationPage, ShopLoginPage, CheckoutPage, PaymentPage } from './routes/Routes.jsx';
 import { ShopHomePage } from './ShopRoutes.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,8 +12,17 @@ import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
 import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopPreviewPage } from './routes/ShopRoutes'
 import { getAllEvents } from './redux/actions/event.jsx';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+
+const stripePromise = loadStripe("pk_test_YOUR_PUBLISHABLE_KEY");
+
+
 
 function App() {
+
+
 
   useEffect(() => {
     Store.dispatch(loadUser());
@@ -76,7 +85,23 @@ function App() {
             <ShopAllCoupons />
           </SellerProtectedRoute>
         } />
-        {/* <Route path='/payment' element={<PaymentPage />} /> */}
+        {/* <Route path='/payment' element={
+          <ProtectedRoute>
+            <PaymentPage />
+          </ProtectedRoute>
+        } /> */}
+
+        <Route
+          path="/payment"
+          element={
+            <ProtectedRoute>
+              <Elements stripe={stripePromise}>
+                <PaymentPage />
+              </Elements>
+            </ProtectedRoute>
+          }
+        />
+
 
         {/* <Route path='/order/success/:id' element={<OrderSuccessPage />} /> */}
 
