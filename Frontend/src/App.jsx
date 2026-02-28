@@ -4,7 +4,7 @@ import { LoginPage, SignUpPage, ActivationPage, HomePage, ProductsPage, BestSell
 import { ShopHomePage } from './ShopRoutes.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Store from "./redux/store.jsx";
 import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
@@ -16,7 +16,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 
-const stripePromise = loadStripe("pk_test_YOUR_PUBLISHABLE_KEY");
+const stripePromise = loadStripe(import.meta.env.STRIPE_API_KEY);
 
 
 
@@ -89,10 +89,10 @@ function App() {
 
 
         <Route path="/payment" element={
-            <ProtectedRoute>
-              <Elements stripe={stripePromise}> <PaymentPage /> </Elements>
-            </ProtectedRoute>
-          }
+          <ProtectedRoute>
+            <Elements stripe={stripePromise}> <PaymentPage /> </Elements>
+          </ProtectedRoute>
+        }
         />
 
 
