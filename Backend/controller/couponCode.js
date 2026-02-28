@@ -30,7 +30,7 @@ router.post("/create-coupon-code", isSeller, catchAsyncErrors(async (req, res, n
 // get all coupons of a shop 
 router.get("/get-coupon/:id", isSeller, catchAsyncErrors(async (req, res, next) => {
     try {
-        const couponCodes = await CouponCode.find({ shopId: req.params.id });
+        const couponCodes = await CouponCode.find({ "shop._id": req.params.id });
         res.status(201).json({
             success: true,
             couponCodes,
@@ -45,7 +45,7 @@ router.get("/get-coupon/:id", isSeller, catchAsyncErrors(async (req, res, next) 
 // get coupon code value by its name 
 router.get("/get-coupon-value/:name", catchAsyncErrors(async (req, res, next) => {
     try {
-        const couponCode = await CouponCode.findOne({ name: params.name });
+        const couponCode = await CouponCode.findOne({ name: req.params.name });
         if (!couponCode) {
             return next(new ErrorHandler("Coupon Code not found", 404));
         }

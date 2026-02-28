@@ -24,7 +24,7 @@ function AllCoupons() {
     const [coupons, setCoupons] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const { seller } = useSelector((state) => state.seller);
-    const {products} = useSelector((state) => state.product);
+    const { products } = useSelector((state) => state.product);
     const dispatch = useDispatch();
 
 
@@ -34,7 +34,6 @@ function AllCoupons() {
         setIsLoading(true);
         axios.get(`${server}/coupon/get-coupon/${seller._id}`, { withCredentials: true }).then((res) => {
             setIsLoading(false);
-            console.log(res.data);
             setCoupons(res.data.couponCodes || []);
         }).catch((error) => {
             setIsLoading(false);

@@ -197,7 +197,7 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
     );
 };
 
-const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCode, setCouponCode, discountPercentenge }) => {
+const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCode, setCouponCode, discountPercentage }) => {
     return (
         <div className="w-full bg-[#fff] rounded-md shadow-md border border-gray-200 p-5 pb-8">
             <div className="flex justify-between">
@@ -212,7 +212,7 @@ const CartData = ({ handleSubmit, totalPrice, shipping, subTotalPrice, couponCod
             <br />
             <div className="flex justify-between border-b pb-3">
                 <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
-                <h5 className="text-[18px] font-[600]"> - {discountPercentenge ? "$" + discountPercentenge.toString() : null} </h5>
+                <h5 className="text-[18px] font-[600]"> - {discountPercentage ? "$" + (subTotalPrice * discountPercentage / 100).toFixed(2) : null} </h5>
             </div>
             <h5 className="text-[18px] font-[600] text-end pt-3">${totalPrice}</h5>
             <br />
