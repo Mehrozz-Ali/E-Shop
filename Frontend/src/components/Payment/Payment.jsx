@@ -61,7 +61,6 @@ const Payment = () => {
         const config = {
             headers: { "Content-Type": "application/json" },
         };
-
         order.paymentInfo = {
             id: paymentInfo.payer_id,
             status: "succeeded",
