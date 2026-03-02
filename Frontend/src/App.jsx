@@ -14,6 +14,9 @@ import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents
 import { getAllEvents } from './redux/actions/event.jsx';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import axios from 'axios';
+import { getAllProducts } from './redux/actions/product.jsx';
+import { server } from './server.jsx';
 
 
 const stripePromise = loadStripe(import.meta.env.STRIPE_API_KEY);
@@ -21,7 +24,12 @@ const stripePromise = loadStripe(import.meta.env.STRIPE_API_KEY);
 
 
 function App() {
+  const [stripeApiKey, setStripeApiKey] = useState("");
 
+  async function getStripeApiKey() {
+    const { data } = await axios.get(`${server}/payment/stripeapikey`);
+    setStripeApiKey(data.stripeApiKey);
+  }
 
 
   useEffect(() => {
@@ -29,6 +37,7 @@ function App() {
     Store.dispatch(loadSeller());
     Store.dispatch(getAllEvents());
     // Store.dispatch(getAllProducts());
+    getStripeApiKey();
   }, []);
 
 
@@ -87,13 +96,16 @@ function App() {
         } />
 
 
+        {stripeApiKey && (
+          <Route path="/payment" element={
+            <ProtectedRoute>
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <PaymentPage />
+              </Elements>
+            </ProtectedRoute>
+          } />
+        )}
 
-        <Route path="/payment" element={
-          <ProtectedRoute>
-            <Elements stripe={stripePromise}> <PaymentPage /> </Elements>
-          </ProtectedRoute>
-        }
-        />
 
 
         {/* <Route path='/order/success/:id' element={<OrderSuccessPage />} /> */}
