@@ -11,12 +11,13 @@ import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 
 const Payment = () => {
+    const { user } = useSelector((state) => state.user);
+
     const [orderData, setOrderData] = useState([]);
     const [open, setOpen] = useState(false);
-    const { user } = useSelector((state) => state.user);
-    const navigate = useNavigate();
     const stripe = useStripe();
     const elements = useElements();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const orderData = JSON.parse(localStorage.getItem("latestOrder"));
