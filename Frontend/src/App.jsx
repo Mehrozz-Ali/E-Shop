@@ -19,7 +19,7 @@ import { getAllProducts } from './redux/actions/product.jsx';
 import { server } from './server.jsx';
 
 
-const stripePromise = loadStripe(import.meta.env.STRIPE_API_KEY);
+// const stripePromise = loadStripe(import.meta.env.STRIPE_API_KEY);
 
 
 
