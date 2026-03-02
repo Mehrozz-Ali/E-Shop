@@ -24,6 +24,8 @@ const Payment = () => {
         setOrderData(orderData);
     }, []);
 
+
+    // for paypal payment 
     const createOrder = (data, actions) => {
         return actions.order.create({
             purchase_units: [{
@@ -44,12 +46,11 @@ const Payment = () => {
 
     const order = { cart: orderData?.cart, shippingAddress: orderData?.shippingAddress, user: user && user, totalPrice: orderData?.totalPrice, };
 
+    // its also for paypal payment
     const onApprove = async (data, actions) => {
         return actions.order.capture().then(function (details) {
             const { payer } = details;
-
             let paymentInfo = payer;
-
             if (paymentInfo !== undefined) {
                 paypalPaymentHandler(paymentInfo);
             }
