@@ -7,7 +7,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 
 
 
-router.post("/payment/process", catchAsyncErrors(async (req, res, next) => {
+router.post("/process", catchAsyncErrors(async (req, res, next) => {
     const myPayment = await stripe.paymentIntents.create({
         amount: req.body.amount,
         currency: "inr",
