@@ -8,7 +8,7 @@ const Product = require("../model/product");
 
 
 // create new order
-router.post("/create-order", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+router.post("/create-order", catchAsyncErrors(async (req, res, next) => {
     try {
         const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
 
@@ -36,6 +36,8 @@ router.post("/create-order", isAuthenticated, catchAsyncErrors(async (req, res, 
             orders,
         })
 
+        console.log(req.body);
+
 
         // try {
         //     await sendMail({
@@ -53,4 +55,6 @@ router.post("/create-order", isAuthenticated, catchAsyncErrors(async (req, res, 
     }
 }))
 
+
+module.exports = router;
 
