@@ -37,6 +37,17 @@ router.post("/create-order", isAuthenticated, catchAsyncErrors(async (req, res, 
         })
 
 
+        // try {
+        //     await sendMail({
+        //         email: user.email,
+        //         subject: "Order Confirmation",
+        //         message: `Hello ${user.name}, your order has been placed successfully!`,
+        //     });
+        // } catch (error) {
+        //     console.log("Email error:", error.message);
+        // }
+
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
