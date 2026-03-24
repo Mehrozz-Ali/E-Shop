@@ -15,6 +15,7 @@ router.post("/create-order", catchAsyncErrors(async (req, res, next) => {
         // group cart items by shopId
         const shopItemsMap = new Map();
 
+        console.log(cart);
         for (const item of cart) {
             const shopId = item.shopId;
             if (!shopItemsMap.has(shopId)) {
@@ -37,17 +38,6 @@ router.post("/create-order", catchAsyncErrors(async (req, res, next) => {
         })
 
         console.log(req.body);
-
-
-        // try {
-        //     await sendMail({
-        //         email: user.email,
-        //         subject: "Order Confirmation",
-        //         message: `Hello ${user.name}, your order has been placed successfully!`,
-        //     });
-        // } catch (error) {
-        //     console.log("Email error:", error.message);
-        // }
 
 
     } catch (error) {
