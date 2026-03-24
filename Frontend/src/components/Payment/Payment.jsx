@@ -21,6 +21,11 @@ const Payment = () => {
 
     useEffect(() => {
         const orderData = JSON.parse(localStorage.getItem("latestOrder"));
+        if (!orderData || !orderData.totalPrice || isNaN(Number(orderData.totalPrice))) {
+            toast.error("Order information missing. Please complete checkout first.");
+            navigate("/checkout");
+            return;
+        }
         setOrderData(orderData);
     }, []);
 
@@ -73,17 +78,21 @@ const Payment = () => {
             toast.success("Order successful!");
             localStorage.setItem("cartItems", JSON.stringify([]));
             localStorage.setItem("latestOrder", JSON.stringify([]));
-            window.location.reload();
         });
     };
 
-    const paymentData = { amount: Math.round(orderData?.totalPrice * 100), };
+    // const paymentData = { amount: Math.round(orderData?.totalPrice * 100), };
+    const paymentData = { amount: Math.round(Number(orderData?.totalPrice) * 100), };
 
     const paymentHandler = async (e) => {
         e.preventDefault();
+        if (!orderData?.totalPrice || isNaN(orderData.totalPrice)) {
+            toast.error("Order total is invalid.");
+            return;
+        }
         try {
             const config = { headers: { "Content-Type": "application/json", }, };
-
+            console.log("orderData.totalPrice", orderData?.totalPrice);
             const { data } = await axios.post(`${server}/payment/process`, paymentData, config);
             const client_secret = data.client_secret;
 
@@ -110,7 +119,6 @@ const Payment = () => {
                         toast.success("Order successful!");
                         localStorage.setItem("cartItems", JSON.stringify([]));
                         localStorage.setItem("latestOrder", JSON.stringify([]));
-                        window.location.reload();
                     });
                 }
             }
@@ -134,7 +142,6 @@ const Payment = () => {
             toast.success("Order successful!");
             localStorage.setItem("cartItems", JSON.stringify([]));
             localStorage.setItem("latestOrder", JSON.stringify([]));
-            window.location.reload();
         });
     };
 
