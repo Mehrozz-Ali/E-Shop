@@ -109,7 +109,7 @@ function App() {
 
 
 
-        <Route path='/order/success/:id' element={<OrderSuccessPage />} />
+        <Route path='/order/success' element={<OrderSuccessPage />} />
 
 
         <Route path='/checkout' element={
