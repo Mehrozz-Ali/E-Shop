@@ -18,6 +18,9 @@ function ProductDetailPage() {
     const dispatch = useDispatch();
 
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
 
     useEffect(() => {
@@ -26,13 +29,8 @@ function ProductDetailPage() {
         }
     }, [dispatch, allProducts]);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    })
 
     useEffect(() => {
-        // const data = allProducts && allProducts.find((i) => i._id === id);
-        // setData(data);
         if (eventData !== null) {
             const data = allEvents && allEvents.find((i) => i._id === id);
             setData(data);
@@ -40,7 +38,7 @@ function ProductDetailPage() {
             const data = allProducts && allProducts.find((i) => i._id === id);
             setData(data);
         }
-    }, [allProducts, allEvents, data, id]);
+    }, [allProducts, allEvents, eventData, id]);
 
     return (
         <div>
@@ -48,7 +46,11 @@ function ProductDetailPage() {
             {data ? (
                 <>
                     <ProductDetail data={data} />
-                    <SuggestedProduct data={data} />
+                    {!eventData && (
+                        <>
+                            {data && <SuggestedProduct data={data} />}
+                        </>
+                    )}
                 </>
             ) : (
                 <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
