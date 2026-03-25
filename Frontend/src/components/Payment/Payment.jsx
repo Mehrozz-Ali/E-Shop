@@ -78,6 +78,7 @@ const Payment = () => {
             toast.success("Order successful!");
             localStorage.setItem("cartItems", JSON.stringify([]));
             localStorage.setItem("latestOrder", JSON.stringify([]));
+            window.location.reload();
         });
     };
 

@@ -2,9 +2,33 @@ import React from 'react'
 import styles from '../../../styles/styles'
 import CountDown from "./CountDown.jsx"
 import { backend_url } from '../../../server.jsx';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../../redux/actions/cart.jsx';
+import { toast } from 'react-toastify';
 
 function EventsCard({ active, data }) {
-    console.log(data);
+
+    const { cart } = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+
+
+
+    const addToCartHandler = (data) => {
+        const isItemExist = cart && cart.find((i) => i._id === data._id);
+        if (isItemExist) {
+            toast.error("Item already exist in cart!")
+        } else {
+            if (data.stock < 1) {
+                toast.error("Product stock limited!")
+            } else {
+                const cartData = { ...data, qty: 1 };
+                dispatch(addToCart(cartData));
+                toast.success("Item added to cart Successfully!");
+            }
+        }
+    }
+
 
     return (
         <div className={`w-full block bg-white rounded-lg ${active ? "unset" : "mb-12"} lg:flex p-2 shadow-sm `}>
@@ -22,7 +46,18 @@ function EventsCard({ active, data }) {
                     </div>
                     <span className='pr-3 font-[400] text-[17px] text-[#44a55e]'>120 sold</span>
                 </div>
-                <CountDown data={data}/>
+                <CountDown data={data} />
+                <br />
+                <div className='flex items-center'>
+                    <Link to={`/product/${data._id}?isEvent=true`}>
+                        <div className={`${styles.button} text-white !rounded-[4px]`}>
+                            See Details
+                        </div>
+                    </Link>
+                    <div className={`${styles.button}  text-white !rounded-[4px] ml-5 `} onClick={() => addToCartHandler(data)}>
+                        Add to cart
+                    </div>
+                </div>
             </div>
         </div>
     )

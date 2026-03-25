@@ -2,7 +2,7 @@ import React, { use, useEffect, useState } from 'react'
 import Header from '../components/Layout/Header';
 import ProductDetail from '../components/Products/ProductDetail';
 import Footer from '../components/Layout/Footer';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import SuggestedProduct from '../components/Products/SuggestedProduct'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../redux/actions/product';
@@ -10,11 +10,15 @@ import { getAllProducts } from '../redux/actions/product';
 
 function ProductDetailPage() {
     const { allProducts } = useSelector((state) => state.product);
-    const dispatch = useDispatch();
-
+    const { allEvents } = useSelector((state) => state.events);
     const { id } = useParams();
     const [data, setData] = useState(null);
-    // const productName = name.replace(/-/g, " ");
+    const [searchParams] = useSearchParams();
+    const eventData = searchParams.get("isEvent");
+    const dispatch = useDispatch();
+
+
+
 
     useEffect(() => {
         if (!allProducts || allProducts.length === 0) {
@@ -27,10 +31,16 @@ function ProductDetailPage() {
     })
 
     useEffect(() => {
-        console.log('All products:', allProducts);
-        const data = allProducts && allProducts.find((i) => i._id === id);
-        setData(data);
-    }, [allProducts, data,id]);
+        // const data = allProducts && allProducts.find((i) => i._id === id);
+        // setData(data);
+        if (eventData !== null) {
+            const data = allEvents && allEvents.find((i) => i._id === id);
+            setData(data);
+        } else {
+            const data = allProducts && allProducts.find((i) => i._id === id);
+            setData(data);
+        }
+    }, [allProducts, allEvents, data, id]);
 
     return (
         <div>
