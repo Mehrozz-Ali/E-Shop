@@ -5,6 +5,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { isAuthenticated } = require("../middleware/auth");
 const Order = require("../model/order");
 const Product = require("../model/product");
+const { create } = require("../model/user");
 
 
 // create new order
@@ -37,9 +38,22 @@ router.post("/create-order", catchAsyncErrors(async (req, res, next) => {
             orders,
         })
 
-        console.log(req.body);
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+}))
 
 
+// get all orders of a user
+router.get("/get-all-orders/:userId", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const orders = (await Order.find({ "user._id": req.params.userId })).sort({
+            createdAt: -1,
+        })
+        res.status(200).json({
+            success: true,
+            orders,
+        })
     } catch (error) {
         return next(new ErrorHandler(error.message, 400));
     }
