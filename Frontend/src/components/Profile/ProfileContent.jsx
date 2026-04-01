@@ -237,7 +237,6 @@ const AllOrders = () => {
         });
     });
 
-    console.log("Orders:", orders);
 
 
     return (

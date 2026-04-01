@@ -47,9 +47,9 @@ router.post("/create-order", catchAsyncErrors(async (req, res, next) => {
 // get all orders of a user
 router.get("/get-all-orders/:userId", catchAsyncErrors(async (req, res, next) => {
     try {
-        const orders = (await Order.find({ "user._id": req.params.userId })).sort({
-            createdAt: -1,
-        })
+
+        const orders = await Order.find({ "user._id": req.params.userId }).sort({ createdAt: -1 });
+
         res.status(200).json({
             success: true,
             orders,
@@ -59,6 +59,20 @@ router.get("/get-all-orders/:userId", catchAsyncErrors(async (req, res, next) =>
     }
 }))
 
+
+// get all orders of a seller 
+router.get("/get-seller-all-orders/:shopId", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const orders = await Order.find({ "cart.shopId": req.params.shopId }).sort({ createdAt: -1 });
+        res.status(200).json({
+            success: true,
+            orders,
+        })
+
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+}))
 
 module.exports = router;
 
