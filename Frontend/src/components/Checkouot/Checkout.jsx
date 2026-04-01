@@ -97,8 +97,9 @@ const Checkout = () => {
 
 
 
-
 const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setUserInfo, address1, setAddress1, address2, setAddress2, zipCode, setZipCode }) => {
+    console.log(user, user?.addresses);
+
     return (
         <div className="w-full md:w-[95%] bg-white rounded-md shadow-md border border-gray-200 p-5 pb-8">
             <h5 className="text-[18px] font-[500]">Shipping Address</h5>
@@ -160,6 +161,7 @@ const ShippingInfo = ({ user, country, setCountry, city, setCity, userInfo, setU
 
                 <div></div>
             </form>
+
             <h5 className="text-[18px] cursor-pointer inline-block" onClick={() => setUserInfo(!userInfo)}>Choose From saved address</h5>
             {userInfo && (
                 <div>
