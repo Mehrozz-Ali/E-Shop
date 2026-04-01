@@ -22,3 +22,12 @@ export const removeFromCart = (data) => async (dispatch, getState) => {
     localStorage.setItem("cartItems", JSON.stringify(getState().cart.cart));
     return data;
 }
+
+ 
+// clear cart
+export const clearCart = () => async (dispatch) => {
+    dispatch({
+        type: "clearCart",
+    });
+    localStorage.setItem("cartItems", JSON.stringify([]));
+};
