@@ -130,7 +130,6 @@ const Payment = () => {
 
     const cashOnDeliveryHandler = async (e) => {
         e.preventDefault();
-
         const config = { headers: { "Content-Type": "application/json", }, };
 
         order.paymentInfo = {
