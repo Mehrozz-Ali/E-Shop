@@ -18,9 +18,7 @@ function UserOrderDetails() {
         dispatch(getAllOrdersOfUser(user._id))
     }, [dispatch, user._id])
 
-    const orderUpdateHandle = (e) => {
-
-    }
+    
 
     const data = orders && orders.find((item) => item._id === id);
 

@@ -23,6 +23,7 @@ function Header({ activeHeading }) {
     const { wishlist } = useSelector((state) => state.wishlist);
 
     const { isAuthenticated, user } = useSelector((state) => state.user);
+    const { isSeller } = useSelector((state) => state.seller)
 
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -86,8 +87,8 @@ function Header({ activeHeading }) {
                     </div>
 
                     <div className={`${styles.button} !rounded-sm`}>
-                        <Link to="/shop-create">
-                            <h1 className='text-[#fff] flex items-center'>Become a Seller<IoIosArrowForward className="ml-1" /></h1>
+                        <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
+                            <h1 className='text-[#fff] flex items-center'>{isSeller ? "Dashboard" : "Become a Seller"}<IoIosArrowForward className="ml-1" /></h1>
                         </Link>
                     </div>
                 </div>

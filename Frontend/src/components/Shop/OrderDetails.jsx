@@ -1,25 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../styles/styles'
 import { BsFillBagFill } from 'react-icons/bs'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrdersOfShop } from '../../redux/actions/order';
-import { backend_url } from '../../server';
+import { backend_url, server } from '../../server';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 function OrderDetails() {
     const { orders, isLoading } = useSelector((state) => state.order);
     const { seller } = useSelector((state) => state.seller);
     const dispatch = useDispatch();
-    const { status, setStatus } = useState("");
+    const [status, setStatus] = useState("");
     const { id } = useParams();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
         dispatch(getAllOrdersOfShop(seller._id))
     }, [dispatch, seller._id])
 
-    const orderUpdateHandle = (e) => {
+    
 
+    const orderUpdateHandler = async (e) => {  
+        if (!status) {
+            toast.error("Status is required");
+            return;
+        }
+
+        await axios.put(`${server}/order/update-order-status/${id}`, {
+            status,
+        }, { withCredentials: true }
+        ).then((res) => {
+            toast.success("Order status updated successfully")
+            navigate("/dashboard-orders")
+        }).catch((error) => {
+            toast.error(error.response.data.message)
+        })
     }
 
     const data = orders && orders.find((item) => item._id === id);
@@ -82,7 +100,7 @@ function OrderDetails() {
             <br />
             <br />
             <h4 className='pt-3 text-[20px] font-[600]'>Order status:</h4>
-            <select className='w-[200px] mt-2 border h-[35px] rounded-[5px]' value={status} onChange={(e) => setStatus(e.target.value)}>
+            <select className='w-[200px] mt-2 border h-[35px] rounded-[5px]' value={status} onChange={(e) => setStatus(e.target.value.trim())}>
                 {
                     [
                         "Processing",
@@ -105,7 +123,7 @@ function OrderDetails() {
                     ))
                 }
             </select>
-            <div className={`${styles.button} mt-5 !bg-[#fCE1E6] !rounded-[4px] text-[#E94560] font-[600] !h-[45px] text-[18px]`} onClick={orderUpdateHandle}>Update Status</div>
+            <div className={`${styles.button} mt-5 !bg-[#fCE1E6] !rounded-[4px] text-[#E94560] font-[600] !h-[45px] text-[18px]`} onClick={orderUpdateHandler}>Update Status</div>
         </div>
     )
 }
