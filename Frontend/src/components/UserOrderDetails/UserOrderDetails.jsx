@@ -3,20 +3,20 @@ import styles from '../../styles/styles'
 import { BsFillBagFill } from 'react-icons/bs'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrdersOfShop } from '../../redux/actions/order';
+import { getAllOrdersOfUser } from '../../redux/actions/order';
 import { backend_url } from '../../server';
 
-function OrderDetails() {
-    const { orders, isLoading } = useSelector((state) => state.order);
-    const { seller } = useSelector((state) => state.seller);
+function UserOrderDetails() {
+    const { orders } = useSelector((state) => state.order);
+    const { user } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const { status, setStatus } = useState("");
     const { id } = useParams();
 
 
     useEffect(() => {
-        dispatch(getAllOrdersOfShop(seller._id))
-    }, [dispatch, seller._id])
+        dispatch(getAllOrdersOfUser(user._id))
+    }, [dispatch, user._id])
 
     const orderUpdateHandle = (e) => {
 
@@ -31,11 +31,6 @@ function OrderDetails() {
                     <BsFillBagFill size={30} color='crimson' />
                     <h1 className="pl-2 text-[25px]">Order Details</h1>
                 </div>
-                <Link to="/dashboard-orders">
-                    <div className={`${styles.button} !bg-[#fce1e6] !rounded-[4px] text-[#e94560] font-[600] !h-[45px] text-[18px]`}>
-                        Order List
-                    </div>
-                </Link>
             </div>
 
             <div className="w-full flex items-center justify-between  pt-6 ">
@@ -55,8 +50,16 @@ function OrderDetails() {
                         <h5 className='pl-3 text-[20px] '>{item?.name}</h5>
                         <h5 className='pl-3 text-[20px] '>US$ {item?.discountPrice} * {item?.qty}</h5>
                     </div>
+                    {
+                        data?.status === "Delivered" && (
+                            <div className={`${styles.button} text-[#fff]`}>
+                                Write a review
+                            </div>
+                        )
+                    }
                 </div>
-            ))}
+            ))
+            }
 
             <div className="border-t w-full text-right ">
                 <h5 className='pt-3 text-[18px]'>Total Price: <strong>US${data?.totalPrice}</strong></h5>
@@ -75,39 +78,18 @@ function OrderDetails() {
 
                 <div className="w-full md:w-[40%]">
                     <h4 className='pt-2 text-[20px]'>Payement Info: {data?.paymentInfo?.type}</h4>
-                    {/* <h4 className='pt-2 text-[20px]'>Status: {data?.status}</h4> */}
                     <h4 className='pt-2 text-[20px]'>Status: {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not paid "}</h4>
                 </div>
             </div>
             <br />
+            <Link to="/">
+                <div className={`${styles.button} text-white`}>Send Message</div>
+            </Link>
             <br />
-            <h4 className='pt-3 text-[20px] font-[600]'>Order status:</h4>
-            <select className='w-[200px] mt-2 border h-[35px] rounded-[5px]' value={status} onChange={(e) => setStatus(e.target.value)}>
-                {
-                    [
-                        "Processing",
-                        "Transferred to delivery partner",
-                        "Shipping",
-                        "Received",
-                        "On the way",
-                        "Delivered"
-                    ].slice(
-                        [
-                            "Processing",
-                            "Transferred to delivery partner",
-                            "Shipping",
-                            "Received",
-                            "On the way",
-                            "Delivered"
-                        ].indexOf(data?.status)
-                    ).map((option, index) => (
-                        <option value={option} key={index}>{option}</option>
-                    ))
-                }
-            </select>
-            <div className={`${styles.button} mt-5 !bg-[#fCE1E6] !rounded-[4px] text-[#E94560] font-[600] !h-[45px] text-[18px]`} onClick={orderUpdateHandle}>Update Status</div>
-        </div>
+            <br />
+
+        </div >
     )
 }
 
-export default OrderDetails
+export default UserOrderDetails
