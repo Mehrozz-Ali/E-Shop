@@ -31,17 +31,17 @@ const orderSchema = new mongoose.Schema({
         type: {
             type: String,
         },
-        paidAt: {
-            type: Date,
-            default: Date.now()
-        },
-        deliveredAt: {
-            type: Date,
-        },
-        createdAt: {
-            type: Date,
-            default: Date.now(),
-        }
+    },
+    paidAt: {
+        type: Date,
+        default: Date.now()
+    },
+    deliveredAt: {
+        type: Date,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
     }
 })
 
