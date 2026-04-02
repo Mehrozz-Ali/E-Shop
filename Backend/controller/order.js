@@ -100,8 +100,6 @@ router.put("/update-order-status/:id", isSeller, catchAsyncErrors(async (req, re
             );
         }
 
-
-
         order.status = status;
         if (status === "Delivered") {
             order.deliveredAt = Date.now();
@@ -119,7 +117,6 @@ router.put("/update-order-status/:id", isSeller, catchAsyncErrors(async (req, re
             if (!product) return;
             product.stock -= qty;
             product.sold_out += qty;
-
             await product.save({ validateBeforeSave: false });
         }
 
