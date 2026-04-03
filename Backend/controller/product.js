@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../model/product");
+const Order = require("../model/order");
 const Shop = require("../model/shop");
 const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
@@ -114,7 +115,7 @@ router.get(
 // review for a product
 router.put("/create-new-review", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
     try {
-        const { user, rating, comment, productId } = req.body;
+        const { user, rating, comment, productId, orderId } = req.body;
         const product = await Product.findById(productId);
 
 
@@ -142,6 +143,8 @@ router.put("/create-new-review", isAuthenticated, catchAsyncErrors(async (req, r
         product.ratings = avg / product.reviews.length;
 
         await product.save({ validateBeforeSave: false });
+        await Order.findByIdAndUpdate(orderId, { $set: { "cart.$[elem].isReviewed": true } }, { arrayFilters: [{ "elem.productId": productId }], new: true})
+
         res.status(201).json({
             success: true,
             message: "Review added successfully",

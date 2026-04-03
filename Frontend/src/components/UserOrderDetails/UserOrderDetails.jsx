@@ -16,11 +16,11 @@ function UserOrderDetails() {
     const dispatch = useDispatch();
     const { status, setStatus } = useState("");
     const [comment, setComment] = useState("");
-    const { id } = useParams();
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [rating, setRating] = useState(1);
-
+    
+    const { id } = useParams();
 
 
     useEffect(() => {
@@ -34,8 +34,12 @@ function UserOrderDetails() {
             rating,
             comment,
             productId: selectedItem?._id,
+            orderId: id,
         }, { withCredentials: true }).then((res) => {
             toast.success(res.data.message);
+            setComment("");
+            setRating(null);
+            setOpen(false);
         }).catch((error) => {
             toast.error(error);
         })
