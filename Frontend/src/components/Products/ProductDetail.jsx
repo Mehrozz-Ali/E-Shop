@@ -184,14 +184,14 @@ const ProductDetailsInfo = ({ data, products }) => {
                 </>
             ) : null}
             {active === 2 ? (
-                <div className='w-full justify-center min-h-[40vh] flex flex-col items-center'>
+                <div className='w-full py-3 min-h-[40vh] flex flex-col items-center overflow-y-scroll'>
                     {
                         data && data.reviews.map((item) => (
                             <div className='w-full flex my-2'>
                                 <img src={`${backend_url}/${item.user.avatar.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
                                 <div className='pl-3'>
                                     <div className="w-full flex items-center">
-                                        <h1 className=' font-[500] mr-1'>{item.user.name}</h1>
+                                        <h1 className=' font-[500] mr-3'>{item.user.name}</h1>
                                         <Rating rating={data?.ratings} />
                                     </div>
                                     <p>{item.comment}</p>
