@@ -5,7 +5,7 @@ const Shop = require("../model/shop");
 const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
-const { isSeller } = require("../middleware/auth");
+const { isSeller, isAuthenticated } = require("../middleware/auth");
 const fs = require("fs");
 
 
@@ -111,7 +111,46 @@ router.get(
 
 
 
+// review for a product
+router.put("/create-new-review", isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const { user, rating, comment, productId } = req.body;
+        const product = await Product.findById(productId);
 
+
+        const review = { user, rating, comment, productId };
+        const isReviewed = product.reviews.find((rev) => rev.user._id.toString() === req.user._id.toString());
+
+        if (isReviewed) {
+            product.reviews.forEach((rev) => {
+                if (rev.user._id.toString() === req.user._id.toString()) {
+                    rev.rating = rating;
+                    rev.comment = comment;
+                    rev.user = user;
+                }
+            })
+        } else {
+            product.reviews.push({ user, rating, comment });
+        }
+
+
+        let avg = 0;
+        product.reviews.forEach((rev) => {
+            avg += rev.rating;
+        })
+
+        product.ratings = avg / product.reviews.length;
+
+        await product.save({ validateBeforeSave: false });
+        res.status(201).json({
+            success: true,
+            message: "Review added successfully",
+        })
+
+    } catch (error) {
+        return next(new ErrorHandler(error, 400));
+    }
+}))
 
 
 

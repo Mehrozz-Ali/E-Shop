@@ -4,21 +4,44 @@ import { BsFillBagFill } from 'react-icons/bs'
 import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrdersOfUser } from '../../redux/actions/order';
-import { backend_url } from '../../server';
+import { backend_url, server } from '../../server';
+import { RxCross1 } from 'react-icons/rx';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function UserOrderDetails() {
     const { orders } = useSelector((state) => state.order);
     const { user } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const { status, setStatus } = useState("");
+    const [comment, setComment] = useState("");
     const { id } = useParams();
+    const [open, setOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [rating, setRating] = useState(1);
+
 
 
     useEffect(() => {
         dispatch(getAllOrdersOfUser(user._id))
     }, [dispatch, user._id])
 
-    
+
+    const reviewHandler = async (e) => {
+        await axios.put(`${server}/product/create-new-review`, {
+            user,
+            rating,
+            comment,
+            productId: selectedItem?._id,
+        }, { withCredentials: true }).then((res) => {
+            toast.success(res.data.message);
+        }).catch((error) => {
+            toast.error(error);
+        })
+    }
+
+
 
     const data = orders && orders.find((item) => item._id === id);
 
@@ -50,7 +73,7 @@ function UserOrderDetails() {
                     </div>
                     {
                         data?.status === "Delivered" && (
-                            <div className={`${styles.button} text-[#fff]`}>
+                            <div className={`${styles.button} text-[#fff] !rounded-[4px] `} onClick={() => setOpen(true) || setSelectedItem(item)}>
                                 Write a review
                             </div>
                         )
@@ -58,6 +81,48 @@ function UserOrderDetails() {
                 </div>
             ))
             }
+            {/* review pop-up */}
+            {
+                open && (
+                    <div className='w-full fixed top-0 left-0 h-screen bg-[#0005] z-50 flex items-center justify-center'>
+                        <div className='w-[50%] h-min bg-[#fff] shadow rounded-md p-3'>
+                            <div className="w-full flex justify-end p-3">
+                                <RxCross1 size={30} onClick={() => setOpen(false)} className='cursor-pointer' />
+                            </div>
+                            <h2 className='text-[30px] font-[500] font-poppins text-center'>Give a Review</h2>
+                            <br />
+                            <div className='w-full flex'>
+                                <img src={`${backend_url}/${selectedItem?.images[0]}`} alt="image" className='w-[80px] h-[80px]' />
+                                <div>
+                                    <div className="pl-3 text-[20px]">{selectedItem?.name}</div>
+                                    <h4 className="pl-3 text-[20px]">US${selectedItem?.discountPrice} x {selectedItem?.qty}</h4>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+
+                            {/* rating */}
+                            <h5 className='pl-3 text-[20px] font-[500]'>Give a Rating <span className='text-red-500'>*</span></h5>
+                            <div className="flex w-full ml-2 pt-1 ">
+                                {[1, 2, 3, 4, 5].map((i) => rating >= i ? (
+                                    <AiFillStar size={25} key={i} className='mr-1 cursor-pointer' color='gold' onClick={() => setRating(i)} />
+                                ) : (
+                                    <AiOutlineStar size={25} key={i} className='mr-1 cursor-pointer' color='gold' onClick={() => setRating(i)} />
+                                ))}
+                            </div>
+                            <br />
+                            <div className="w-full ml-3">
+                                <label className='block text-[20px] font-[500]'>Write a comment
+                                    <span className='ml-1 font-[400] text-[16px] text-[#00000052]'>(optional)</span>
+                                </label>
+                                <textarea className='mt-2 w-[95%] border p-2 outline-none' value={comment} onChange={(e) => setComment(e.target.value)} name="comment" cols={20} rows={5} placeholder='How was your product? write your expression about it!....'></textarea>
+                            </div>
+                            <div className={`${styles.button} text-white text-[20px] ml-3`} onClick={rating > 1 ? reviewHandler : null}>Submit</div>
+                        </div>
+                    </div>
+                )
+            }
+
 
             <div className="border-t w-full text-right ">
                 <h5 className='pt-3 text-[18px]'>Total Price: <strong>US${data?.totalPrice}</strong></h5>
