@@ -10,6 +10,7 @@ import { getAllProductsShop } from '../../redux/actions/product';
 import { addToWishlist, removeFromWishlist } from '../../redux/actions/wishlist';
 import { addToCart } from '../../redux/actions/cart';
 import { toast } from 'react-toastify';
+import Rating from './Rating';
 
 function ProductDetail({ data }) {
     const { wishlist } = useSelector((state) => state.wishlist);
@@ -183,14 +184,28 @@ const ProductDetailsInfo = ({ data, products }) => {
                 </>
             ) : null}
             {active === 2 ? (
-                <div className='w-full justify-center min-h-[40vh] flex items-center'>
+                <div className='w-full justify-center min-h-[40vh] flex flex-col items-center'>
                     {
                         data && data.reviews.map((item) => (
-                            <div className='w-full'>
-                                {item.comment}
+                            <div className='w-full flex my-2'>
+                                <img src={`${backend_url}/${item.user.avatar.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
+                                <div className='pl-3'>
+                                    <div className="w-full flex items-center">
+                                        <h1 className=' font-[500] mr-1'>{item.user.name}</h1>
+                                        <Rating rating={data?.ratings} />
+                                    </div>
+                                    <p>{item.comment}</p>
+                                </div>
                             </div>
                         ))
                     }
+                    <div className="w-full flex justify-center">
+                        {
+                            data && data.reviews.length === 0 && (
+                                <h5>No Reviews for this product</h5>
+                            )
+                        }
+                    </div>
                 </div>
             ) : null}
             {
