@@ -184,7 +184,13 @@ const ProductDetailsInfo = ({ data, products }) => {
             ) : null}
             {active === 2 ? (
                 <div className='w-full justify-center min-h-[40vh] flex items-center'>
-                    <p>No Reviews yet</p>
+                    {
+                        data && data.reviews.map((item) => (
+                            <div className='w-full'>
+                                {item.comment}
+                            </div>
+                        ))
+                    }
                 </div>
             ) : null}
             {

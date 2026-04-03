@@ -37,6 +37,7 @@ function UserOrderDetails() {
             orderId: id,
         }, { withCredentials: true }).then((res) => {
             toast.success(res.data.message);
+            dispatch(getAllOrdersOfUser(user._id))
             setComment("");
             setRating(null);
             setOpen(false);

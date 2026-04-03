@@ -87,7 +87,7 @@ function ProductCard({ data }) {
                 {data.originalPrice ? data.originalPrice + " $" : null}
               </h4>
             </div>
-            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data.sold_out} sold</span>
+            <span className='font-[400] text-[17px] text-[#6Bd284]'>{data?.sold_out} sold</span>
           </div>
         </Link>
         {/* Side options */}
