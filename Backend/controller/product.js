@@ -143,7 +143,7 @@ router.put("/create-new-review", isAuthenticated, catchAsyncErrors(async (req, r
         product.ratings = avg / product.reviews.length;
 
         await product.save({ validateBeforeSave: false });
-        await Order.findByIdAndUpdate(orderId, { $set: { "cart.$[elem].isReviewed": true } }, { arrayFilters: [{ "elem.productId": productId }], new: true})
+        await Order.findByIdAndUpdate(orderId, { $set: { "cart.$[elem].isReviewed": true } }, { arrayFilters: [{ "elem._id": productId }], new: true})
 
         res.status(201).json({
             success: true,

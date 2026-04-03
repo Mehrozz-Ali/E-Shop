@@ -14,12 +14,12 @@ function UserOrderDetails() {
     const { orders } = useSelector((state) => state.order);
     const { user } = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    const { status, setStatus } = useState("");
+    const [status, setStatus] = useState("");
     const [comment, setComment] = useState("");
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [rating, setRating] = useState(1);
-    
+
     const { id } = useParams();
 
 
@@ -75,13 +75,13 @@ function UserOrderDetails() {
                         <h5 className='pl-3 text-[20px] '>{item?.name}</h5>
                         <h5 className='pl-3 text-[20px] '>US$ {item?.discountPrice} * {item?.qty}</h5>
                     </div>
-                    {
-                        data?.status === "Delivered" && (
-                            <div className={`${styles.button} text-[#fff] !rounded-[4px] `} onClick={() => setOpen(true) || setSelectedItem(item)}>
-                                Write a review
-                            </div>
-                        )
-                    }
+                    {item.isReviewed ? (
+                        null
+                    ) : (
+                        <div className={`${styles.button} text-[#fff] !rounded-[4px] `} onClick={() => { setOpen(true); setSelectedItem(item) }}>
+                            Write a review
+                        </div>
+                    )}
                 </div>
             ))
             }
