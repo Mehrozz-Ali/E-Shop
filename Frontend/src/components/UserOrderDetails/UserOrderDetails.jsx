@@ -49,6 +49,7 @@ function UserOrderDetails() {
     const refundHandler = async () => {
         await axios.put(`${server}/order/order-refund/${id}`, { status: "Processing refund" }).then((res) => {
             toast.success(res.data.message);
+            dispatch(getAllOrdersOfUser(user._id))
         }).catch((error) => {
             toast.error(error.response.data.message);
         })
@@ -84,7 +85,7 @@ function UserOrderDetails() {
                         <h5 className='pl-3 text-[20px] '>{item?.name}</h5>
                         <h5 className='pl-3 text-[20px] '>US$ {item?.discountPrice} * {item?.qty}</h5>
                     </div>
-                    {item.isReviewed ? (
+                    {item.isReviewed || item.status !== "Delivered" ? (
                         null
                     ) : (
                         <div className={`${styles.button} text-[#fff] !rounded-[4px] `} onClick={() => { setOpen(true); setSelectedItem(item) }}>
