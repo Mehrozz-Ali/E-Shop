@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { backend_url, server, } from '../../server';
 import { AiOutlineCamera, AiOutlineDelete, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import { MdOutlineTrackChanges } from 'react-icons/md';
+import { MdTrackChanges } from 'react-icons/md';
 import styles from '../../styles/styles';
 import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
@@ -113,7 +113,6 @@ function ProfileContent({ active }) {
                         </form>
                     </div>
                 </>
-
             )}
 
 
@@ -237,8 +236,6 @@ const AllOrders = () => {
         });
     });
 
-
-
     return (
         <div className="pl-8 pt-1">
             <DataGrid rows={row} columns={columns} pageSize={10} disableRowSelectionOnClick autoHeight />
@@ -247,21 +244,22 @@ const AllOrders = () => {
 }
 
 const AllRefundOrders = () => {
-    const orders = [
-        {
-            _id: "123frfyyc",
-            orderItems: [
-                {
-                    name: "Iphone 14 Pro Max",
-                }
-            ],
-            totalPrice: 1200,
-            orderStatus: "Processing",
-        },
-    ];
+    const { user } = useSelector((state) => state.user);
+    const { orders } = useSelector((state) => state.order);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        if (user && user._id) {
+            dispatch(getAllOrdersOfUser(user._id));
+        }
+    }, [dispatch, user]);
+
+    const eligibleOrders = orders && orders.filter((item) => item.status === "Processing refund")
+
 
     const columns = [
-        { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+        { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7, },
 
         {
             field: "status",
@@ -310,14 +308,14 @@ const AllRefundOrders = () => {
             },
         },
     ];
-
     const row = [];
-    orders && orders.forEach((item) => {
+
+    eligibleOrders && eligibleOrders.forEach((item) => {
         row.push({
             id: item._id,
-            itemsQty: item.orderItems.length,
+            itemsQty: item.cart.length,
             total: "US$" + item.totalPrice,
-            status: item.orderStatus
+            status: item.status,
         });
     });
 
@@ -329,22 +327,23 @@ const AllRefundOrders = () => {
     )
 }
 
+
 const TrackOrder = () => {
-    const orders = [
-        {
-            _id: "223344",
-            orderItems: [
-                {
-                    name: "Iphone 14 Pro Max",
-                }
-            ],
-            totalPrice: 1200,
-            orderStatus: "Processing",
-        },
-    ];
+    const { user } = useSelector((state) => state.user);
+    const { orders } = useSelector((state) => state.order);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        if (user && user._id) {
+            dispatch(getAllOrdersOfUser(user._id));
+        }
+    }, [dispatch, user]);
+
 
     const columns = [
-        { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
+        { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7, },
+
         {
             field: "status",
             headerName: "Status",
@@ -375,31 +374,31 @@ const TrackOrder = () => {
         {
             field: " ",
             flex: 1,
-            minWidth: 130,
+            minWidth: 150,
             headerName: "",
             type: "number",
             sortable: false,
             renderCell: (params) => {
                 return (
                     <>
-                        <Link to={`/user/order/${params.id}`}>
+                        <Link to={`/user/track/order/${params.id}`}>
                             <Button>
-                                <MdOutlineTrackChanges size={20} />
+                                <MdTrackChanges size={20} color='black' />
                             </Button>
                         </Link>
                     </>
                 );
             },
         },
-    ]
+    ];
 
     const row = [];
     orders && orders.forEach((item) => {
         row.push({
             id: item._id,
-            itemsQty: item.orderItems.length,
+            itemsQty: item.cart.length,
             total: "US$" + item.totalPrice,
-            status: item.orderStatus
+            status: item.status,
         });
     });
 
