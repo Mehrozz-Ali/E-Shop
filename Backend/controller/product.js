@@ -94,20 +94,18 @@ router.delete("/delete-shop-product/:id", isSeller, catchAsyncErrors(async (req,
 
 
 // get all products
-router.get(
-    "/get-all-products",
-    catchAsyncErrors(async (req, res, next) => {
-        try {
-            const products = await Product.find().sort({ createdAt: -1 });
+router.get("/get-all-products", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 });
 
-            res.status(201).json({
-                success: true,
-                products,
-            });
-        } catch (error) {
-            return next(new ErrorHandler(error, 400));
-        }
-    })
+        res.status(201).json({
+            success: true,
+            products,
+        });
+    } catch (error) {
+        return next(new ErrorHandler(error, 400));
+    }
+})
 );
 
 
@@ -143,7 +141,7 @@ router.put("/create-new-review", isAuthenticated, catchAsyncErrors(async (req, r
         product.ratings = avg / product.reviews.length;
 
         await product.save({ validateBeforeSave: false });
-        await Order.findByIdAndUpdate(orderId, { $set: { "cart.$[elem].isReviewed": true } }, { arrayFilters: [{ "elem._id": productId }], new: true})
+        await Order.findByIdAndUpdate(orderId, { $set: { "cart.$[elem].isReviewed": true } }, { arrayFilters: [{ "elem._id": productId }], new: true })
 
         res.status(201).json({
             success: true,
