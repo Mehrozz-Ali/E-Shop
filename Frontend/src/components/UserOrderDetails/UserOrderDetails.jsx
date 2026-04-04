@@ -46,6 +46,14 @@ function UserOrderDetails() {
         })
     }
 
+    const refundHandler = async () => {
+        await axios.put(`${server}/order/order-refund/${id}`, { status: "Processing refund" }).then((res) => {
+            toast.success(res.data.message);
+        }).catch((error) => {
+            toast.error(error.response.data.message);
+        })
+    }
+
 
 
     const data = orders && orders.find((item) => item._id === id);
@@ -147,11 +155,18 @@ function UserOrderDetails() {
                 <div className="w-full md:w-[40%]">
                     <h4 className='pt-2 text-[20px]'>Payement Info: {data?.paymentInfo?.type}</h4>
                     <h4 className='pt-2 text-[20px]'>Status: {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not paid "}</h4>
+                    <br />
+                    {
+                        data?.status === "Delivered" && (
+                            <div className={`${styles.button} text-white !rounded`} onClick={refundHandler}>Give a refund</div>
+                        )
+                    }
                 </div>
+
             </div>
             <br />
             <Link to="/">
-                <div className={`${styles.button} text-white`}>Send Message</div>
+                <div className={`${styles.button} text-white !rounded`}>Send Message</div>
             </Link>
             <br />
             <br />

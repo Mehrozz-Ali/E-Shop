@@ -77,7 +77,7 @@ router.get("/get-seller-all-orders/:shopId", catchAsyncErrors(async (req, res, n
 
 
 
-// update order status  for just seller 
+// update order status for just seller 
 router.put("/update-order-status/:id", isSeller, catchAsyncErrors(async (req, res, next) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -125,6 +125,33 @@ router.put("/update-order-status/:id", isSeller, catchAsyncErrors(async (req, re
     }
 }))
 
+
+// give a refund 
+router.put("/order-refund/:id", catchAsyncErrors(async (req, res, next) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return next(new ErrorHandler("Order not found with this id", 400));
+        }
+
+        if (!req.body.status) {
+            return next(new ErrorHandler("Status is required", 400));
+        }
+
+        order.status = req.body.status.trim();
+        await order.save({ validateBeforeSave: false });
+
+        res.status(200).json({
+            success: true,
+            order,
+            message: "Order Refund request successfully!"
+        })
+
+
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+}))
 
 module.exports = router;
 

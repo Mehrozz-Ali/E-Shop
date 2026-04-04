@@ -24,6 +24,10 @@ function ProductDetail({ data }) {
     const [select, setSelect] = useState(0);
     const navigate = useNavigate();
 
+    const totalReviewsLength = products && products.reduce((acc, product) => acc + product.reviews.length, 0);
+
+    const totalRatings = products && products.reduce((acc, product) => acc + product.reviews.reduce((sum, review) => sum + review.rating, 0), 0);
+    const averageRating = totalRatings / totalReviewsLength || 0;
 
     const dispatch = useDispatch();
 
@@ -133,7 +137,7 @@ function ProductDetail({ data }) {
                                         <Link to={`/shop/preview/${data?.shop._id}`}>
                                             <h3 className={`${styles.shop_name} pb-1 pt-1`}>{data?.shop?.name}</h3>
                                         </ Link >
-                                        <h5 className='pb-3 text-[15px]'>[4/5] Ratings</h5>
+                                        <h5 className='pb-3 text-[15px]'>[{averageRating}/5] Ratings</h5>
                                     </div>
                                     <div className={`${styles.button} !bg-[#6443d1] mt-4 !rounded !h-11`} onClick={handleMessageSubmit}>
                                         <span className='text-white flex items-center'>Send Message<AiOutlineMessage className='ml-1' /> </span>
@@ -142,7 +146,7 @@ function ProductDetail({ data }) {
                             </div>
                         </div>
                     </div>
-                    <ProductDetailsInfo data={data} products={products} />
+                    <ProductDetailsInfo data={data} products={products} totalReviewsLength={totalReviewsLength} averageRating={averageRating} />
                     <br />
                     <br />
                 </div>
@@ -154,7 +158,7 @@ function ProductDetail({ data }) {
 
 
 
-const ProductDetailsInfo = ({ data, products }) => {
+const ProductDetailsInfo = ({ data, products, totalReviewsLength, averageRating }) => {
     const [active, setActive] = useState(1);
     return (
         <div className='bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded'>
@@ -222,7 +226,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                                     />
                                     <div className='pl-3'>
                                         <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
-                                        <h5 className='pb-2 text-[15px]'>[4/5] Rating</h5>
+                                        <h5 className='pb-2 text-[15px]'>[{averageRating}/5] Rating</h5>
                                     </div>
                                 </div>
                             </Link>
@@ -234,7 +238,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                             <div className="text-left">
                                 <h5 className='font-[600]'>Join on: <span className='font-[500]'>{data?.shop?.createdAt ? new Date(data.shop.createdAt).toLocaleDateString() : "N/A"}</span></h5>
                                 <h5 className='font-[600] pt-3'>Total Products: <span className='font-[500]'>{products && products.length}</span></h5>
-                                <h5 className='font-[600] pt-3'>Total Reviews: <span className='font-[500]'>324</span></h5>
+                                <h5 className='font-[600] pt-3'>Total Reviews: <span className='font-[500]'>{totalReviewsLength}</span></h5>
                                 <Link to="/">
                                     <div className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}>
                                         <h4 className='text-white '> Visit Shop</h4>
