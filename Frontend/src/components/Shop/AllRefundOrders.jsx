@@ -17,6 +17,8 @@ function AllRefundOrders() {
         dispatch(getAllOrdersOfShop(seller._id));
     }, [dispatch, seller._id]);
 
+    const refundOrders = orders && orders.filter((item) => item.status === "Processing refund")
+
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7, },
 
@@ -68,9 +70,9 @@ function AllRefundOrders() {
         },
     ];
 
-    
+
     const row = [];
-    orders && orders.forEach((item) => {
+    refundOrders && refundOrders.forEach((item) => {
         row.push({
             id: item._id,
             itemsQty: item.cart.length,
@@ -85,7 +87,7 @@ function AllRefundOrders() {
                 isLoading ? (
                     <Loader />
                 ) : (
-                    <div className='w-full mx-8 pt-1 mt-1 bg-white'>
+                    <div className='w-full mx-3 pt-1 mt-1 bg-white '>
                         <DataGrid rows={row} columns={columns} pageSize={10} disableSelectionOnClick autoHeight />
                     </div>
                 )

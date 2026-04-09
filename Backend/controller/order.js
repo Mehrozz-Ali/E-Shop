@@ -153,5 +153,47 @@ router.put("/order-refund/:id", catchAsyncErrors(async (req, res, next) => {
     }
 }))
 
+
+
+// accept the refund  ----- seller 
+router.put(`/order-refund-success/:id`, isSeller, catchAsyncErrors(async (req, res, next) => {
+    try {
+        const order = await Order.findById(req.params.id);
+
+        if (!order) {
+            return next(new ErrorHandler("Order not found with this id", 400));
+        }
+
+        order.status = req.body.status;
+        await order.save();
+
+        res.status(200).json({
+            success: true,
+            message:"Order Refund Successfully!"
+        })
+
+        if (
+            order.status === "Refund Success" &&
+            order.status !== "Refund Success"
+        ) {
+            await Promise.all(
+                order.cart.map(o => updateOrder(o._id, o.qty))
+            );
+        }
+
+        async function updateOrder(id, qty) {
+            const product = await Product.findById(id);
+            if (!product) return;
+            product.stock += qty;
+            product.sold_out -= qty;
+            await product.save({ validateBeforeSave: false });
+        }
+
+        await Order.save();
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 400));
+    }
+}))
+
 module.exports = router;
 
