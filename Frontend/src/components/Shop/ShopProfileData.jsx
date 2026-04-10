@@ -16,16 +16,30 @@ function ShopProfileData({ isOwner }) {
   const { seller } = useSelector((state) => state.seller);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [active, setActive] = useState(1);
 
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalItems = active === 1 ? products?.length : events?.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+
+
+  const getPaginatedData = (data) => {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    return data.slice(indexOfFirstItem, indexOfLastItem);
+  };
 
 
   useEffect(() => {
     dispatch(getAllProductsShop(id));
     dispatch(getAllEventsShop(seller._id));
+    setCurrentPage(1);
 
-  }, [dispatch, id, seller._id]);
+  }, [dispatch, id, seller._id, active]);
 
-  const [active, setActive] = useState(1);
 
   // flat convert nested array into a single array 
   const allReviews = products && products.map((product) => product.reviews).flat();
@@ -69,9 +83,16 @@ function ShopProfileData({ isOwner }) {
       {
         active === 1 && (
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[20px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
-            {products && products.map((i, index) => (
+            {/* {products && products.map((i, index) => (
               <ProductCard key={index} data={i} isShop={true} />
-            ))}
+            ))} */}
+
+            {
+              getPaginatedData(products || []).map((i, index) => (
+                <ProductCard key={index} data={i} isShop={true} />
+              ))
+            }
+
           </div>
         )
       }
@@ -79,9 +100,16 @@ function ShopProfileData({ isOwner }) {
       {
         active === 2 && (
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[20px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
-            {events && events.map((i, index) => (
-              <ProductCard key={index} data={i} isShop={true} />
-            ))}
+            {/* {events && events.map((i, index) => (
+              <ProductCard key={index} data={i} isShop={true} isEvent={true} />
+            ))} */}
+
+            {
+              getPaginatedData(events || []).map((i, index) => (
+                <ProductCard key={index} data={i} isShop={true} isEvent={true} />
+              ))
+
+            }
           </div>
         )
       }
@@ -111,6 +139,25 @@ function ShopProfileData({ isOwner }) {
           <h5 className='w-full text-ccenter py-5 text-[18px]'>No Products have for this shop!</h5>
         )
       }
+
+      {
+        (active === 1 || active === 2) && (
+          <div className="flex justify-center mt-4">
+            {[...Array(totalPages)].map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                className={`mx-1 px-3 py-1 border ${currentPage === index + 1 ? "bg-black text-white" : "bg-gray-200"
+                  }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+        )
+      }
+
+
 
     </div>
   )
