@@ -10,7 +10,7 @@ import { loadSeller, loadUser } from './redux/actions/user.jsx';
 import ProductDetailCard from './components/Route/ProductDetailCard/ProductDetailCard.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import SellerProtectedRoute from './routes/SellerProtectedRoute.jsx';
-import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, ShopAllOrders, ShopOrdersDetails, ShopAllRefunds } from './routes/ShopRoutes'
+import { ShopDashboardPage, ShopCreateProduct, ShopAllProducts, ShopCreateEvents, ShopAllEvents, ShopAllCoupons, ShopPreviewPage, ShopAllOrders, ShopOrdersDetails, ShopAllRefunds, ShopSettingsPage } from './routes/ShopRoutes'
 import { getAllEvents } from './redux/actions/event.jsx';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -64,6 +64,11 @@ function App() {
         <Route path='/shop/:id' element={
           <SellerProtectedRoute  >
             <ShopHomePage />
+          </SellerProtectedRoute>
+        } />
+        <Route path='/settings' element={
+          <SellerProtectedRoute  >
+            <ShopSettingsPage />
           </SellerProtectedRoute>
         } />
         <Route path='/dashboard' element={

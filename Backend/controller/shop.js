@@ -193,5 +193,34 @@ router.get("/get-all-shops", catchAsyncErrors(async (req, res, next) => {
 }));
 
 
+// update shop profile picture
+router.put("/update-shop-avatar", isSeller, upload.single("file"), catchAsyncErrors(async (req, res, next) => {
+    try {
+        const existUser = await Shop.findById(req.seller._id);
+        if (existUser.avatar) {
+            const existAvatarPath = `uploads/${existUser.avatar}`;
+            if (fs.existsSync(existAvatarPath)) {
+                fs.unlinkSync(existAvatarPath);
+            }
+        }
+
+
+        const fileUrl = path.join(req.file.filename);
+        const avatar = {
+            public_id: req.file.filename,
+            url: fileUrl,
+        };
+        const user = await Shop.findByIdAndUpdate(req.seller._id, { avatar: avatar }, { new: true });
+
+        res.status(200).json({
+            success: true,
+            user,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+
+    }
+}))
+
 
 module.exports = router;

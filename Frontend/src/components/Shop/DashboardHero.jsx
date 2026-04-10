@@ -84,7 +84,7 @@ function DashboardHero() {
 
     const row = [];
 
-    orders && orders.forEach((item) => {
+    deliveredOrders && deliveredOrders.forEach((item) => {
         row.push({
             id: item._id,
             itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
@@ -115,7 +115,7 @@ function DashboardHero() {
                         <h3 className={`${styles.productTitle} !text-[18px] leading-5 !font-[400] text-[#00000085]`}>All Orders </h3>
                     </div>
 
-                    <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{orders && orders.length}</h5>
+                    <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{deliveredOrders && deliveredOrders.length}</h5>
                     <Link to="/dashboard-orders">
                         <h5 className='pt-4 pl-2 text-[#077f9c]'>View Orders</h5>
                     </Link>
