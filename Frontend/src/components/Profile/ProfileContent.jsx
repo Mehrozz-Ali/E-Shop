@@ -62,7 +62,9 @@ function ProfileContent({ active }) {
             },
             withCredentials: true,
         }).then((response) => {
-            window.location.reload();
+            // window.location.reload();
+            dispatch(loadUser());
+            toast.success("Avatar updated successfully!");
         }).catch((error) => {
             toast.error(error.response.data.message);
         })

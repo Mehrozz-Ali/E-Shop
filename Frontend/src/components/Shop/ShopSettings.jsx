@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { backend_url } from '../../server';
+import { backend_url, server } from '../../server';
 import styles from '../../styles/styles';
 import { AiOutlineCamera } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import { loadSeller } from '../../redux/actions/user';
+import axios from 'axios';
+
+
 function ShopSettings() {
 
     const { seller } = useSelector((state) => state.seller);
     const [avatar, setAvatar] = useState();
+    const [name, setName] = useState(seller && seller?.name);
+    const [description, setDescription] = useState(seller && seller?.description ? seller?.description : "");
+    const [address, setAddress] = useState(seller && seller?.address);
+    const [phoneNumber, setPhoneNumber] = useState(seller && seller?.phoneNumber);
+    const [zipCode, setZipCode] = useState(seller && seller?.zipCode);
     const dispatch = useDispatch();
 
 
@@ -34,8 +42,21 @@ function ShopSettings() {
 
     }
 
-    const updateHandler = (e) => {
+    const updateHandler = async (e) => {
         e.preventDefault();
+
+        await axios.put(`${server}/shop/update-seller-info`, {
+            name,
+            description,
+            address,
+            phoneNumber,
+            zipCode,
+        }, { withCredentials: true }).then((res) => {
+            toast.success("Shop info updated successfully!");
+            dispatch(loadSeller());
+        }).catch((error) => {
+            toast.error(error.response.data.message);
+        })
     }
 
 
@@ -59,27 +80,27 @@ function ShopSettings() {
                 <form aria-aria-required="true" className='flex flex-col items-center' onSubmit={updateHandler}>
                     <div className="w-[95%] md:w-[50%] mt-5 ">
                         <label className='block pb-2'>Shop Name</label>
-                        <input type="Name" placeholder={`${seller?.name}`} value={seller?.name} className={`${styles.input} pr-10`} required />
+                        <input type="Name" placeholder={`${seller?.name}`} value={name} className={`${styles.input} pr-10`} required onChange={(e) => setName(e.target.value)} />
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
                         <label className='block pb-2'>Shop description</label>
-                        <input type="text" placeholder={`${seller?.description ? seller.description : "Enter your shop description"}`} value={seller?.description ? seller.description : ""} className={`${styles.input} pr-10`} />
+                        <input type="text" placeholder={`${seller?.description ? seller.description : "Enter your shop description"}`} value={description} className={`${styles.input} pr-10`} onChange={(e) => setDescription(e.target.value)} />
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
                         <label className='block pb-2'>Shop Address</label>
-                        <input type="text" placeholder={`${seller?.address}`} value={seller?.address} className={`${styles.input} pr-10`} required />
+                        <input type="text" placeholder={`${seller?.address}`} value={address} className={`${styles.input} pr-10`} required onChange={(e) => setAddress(e.target.value)} />
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
                         <label className='block pb-2'>Shop Phone Number</label>
-                        <input type="number" placeholder={`${seller?.phoneNumber}`} value={seller?.phoneNumber} className={`${styles.input} pr-10`} required />
+                        <input type="number" placeholder={`${seller?.phoneNumber}`} value={phoneNumber} className={`${styles.input} pr-10`} required onChange={(e) => setPhoneNumber(e.target.value)} />
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
                         <label className='block pb-2'>Shop Zip Code</label>
-                        <input type="number" placeholder={`${seller?.zipCode}`} value={seller?.zipCode} className={`${styles.input} pr-10`} required />
+                        <input type="number" placeholder={`${seller?.zipCode}`} value={zipCode} className={`${styles.input} pr-10`} required onChange={(e) => setZipCode(e.target.value)} />
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
