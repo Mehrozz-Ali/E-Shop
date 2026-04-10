@@ -64,8 +64,8 @@ function ShopSettings() {
             <div className="flex w-full md:w-[80%] flex-col justify-center my-5">
                 <div className="w-full flex items-center justify-center ">
                     <div className="relative">
-                        <img src={avatar ? URL.createObjectURL(avatar) : `${backend_url}/${seller?.avatar?.url}`} alt="image" className='w-[200px] h-[200px] rounded-full cursor-pointer' />
-                        <div className='w-[30px] h-[30px] bg-[#f3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[10px] right-[15px]'>
+                        <img src={avatar ? URL.createObjectURL(avatar) : `${backend_url}/${seller?.avatar?.url}`} alt="image" className='w-[100px] h-[100px] rounded-full cursor-pointer' />
+                        <div className='w-[30px] h-[30px] bg-[#f3E9EE] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[4px] right-[4px]'>
                             <input type="file" id="file" className='hidden' onChange={handleImage} />
                             <label htmlFor="file" className='cursor-pointer'>
                                 <AiOutlineCamera />
@@ -103,7 +103,7 @@ function ShopSettings() {
                     </div>
 
                     <div className="w-[95%] md:w-[50%] mt-5 ">
-                        <input type="submit" value="Update Shop " className={`${styles.input} pr-10 cursor-pointer`} required readOnly />
+                        <input type="submit" value="Update Shop " className={`${styles.input} !text-white bg-[#000000d3] pr-10 cursor-pointer`} required readOnly />
                     </div>
 
                 </form>

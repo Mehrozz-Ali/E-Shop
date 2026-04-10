@@ -1,16 +1,22 @@
 import React from 'react'
 import Footer from '../../components/Layout/Footer'
-import Header from '../../components/Layout/Header'
 import ShopSettings from '../../components/Shop/ShopSettings.jsx'
+import DashboardHeader from '../../components/Shop/Layout/DashboardHeader.jsx'
+import DashboardSidebar from '../../components/Shop/Layout/DashboardSidebar.jsx'
 
 function ShopSettingsPage() {
-    
+
     return (
-        <div>
-            <Header />
-            <ShopSettings />
-            <Footer />
-        </div>
+        <div >
+            <DashboardHeader />
+            <div className="flex items-start justify-between w-full">
+                <div className='w-[80px] md:w-[300px]'>
+                    <DashboardSidebar active={11} />
+                </div>
+                <ShopSettings />
+            </div>
+        </div >
+
     )
 }
 
