@@ -44,7 +44,6 @@ function ShopSettings() {
 
     const updateHandler = async (e) => {
         e.preventDefault();
-
         await axios.put(`${server}/shop/update-seller-info`, {
             name,
             description,

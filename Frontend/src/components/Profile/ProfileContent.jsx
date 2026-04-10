@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { Button } from '@mui/material';
-import { deleteUserAddress, updateUserAddress, updateUserInformation } from '../../redux/actions/user';
+import { deleteUserAddress, loadUser, updateUserAddress, updateUserInformation } from '../../redux/actions/user';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import axios from 'axios';

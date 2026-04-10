@@ -194,7 +194,7 @@ router.get("/get-all-shops", catchAsyncErrors(async (req, res, next) => {
 
 
 // update shop profile picture
-router.put("/update-shop-avatar", isSeller, upload.single("file"), catchAsyncErrors(async(req, res, next) => {
+router.put("/update-shop-avatar", isSeller, upload.single("file"), catchAsyncErrors(async (req, res, next) => {
     try {
         const existUser = await Shop.findById(req.seller._id);
         if (existUser.avatar) {
@@ -226,11 +226,12 @@ router.put("/update-shop-avatar", isSeller, upload.single("file"), catchAsyncErr
 router.put("/update-seller-info", isSeller, catchAsyncErrors(async (req, res, next) => {
     try {
         const { name, description, address, phoneNumber, zipCode } = req.body;
-        const shop = await Shop.findById(req.seller._id);
+        const shop = await Shop.findOne(req.seller._id);
 
         if (!shop) {
             return next(new ErrorHandler("Shop not found", 400));
         }
+
 
         shop.name = name;
         shop.description = description;
