@@ -39,7 +39,7 @@ function CreateEvent() {
         const minFinishDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
         setStartDate(startDate);
         setEndDate(null);
-        document.getElementById("finish_Date").min = minFinishDate.toISOString().slice(0, 10);
+        document.getElementById("end_Date").min = minFinishDate.toISOString().slice(0, 10);
     };
 
     const handleEndDateChange = (e) => {
@@ -150,7 +150,7 @@ function CreateEvent() {
                     </div>
                     <br />
                     <div>
-                        <input type="submit" value="Create" className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm' />
+                        <input type="submit" value="Create" className=' mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer' />
                     </div>
                 </div>
             </form>

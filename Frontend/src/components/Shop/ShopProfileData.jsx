@@ -6,17 +6,29 @@ import styles from '../../styles/styles';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProductsShop } from '../../redux/actions/product';
-
+import { backend_url } from '../../server';
+import Rating from "../Products/Rating";
+import { getAllEventsShop } from '../../redux/actions/event';
 
 function ShopProfileData({ isOwner }) {
   const { products } = useSelector((state) => state.product);
+  const { events } = useSelector((state) => state.events);
+  const { seller } = useSelector((state) => state.seller);
   const { id } = useParams();
   const dispatch = useDispatch();
+
+
+
   useEffect(() => {
     dispatch(getAllProductsShop(id));
-  }, [dispatch, id]);
+    dispatch(getAllEventsShop(seller._id));
+
+  }, [dispatch, id, seller._id]);
 
   const [active, setActive] = useState(1);
+
+  // flat convert nested array into a single array 
+  const allReviews = products && products.map((product) => product.reviews).flat();
 
 
   return (
@@ -54,11 +66,51 @@ function ShopProfileData({ isOwner }) {
       </div>
 
       <br />
-      <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[20px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
-        {products && products.map((i,index) => (
-          <ProductCard key={index} data={i} isShop={true} />
-        ))}
-      </div>
+      {
+        active === 1 && (
+          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[20px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
+            {products && products.map((i, index) => (
+              <ProductCard key={index} data={i} isShop={true} />
+            ))}
+          </div>
+        )
+      }
+
+      {
+        active === 2 && (
+          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[20px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
+            {events && events.map((i, index) => (
+              <ProductCard key={index} data={i} isShop={true} />
+            ))}
+          </div>
+        )
+      }
+
+      {
+        active === 3 && (
+          <div className="w-full">
+            {allReviews && allReviews.map((item, index) => (
+              <div className="w-full flex my-4">
+                <img src={`${backend_url}/${item.user?.avatar?.url}`} alt="image" className='w-[50px] h-[50px] rounded-full' />
+                <div className='pl-3'>
+                  <div className="w-full flex items-center">
+                    <h1 className='font-[600] pr-2'>{item.user?.name}</h1>
+                    <Rating rating={item.rating} />
+                  </div>
+                  <p className='font-[400] text-[#000000cb]'>{item.comment}</p>
+                  <p className='text-[#0000009a] text-[14px]'>{'2 days ago'}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        products && products.length === 0 && (
+          <h5 className='w-full text-ccenter py-5 text-[18px]'>No Products have for this shop!</h5>
+        )
+      }
 
     </div>
   )

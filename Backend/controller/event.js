@@ -38,6 +38,8 @@ router.post("/create-event", upload.array("files"), catchAsyncErrors(async (req,
             res.status(201).json({
                 success: true,
                 product,
+                message: "Event Created Successfully",
+
             })
 
         }
@@ -50,7 +52,7 @@ router.post("/create-event", upload.array("files"), catchAsyncErrors(async (req,
 // get all events
 router.get("/get-all-events", catchAsyncErrors(async (req, res, next) => {
     try {
-const events=await Event.find({});
+        const events = await Event.find({});
         res.status(201).json({
             success: true,
             events,

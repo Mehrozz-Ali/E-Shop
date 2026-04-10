@@ -61,7 +61,7 @@ function AllEvents() {
             id: item._id,
             name: item.name,
             price: "US$" + item.discountPrice,
-            stock: item.stock,
+            stock: item?.stock,
             sold: 10,
         })
     })
