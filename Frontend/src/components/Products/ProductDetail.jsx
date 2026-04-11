@@ -16,6 +16,7 @@ function ProductDetail({ data }) {
     const { wishlist } = useSelector((state) => state.wishlist);
     const { cart } = useSelector((state) => state.cart);
     const { products } = useSelector((state) => state.product);
+    const { user, isAuthenticated } = useSelector((state) => state.user);
 
 
 
@@ -77,8 +78,21 @@ function ProductDetail({ data }) {
     const incrementCount = () => {
         setCount(count + 1);
     }
-    const handleMessageSubmit = () => {
-        navigate("/inbox?conversation=507ebjwhdhh569gfj")
+    const handleMessageSubmit = async () => {
+        if (isAuthenticated) {
+            const groupTitle = data._id + user._id;
+            const userId = user._id;
+            const sellerId = data.shop._id;
+            await axios.post(`${server}/conversation/create-new-conversation`, {
+                groupTitle, userId, sellerId
+            }).then((res) => {
+                navigate(`/conversation/${res.data.conversation._id}`);
+            }).catch((error) => {
+                toast.error(error.response.data.message || "Failed to create conversation");
+            })
+        } else {
+            toast.error("Please login to create a conversation");
+        }
     }
 
     return (
