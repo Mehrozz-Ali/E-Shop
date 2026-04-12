@@ -4,13 +4,14 @@ import styles from '../../styles/styles';
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from 'react-icons/ai';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { backend_url } from '../../server';
+import { backend_url, server } from '../../server';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProductsShop } from '../../redux/actions/product';
 import { addToWishlist, removeFromWishlist } from '../../redux/actions/wishlist';
 import { addToCart } from '../../redux/actions/cart';
 import { toast } from 'react-toastify';
 import Rating from './Rating';
+import axios from 'axios';
 
 function ProductDetail({ data }) {
     const { wishlist } = useSelector((state) => state.wishlist);

@@ -13,7 +13,7 @@ router.post("/create-new-conversation", catchAsyncErrors(async (req, res, next) 
 
         if (isConversationExist) {
             const conversation = isConversationExist;
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 conversation,
             })
@@ -23,15 +23,13 @@ router.post("/create-new-conversation", catchAsyncErrors(async (req, res, next) 
                 groupTitle: groupTitle,
             })
 
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 conversation,
             })
         }
-
-
     } catch (error) {
-        return next(new ErrorHandler(error.response.message), 500)
+        return next(new ErrorHandler(error.message, 500));
     }
 }));
 
