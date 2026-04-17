@@ -7,7 +7,6 @@ function BestDeals() {
     const { allProducts } = useSelector((state) => state.product);
     // Sort and slice top 10 by originalPrice
     const sortedProducts = allProducts.slice().sort((a, b) => Number(b.originalPrice) - Number(a.originalPrice)).slice(0, 10);
-    console.log(allProducts);
     return (
         <div>
             <div className={`${styles.section}`}>

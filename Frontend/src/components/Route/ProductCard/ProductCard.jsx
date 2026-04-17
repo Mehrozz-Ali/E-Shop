@@ -55,7 +55,6 @@ function ProductCard({ data, isEvent }) {
     }
   }
 
-  console.log(wishlist);
 
 
   return (
