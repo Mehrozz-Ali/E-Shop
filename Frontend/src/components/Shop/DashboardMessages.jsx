@@ -100,9 +100,8 @@ const SellerInbox = ({ setOpen }) => {
 
 
                 <div className="flex w-full justify-end my-2">
-                    <img src="http://localhost:8000/rock-1775801409015-335925793.png" alt="image" className='w-[40px] h-[40px] rounded-full mr-3 ' />
                     <div className="w-max p-2 rounded bg-[#40a56c] text-[#fff] h-min ">
-                        <p>Hello there!</p>
+                        <p>Hello !</p>
                     </div>
                 </div>
             </div>
