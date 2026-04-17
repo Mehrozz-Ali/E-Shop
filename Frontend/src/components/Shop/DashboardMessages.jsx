@@ -6,11 +6,37 @@ import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowRight, AiOutlineSend } from 'react-icons/ai';
 import { TfiGallery } from 'react-icons/tfi';
 import styles from '../../styles/styles';
+import socketIO from 'socket.io-client';
+const ENDPOINT = "http://localhost:4000/";
+
+const socketId = socketIO(ENDPOINT, { transport: ["websocket"] });
 
 function DashboardMessages() {
     const { seller } = useSelector((state) => state.seller);
     const [conversations, setConversations] = useState([]);
     const [open, setOpen] = useState(false);
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+    const [messages, setMessages] = useState(null);
+    const [currentChat, setCurrentChat] = useState(null);
+
+
+
+    useEffect(() => {
+        socketId.on("getMessage", (data) => {
+            setArrivalMessage({
+                sender: data.senderId,
+                text: data.text,
+                createdAt: Date.now(),
+            });
+        })
+    }, [])
+
+
+    useEffect(() => {
+        arrivalMessage && currentChat?.members.includes(arrivalMessage.sender) && setMessages((prev) => [...prev, arrivalMessage]);
+    }, [arrivalMessage, currentChat])
+
+
 
 
 
@@ -100,9 +126,8 @@ const SellerInbox = ({ setOpen }) => {
 
 
                 <div className="flex w-full justify-end my-2">
-                    <img src="http://localhost:8000/rock-1775801409015-335925793.png" alt="image" className='w-[40px] h-[40px] rounded-full mr-3 ' />
                     <div className="w-max p-2 rounded bg-[#40a56c] text-[#fff] h-min ">
-                        <p>Hello there!</p>
+                        <p>Hello !</p>
                     </div>
                 </div>
             </div>
