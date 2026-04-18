@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
     // take userId and socketId from user
     socket.on("addUser", (userId) => {
         addUser(userId, socket.id);
-        io.emit("getUsers", users);
+        io.emit("getUsers", users);  // emit behave like a dispatch 
     });
 
     // send and get message
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
 
         const user = getUser(receiverId);
 
-        // Store the messages in the `messages` object
+        // Store the messages in the "messages" object
         if (!messages[receiverId]) {
             messages[receiverId] = [message];
         } else {

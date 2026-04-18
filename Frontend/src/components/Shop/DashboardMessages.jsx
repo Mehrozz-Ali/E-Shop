@@ -18,32 +18,33 @@ function DashboardMessages() {
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [messages, setMessages] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
+    const [newMessage, setNewMessage] = useState("");
 
 
-
-    // useEffect(() => {
-    //     socketId.on("getMessage", (data) => {
-    //         setArrivalMessage({
-    //             sender: data.senderId,
-    //             text: data.text,
-    //             createdAt: Date.now(),
-    //         });
-    //     })
-    // }, [])
 
     useEffect(() => {
-        const handler = (data) => {
+        socketId.on("getMessage", (data) => {
             setArrivalMessage({
                 sender: data.senderId,
                 text: data.text,
                 createdAt: Date.now(),
             });
-        };
-        socketId.on("getMessage", handler);
-        return () => {
-            socketId.off("getMessage", handler);
-        };
-    }, []);
+        })
+    }, [])
+
+    // useEffect(() => {
+    //     const handler = (data) => {
+    //         setArrivalMessage({
+    //             sender: data.senderId,
+    //             text: data.text,
+    //             createdAt: Date.now(),
+    //         });
+    //     };
+    //     socketId.on("getMessage", handler);
+    //     return () => {
+    //         socketId.off("getMessage", handler);
+    //     };
+    // }, []);
 
 
 
@@ -63,6 +64,54 @@ function DashboardMessages() {
         })
     }, [seller])
 
+
+    const sendMessageHandler = async (e) => {
+        e.preventDefault();
+
+        const message = {
+            sender: seller._id,
+            text: newMessage,
+            conversationId: currentChat._id,
+        };
+        const receiverId = currentChat.members.find((member) => member.id !== seller._id);
+
+        socketId.emit("sendMessage", {
+            senderId: seller._id,
+            receiverId,
+            text: newMessage,
+        })
+
+        try {
+            if (newMessage.trim() !== "") {
+                await axios.post(`${server}/message/create-new-message`, message).then((res) => {
+                    setMessages([...messages, res.data.message]);
+                    updateLastMessage();
+                }).catch((error) => {
+                    console.log(error);
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const updateLastMessage = async () => {
+        socketId.emit("updateLastMessage", {
+            lastMessage: newMessage,
+            lastMessageId: seller._id,
+        })
+        await axios.put(`${server}/conversation//update-last-message/${currentChat._id}`, {
+            lastMessage: newMessage,
+            lastMessageId: seller._id,
+        }).then((res) => {
+            console.log(res.data.conversation);
+            setNewMessage("");
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+
     return (
         <div className='w-[90%] bg-[#f5f5f5] m-5 h-[85vh] overflow-y-scroll rounded'>
 
@@ -73,24 +122,21 @@ function DashboardMessages() {
                         {/* All messages list */}
                         {
                             conversations && conversations.map((item, index) => (
-                                <MessageList data={item} key={index} index={index} setOpen={setOpen} />
+                                <MessageList data={item} key={index} index={index} setOpen={setOpen} setCurrentChat={setCurrentChat} />
                             ))
                         }
                     </>
                 )
             }
 
-            {
-                open && (
-                    <SellerInbox setOpen={setOpen} />
-                )
-            }
+            {open && (<SellerInbox setOpen={setOpen} newMessage={newMessage} setNewMessage={setNewMessage} sendMessageHandler={sendMessageHandler} />)}
 
         </div>
     )
 }
 
-const MessageList = ({ data, index, open, setOpen }) => {
+
+const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat }) => {
 
     const [active, setActive] = useState(0);
     const navigate = useNavigate();
@@ -100,8 +146,9 @@ const MessageList = ({ data, index, open, setOpen }) => {
         setOpen(true);
     }
 
+
     return (
-        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id)}>
+        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id) || setCurrentChat(data)}>
             <div className="relative">
                 <img src="http://localhost:8000/rock-1775801409015-335925793.png" alt="" className='w-[50px] h-[50px] rounded-full' />
                 <div className='w-[12px] h-[12px] bg-green-400 rounded-full absolute  top-[-2px] right-2'></div>
@@ -115,7 +162,7 @@ const MessageList = ({ data, index, open, setOpen }) => {
 }
 
 
-const SellerInbox = ({ setOpen }) => {
+const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler }) => {
     return (
         <div className="w-full min-h-full  flex flex-col justify-between">
             {/* Message Header */}
@@ -149,12 +196,12 @@ const SellerInbox = ({ setOpen }) => {
 
 
             {/* send message input*/}
-            <form action="" aria-required={true} className='p-3 relative w-full flex justify-between items-center'>
+            <form onSubmit={sendMessageHandler} aria-required={true} className='p-3 relative w-full flex justify-between items-center'>
                 <div className='w-[4%] '>
                     <TfiGallery size={20} className='cursor-pointer' />
                 </div>
                 <div className='w-[96%]'>
-                    <input type="text" required placeholder='Enter your message...' className={`${styles.input}`} />
+                    <input type="text" required value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder='Enter your message...' className={`${styles.input}`} />
                     <input type="submit" value="Send" className='hidden' id='send' />
                     <label htmlFor="send">
                         <AiOutlineSend size={20} className='absolute right-4 top-5 cursor-pointer' />
