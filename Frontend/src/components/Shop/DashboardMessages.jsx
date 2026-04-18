@@ -7,29 +7,44 @@ import { AiOutlineArrowRight, AiOutlineSend } from 'react-icons/ai';
 import { TfiGallery } from 'react-icons/tfi';
 import styles from '../../styles/styles';
 import socketIO from 'socket.io-client';
-const ENDPOINT = "http://localhost:4000/";
+const ENDPOINT = "http://localhost:4000";
 
-const socketId = socketIO(ENDPOINT, { transport: ["websocket"] });
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 function DashboardMessages() {
     const { seller } = useSelector((state) => state.seller);
     const [conversations, setConversations] = useState([]);
     const [open, setOpen] = useState(false);
     const [arrivalMessage, setArrivalMessage] = useState(null);
-    const [messages, setMessages] = useState(null);
+    const [messages, setMessages] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
 
 
 
+    // useEffect(() => {
+    //     socketId.on("getMessage", (data) => {
+    //         setArrivalMessage({
+    //             sender: data.senderId,
+    //             text: data.text,
+    //             createdAt: Date.now(),
+    //         });
+    //     })
+    // }, [])
+
     useEffect(() => {
-        socketId.on("getMessage", (data) => {
+        const handler = (data) => {
             setArrivalMessage({
                 sender: data.senderId,
                 text: data.text,
                 createdAt: Date.now(),
             });
-        })
-    }, [])
+        };
+        socketId.on("getMessage", handler);
+        return () => {
+            socketId.off("getMessage", handler);
+        };
+    }, []);
+
 
 
     useEffect(() => {
