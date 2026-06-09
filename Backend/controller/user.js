@@ -317,6 +317,10 @@ router.get("/user-info/:id", catchAsyncErrors(async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
 
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
         res.status(201).json({
             success: true,
             user,

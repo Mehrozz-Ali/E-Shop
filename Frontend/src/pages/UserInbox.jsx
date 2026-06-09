@@ -42,8 +42,9 @@ function UserInbox() {
 
 
     useEffect(() => {
-        axios.get(`${server}/conversation/get-all-conversation-user/${user._id}`, { withCredentials: true }).then((res) => {
+        axios.get(`${server}/conversation/get-all-conversation-user/${user?._id}`, { withCredentials: true }).then((res) => {
             setConversations(res.data.conversations);
+
         }).catch((err) => {
             console.log(err);
         })
@@ -58,6 +59,7 @@ function UserInbox() {
                 setOnlineUsers(data);
             });
         }
+
     }, [user]);
 
 
@@ -81,6 +83,7 @@ function UserInbox() {
         getMessage();
     }, [currentChat])
 
+    console.log(userData);
 
 
     // create new message 
@@ -92,7 +95,7 @@ function UserInbox() {
             text: newMessage,
             conversationId: currentChat._id,
         };
-        const receiverId = currentChat.members.find((member) => member !== user._id);
+        const receiverId = currentChat.members.find((member) => member !== user?._id);
 
         socketId.emit("sendMessage", {
             senderId: user._id,
@@ -141,7 +144,7 @@ function UserInbox() {
                         {/* All messages list */}
                         {
                             conversations && conversations.map((item, index) => (
-                                <MessageList data={item} key={index} index={index} setOpen={setOpen} setCurrentChat={setCurrentChat} me={user?._id} setUserData={setUserData} userData={userData} online={onlineCheck(item)} setActiveStatus={setActiveStatus} />
+                                <MessageList data={item} key={index} index={index} setOpen={setOpen} setCurrentChat={setCurrentChat} me={user._id} setUserData={setUserData} userData={userData} online={onlineCheck(item)} setActiveStatus={setActiveStatus} />
                             ))
                         }
                     </>
@@ -153,7 +156,7 @@ function UserInbox() {
 
 
 const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, me, setUserData, userData, online, setActiveStatus }) => {
-
+    const [user, setUser] = useState([]);
     const [active, setActive] = useState(0);
     const navigate = useNavigate();
 
@@ -166,22 +169,24 @@ const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, 
     useEffect(() => {
         setActiveStatus(online);
         const userId = data.members.find((user) => user !== me);
+        console.log("userId:", userId); // Debug userId
 
         const getUser = async () => {
             try {
                 const response = await axios.get(`${server}/user/user-info/${userId}`);
-                setUserData(response.data.user);
+                console.log("API response:", response.data); // Debug API response
+                setUser(res.data.shop);
             } catch (error) {
-                console.log(error);
+                console.log("Error fetching user:", error);
             }
         }
         getUser();
     }, [me, data])
 
     return (
-        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id) || setCurrentChat(data)}>
+        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id) || setCurrentChat(data) || setUserData(user) || setActiveStatus(online)}>
             <div className="relative">
-                <img src={`${backend_url}${userData?.avatar.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
+                <img src={`${backend_url}${userData?.avatar?.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
                 {
                     online ? (
                         <div className='w-[12px] h-[12px] bg-green-400 rounded-full absolute  top-[-2px] right-2'></div>

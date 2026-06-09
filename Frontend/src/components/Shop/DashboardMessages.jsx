@@ -159,7 +159,7 @@ function DashboardMessages() {
                         {/* All messages list */}
                         {
                             conversations && conversations.map((item, index) => (
-                                <MessageList data={item} key={index} index={index} setOpen={setOpen} setCurrentChat={setCurrentChat} me={seller._id} setUserData={setUserData} userData={userData} online={onlineCheck(item)} setActiveStatus={setActiveStatus}/>
+                                <MessageList data={item} key={index} index={index} setOpen={setOpen} setCurrentChat={setCurrentChat} me={seller._id} setUserData={setUserData} userData={userData} online={onlineCheck(item)} setActiveStatus={setActiveStatus} />
                             ))
                         }
                     </>
@@ -174,7 +174,7 @@ function DashboardMessages() {
 
 
 const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, me, setUserData, userData, online, setActiveStatus }) => {
-
+    const [user, setUser] = useState([]);
     const [active, setActive] = useState(0);
     const navigate = useNavigate();
 
@@ -191,7 +191,7 @@ const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, 
         const getUser = async () => {
             try {
                 const response = await axios.get(`${server}/user/user-info/${userId}`);
-                setUserData(response.data.user);
+                setUser(res.data.user);
             } catch (error) {
                 console.log(error);
             }
@@ -203,9 +203,9 @@ const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, 
 
 
     return (
-        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id) || setCurrentChat(data)}>
+        <div className={`w-full flex p-3 px-3 cursor-pointer  ${active === index ? 'bg-[#00000010]' : 'bg-transparent'}`} onClick={(e) => setActive(index) || handleClick(data._id) || setCurrentChat(data) || setUserData(user) || setActiveStatus(online)}>
             <div className="relative">
-                <img src={`${backend_url}${userData?.avatar.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
+                <img src={`${backend_url}${user?.avatar.url}`} alt="" className='w-[50px] h-[50px] rounded-full' />
                 {
                     online ? (
                         <div className='w-[12px] h-[12px] bg-green-400 rounded-full absolute  top-[-2px] right-2'></div>
@@ -215,8 +215,8 @@ const MessageList = ({ data, index, open, setOpen, currentChat, setCurrentChat, 
                 }
             </div>
             <div className='pl-3'>
-                <h1 className='text-[18px]'>{userData?.name}</h1>
-                <p className='text-[14px] text-[#000c]'>{data?.lastMessageId !== userData?._id ? "You:" : userData.name.split("")[0] + ": "}{data?.lastMessage}</p>
+                <h1 className='text-[18px]'>{user?.name}</h1>
+                <p className='text-[14px] text-[#000c]'>{data?.lastMessageId !== user?._id ? "You:" : user.name.split("")[0] + ": "}{data?.lastMessage}</p>
             </div>
         </div>
     )
