@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import styles from '../../../styles/styles'
 import ProductCard from '../ProductCard/ProductCard'
 
 function BestDeals() {
+    const [data, setData] = useState([]);
     const { allProducts } = useSelector((state) => state.product);
     // Sort and slice top 10 by originalPrice
     const sortedProducts = allProducts.slice().sort((a, b) => Number(b.originalPrice) - Number(a.originalPrice)).slice(0, 10);
