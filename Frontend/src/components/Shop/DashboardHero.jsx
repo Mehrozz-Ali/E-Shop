@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { AiOutlineArrowRight, AiOutlineMoneyCollect } from 'react-icons/ai'
 import { MdBorderClear } from 'react-icons/md'
-import styles from '../../styles/styles'
+import styles from '../../styles/styles'    
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllOrdersOfShop } from '../../redux/actions/order'
